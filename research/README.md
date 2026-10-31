@@ -41,21 +41,26 @@ Every document is logged here before anything is read from it. Only documents ap
 
 Note: Appendix C of D6-20659 is NASA CR-73276 (the register gives only the summary's number, CR-73277).
 
-**Read but not archived**, because the copyright forbids copying the document; the facts in it are used, with a citation:
+Downloaded on 31 October 2026 from the owner's shared folder, after DTIC, AFIT and MDPI refused the session's own downloads. The statement is the document's own cover or documentation page, read by eye:
+
+| ID | Document | Source | Statement |
+|---|---|---|---|
+| A3 | AFFDL-TR-77-23 (Ishimitsu & Zanton, Boeing D6-45090, May 1977), *Design and Analysis of Winglets for Military Aircraft, Phase II* | https://apps.dtic.mil/sti/tr/pdf/ADA046152.pdf | "Approved for public release; distribution unlimited" on the cover and the DD 1473; the notice page says it is releasable to NTIS and the general public |
+| G6 | Crenshaw, *Stability and Control Characteristics of the Winglet Configured KC-135A*, AFIT GAE/MC/76D-5, December 1976 | https://apps.dtic.mil/sti/pdfs/ADA034940.pdf | "Distribution Statement A: Approved for public release; distribution unlimited" on the cover and title page. Note: DDC's stamp says the copy "does not permit fully legible production"; the scan is readable by eye. Only its bibliography is read until Owner decision 1 |
+| F2 | Mortensen, *Improved Load Alleviation Capability for the KC-135*, AFIT/GE/ENY/97S-01, September 1997 | https://scholar.afit.edu (AFIT Scholar copy) | "Approved for public release; distribution unlimited" |
+| G5 | J. J. Smith, *Simulation of the Dynamically Coupled KC-135 Tanker and Refueling Boom*, AFIT, March 2007 | https://scholar.afit.edu/cgi/viewcontent.cgi?article=3971&context=etd | "Approved for public release; distribution unlimited" |
+| G2 | USAF Aircraft Accident Investigation Board report, KC-135R T/N 63-8877, 3 May 2013 (Shell 77) | Air Force FOIA reading room; mirror https://code7700.com/pdfs/usaf/usaf_aib_050313_kc135_manas.pdf | Prepared under AFI 51-503 as "a publicly-releasable report". Only the board's own findings are used; every passage it cites to the inflight manual (its Tab BB) is excluded |
+| E3 | Sun, Hoekstra & Ellerbroek, *OpenAP: An Open-Source Aircraft Performance Model…*, Aerospace 7(8):104, 2020 | https://www.mdpi.com/2226-4310/7/8/104 | Creative Commons Attribution 4.0 (CC BY), stated on its last page |
+
+**Read but not archived**, because the copyright forbids copying the document or no licence is stated; the facts in them are used, with a citation:
 
 | ID | Document | Source | Statement |
 |---|---|---|---|
 | E1 | EASA TCDS E.066, CFM56-2 and -3 series, Issue 02 (17 March 2023) | https://www.easa.europa.eu/en/downloads/7691/en | "© European Union Aviation Safety Agency. All rights reserved." and "Proprietary document. Copies are not controlled." Published openly by EASA |
+| E2 | ICAO Aircraft Engine Emissions Databank, version 32, `edb-emissions-databank_v32__web_.xlsx` | https://www.easa.europa.eu/en/domains/environment/icao-aircraft-engine-emissions-databank | No licence or copyright text anywhere in the workbook; ICAO material, so not copied. Its CFM56-2 rows (UIDs 1CM001–1CM003) were read and match the register |
 
-## Still to upload
+**Not a source:** `ADA061313.pdf`, uploaded by mistake, is AFFDL-TR-77-60, a bird-strike study. Not archived.
 
-DTIC (`apps.dtic.mil`) and AFIT (`scholar.afit.edu`) refuse automated downloads from Claude's cloud session, so these need downloading in a browser and uploading:
+## Not yet fetched
 
-| ID | Document | Source |
-|---|---|---|
-| A3 | AFFDL-TR-77-23 | https://apps.dtic.mil/sti/tr/pdf/ADA046152.pdf |
-| G6 | Crenshaw 1976 (only its bibliography is read, for Owner decision 1) | https://apps.dtic.mil/sti/pdfs/ADA034940.pdf |
-| G5 | J. Smith 2007, AFIT | https://scholar.afit.edu/cgi/viewcontent.cgi?article=3971&context=etd |
-| F1, F2, F4–F6, F9 | The refuelling sources | In the register. Not needed until refuelling, which is parked |
-
-Also still to fetch: G2 (the Shell 77 report, from the Air Force FOIA reading room), E2 (the ICAO emissions databank spreadsheet) and E3 (the OpenAP paper). MDPI, which publishes E3, refused the session too.
+The refuelling sources F1, F4, F5, F6 and F9 (in the register). Not needed until refuelling, which is parked. DTIC and AFIT refuse automated downloads from Claude's cloud session, so they will need downloading in a browser when the time comes.

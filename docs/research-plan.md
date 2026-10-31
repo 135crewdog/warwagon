@@ -35,17 +35,18 @@ Source IDs (A1, R2, E3 …) are the register's.
 |---|---|---|---|---|
 | 1 | A1 | NASA TM 73,250 | The only complete tail-on C-135 test: the low-speed model's backbone | Archived |
 | 1 | A2 | NASA TP-1119 | Tail on and off, stabiliser settings, aileron effectiveness | Archived |
-| 1 | A3 | AFFDL-TR-77-23 | Geometry table, drag rise, buffet, Mach tuck | To upload (DTIC blocks the session) |
-| 1 | G6 | Crenshaw 1976 | **Only its bibliography**, for Owner decision 1. Nothing else from it is used until the owner decides | To upload (DTIC) |
+| 1 | A3 | AFFDL-TR-77-23 | Geometry table, drag rise, buffet, Mach tuck | Archived |
+| 1 | G6 | Crenshaw 1976 | **Only its bibliography**, for Owner decision 1. Nothing else from it is used until the owner decides | Archived; bibliography read (section 5) |
 | 2 | A8 | NASA TN D-8473 | CL-α and Cm through cruise Mach | Archived |
 | 2 | A5, A6 | Montoya; NASA CP-2211 (Lux and Dodson papers) | Full-scale cruise polars | Archived |
 | 2 | R1 | Boeing D6-20659 Appendix C (CR-73276) and summary (CR-73277) | Tabulated 707-320B derivatives, Mach 0.1–1.0 | Archived |
 | 2 | R2, R3 | NASA TN D-3971, TN D-4804 | Tabulated Dash 80 derivatives, inertias; flight-measured modes | Archived |
-| 2 | E3 | Sun et al., *Aerospace* 2020 (CC BY) | The thrust-lapse constants | To upload (MDPI blocks the session) |
+| 2 | E3 | Sun et al., *Aerospace* 2020 (CC BY) | The thrust-lapse constants | Archived |
 | 3 | A4, A7 | NASA TM-85920, TP-1163 | Ground effect; transonic lateral data | Archived |
-| 3 | G2, G5 | Shell 77 report; J. Smith 2007 (AFIT) | The dutch-roll and trim checks | To upload |
+| 3 | G2, G5 | Shell 77 report; J. Smith 2007 (AFIT) | The dutch-roll and trim checks | Archived |
+| 3 | F2 | Mortensen 1997 (AFIT) | Its bibliography, for Owner decision 1; the boom, later | Archived |
 | 3 | E1 | EASA TCDS E.066 | Engine ratings | Read from EASA; not archived (EASA copyright) |
-| 3 | E2 | ICAO emissions databank spreadsheet | Fuel flows, re-keyed from ICAO, not OpenAP | To fetch |
+| 3 | E2 | ICAO emissions databank spreadsheet, v32 | Fuel flows, re-keyed from ICAO, not OpenAP | Read; not archived (no licence stated). Its CFM56-2B-1 row matches the register: 97.86 kN, pressure ratio 23.5, fuel flow 0.985 / 0.819 / 0.311 / 0.128 kg/s at take-off, climb-out, approach and idle |
 
 The URLs are in the register and the log.
 
@@ -79,7 +80,14 @@ Where the data has nothing, the model says so and does something defensible:
 
 The register's section 7 lists six. Two matter for milestones 0 and 1:
 
-1. **Crenshaw's thesis** (decision 1): its bibliography gets read from the uploaded scan first. That reading decides how much of the rate derivatives and inertias has to be estimated.
+1. **Crenshaw's thesis** (decision 1). Its bibliography (thesis page 104, PDF page 117, one page, eleven entries) was read from the scan on 31 October 2026. The entries that matter:
+   - **Ref 7**, the source of the inertias and the flight-test derivatives: *"Summary of the Stability, Control and Flying Qualities Information for All the -135 Series."* Seattle: The Boeing Commercial Airplane Company, October 1973. A Boeing engineering summary. By its title it is not a T.O., not a flight manual, and not the flight-manual substantiation report (that is D6-5599, 1964, a different document).
+   - **Ref 9**: T.O. 1C-135A-1, *Flight Manual USAF Series C-135A and B Aircraft*, September 1974. **Ref 10**: T.O. 1C-135B-1-1, *Flight Manual … Performance Data*, October 1974. Both are flight manuals, so the register was right to strike the stall speed (Ref 9) and the minimum control speed (Ref 10). Nothing else in the thesis cites them.
+   - Ref 2 is Boeing's Phase I winglet report (February 1976), Ref 3 is NASA TN D-8267, Ref 4 the FLEXSTAB manual, Ref 6 Roskam, Ref 8 MIL-F-8785B.
+
+   **Mortensen 1997** (F2), whose tanker condition and inertias repeat Crenshaw's, does not cite Crenshaw or any Boeing document. Its bibliography (thesis page 142) has Russell's 1984 AFIT thesis on KC-135 controllers, Locken's 1993 thesis (excluded by the register as T.O.-based), Campbell 1989 on the boom, and telephone interviews with two Boeing Wichita engineers. So Mortensen's numbers don't add provenance to Crenshaw's; they stand or fall with it.
+
+   **The decision is the owner's.** The register's recommendation applies: if the owner accepts that Ref 7, a Boeing stability-and-control summary, is not flight-manual data, the thesis is used minus the two struck values. Until then nothing from it is read into data.
 2. **D6-5599's two items in AFFDL-TR-77-23** (decision 2) and **CR-66125/66126** (decision 3): the register recommends not using them.
 
 Decisions 4 to 6 are about the boom and refuelling, which is parked.
