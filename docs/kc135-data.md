@@ -232,3 +232,62 @@ TP-1119 tested a second 0.035-scale KC-135A model, with winglets on and off, at 
 | Cm_δh, per deg, winglets off | −0.0326 | −0.0324 | −0.0326 | −0.0349 |
 
 **What it gives.** Cm per degree of stabiliser trailing edge *down* is −0.0325 at flaps 30 on this model, against −0.0284 from A1's two tail settings at flaps 0 (3.1; A1's 0.0284 per degree trailing edge *up* is the same number with the opposite sign convention). The 14 % difference is the flaps' extra downwash and dynamic pressure at the tail, and the two models' differences; the two reports agree on the tail's effectiveness to that level, and the clean value stays A1's.
+
+---
+
+## 6. Flaps and gear at low speed (for the flaps milestone)
+
+Read now while the documents were open, as the owner asked; used when flaps, gear and landing are built. All from A1 (TM 73,250) at Mach 0.28, β 0, ailerons and rudder 0, **tail at 6° trailing edge up** (the only tail setting in the flaps runs), the basic configuration's run (○) where the data sets diverge. Each page's three panels were cut by their frames, calibrated from their gridlines, and read by `scan.py --symbols`, which finds the plotted symbols by their white interiors and takes their centroids; where the four to six configurations' symbols coincide (to about 14°) the merged interior's centroid is their common value, and above that the automatic curve hops between the diverging sets and is **not to be trusted past 14°** until read by eye. Every overlay was viewed with the points on their symbols (`research/check/A1-fig8-p29-*`, `-p30-*`, `A1-fig9-p37-*`, `-p40-*`). Accuracy about 0.01 in CL, 0.005 in Cm and 0.003 in CD below 14°, plus the report's repeatability.
+
+| Page | Figure | Flaps | Gear | RN/L, 10⁶/m | Run | Charts |
+|---|---|---|---|---|---|---|
+| 29 | 8(b) | 30° | up | 19.69 | ZHG005 | `A1-fig8-p29-{CL,Cm,CD}` |
+| 30 | 8(c) | 50° | up | 16.40 | ZHG030 | `A1-fig8-p30-{CL,Cm,CD}` |
+| 37 | 9(c) | 30° | down | 19.54 | ZHG006 | `A1-fig9-p37-{CL,Cm,CD}` |
+| 40 | 9(c) | 50° | down | 16.42 | ZHG028 | `A1-fig9-p40-{CL,Cm,CD}` |
+
+### 6.1 At the breakpoints
+
+| α, deg | −8 | −6 | −4 | −2 | 0 | 2 | 4 | 6 | 8 | 10 | 12 | 14 | 16 | 18 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| **CL** flaps 30, gear up | −0.040 | 0.166 | 0.350 | 0.520 | 0.686 | 0.850 | 1.010 | 1.159 | 1.293 | 1.360 | 1.387 | 1.353 | *1.33* | *1.28* |
+| CL flaps 30, gear down | −0.024 | 0.164 | 0.351 | 0.517 | 0.703 | 0.845 | 0.991 | 1.151 | 1.282 | 1.345 | 1.351 | 1.349 | *1.32* | *1.29* |
+| CL flaps 50, gear up | — | 0.459 | 0.617 | 0.768 | 0.966 | 1.103 | 1.260 | 1.397 | 1.484 | 1.500 | 1.486 | 1.416 | *1.38* | *1.32* |
+| CL flaps 50, gear down | — | 0.445 | 0.617 | 0.763 | 0.959 | 1.104 | 1.251 | 1.391 | 1.481 | 1.503 | 1.465 | 1.413 | *1.38* | *1.33* |
+| **Cm** flaps 30, gear up | 0.288 | 0.236 | 0.190 | 0.151 | 0.116 | 0.082 | 0.047 | 0.019 | 0.002 | 0.021 | 0.037 | 0.035 | *−0.01* | *−0.11* |
+| Cm flaps 30, gear down | 0.286 | 0.242 | 0.193 | 0.152 | 0.109 | 0.077 | 0.042 | 0.009 | −0.010 | 0.012 | 0.029 | 0.025 | *−0.02* | *−0.10* |
+| Cm flaps 50, gear up | — | 0.164 | 0.134 | 0.096 | 0.054 | 0.017 | −0.016 | −0.038 | −0.026 | 0.008 | 0.032 | 0.032 | *−0.04* | *−0.11* |
+| Cm flaps 50, gear down | — | 0.167 | 0.133 | 0.098 | 0.050 | 0.015 | −0.024 | −0.049 | −0.029 | −0.002 | 0.020 | −0.006 | *−0.05* | *−0.13* |
+| **CD** flaps 30, gear up | 0.077 | 0.072 | 0.071 | 0.074 | 0.082 | 0.092 | 0.105 | 0.123 | 0.151 | 0.201 | 0.252 | 0.325 | 0.391 | 0.436 |
+| CD flaps 30, gear down | 0.095 | 0.085 | 0.082 | 0.084 | 0.090 | 0.098 | 0.114 | 0.132 | 0.156 | 0.211 | 0.257 | 0.332 | 0.396 | 0.446 |
+| CD flaps 50, gear up | — | 0.145 | 0.144 | 0.147 | 0.152 | 0.158 | 0.180 | 0.201 | 0.244 | 0.296 | 0.348 | 0.416 | 0.466 | 0.515 |
+| CD flaps 50, gear down | — | 0.152 | 0.151 | 0.155 | 0.156 | 0.174 | 0.188 | 0.211 | 0.254 | 0.292 | 0.350 | 0.421 | 0.469 | 0.517 |
+
+Italics: past 14°, the diverging sets' mean, not the basic run. The flaps-50 runs start at α −7.5°, so −8° is not covered.
+
+### 6.2 What the tables give
+
+**Flap increments** (flaps against clean, both tail 6° TEU, 2.1/3.1/4.1 for the clean values), at α 0 and at the plateau:
+
+| | Clean | Flaps 30 | Flaps 50 |
+|---|---|---|---|
+| CL at α 0 | 0.148 | 0.686 (+0.54) | 0.966 (+0.82) |
+| CLmax, and where | 1.08 at 15° | 1.39 at 11–12° | 1.50 at 9–10° |
+| Cm at α 0 | 0.197 | 0.116 (−0.08) | 0.054 (−0.14) |
+| CD at α 0 | 0.029 | 0.082 (+0.05) | 0.152 (+0.12) |
+| Lift-curve slope, /deg (α −6 to 6) | 0.082 | 0.083 | 0.079 |
+
+The flaps shift the lift curve up without changing its slope, bring the stall forward (from 15° clean to 10° at flaps 50), pitch the nose down (which the stabiliser trims), and roughly quadruple the zero-lift drag at flaps 50. The pitch-up between 8° and 14° is there in every configuration.
+
+**Gear increments** (down minus up, same flaps, same Reynolds number within 1 %):
+
+| | Flaps 30 | Flaps 50 |
+|---|---|---|
+| ΔCL (α −6 to 10, mean) | −0.005 | −0.005 |
+| ΔCm (α −6 to 10, mean) | −0.005 | −0.003 |
+| ΔCD at α −4 to 0 | +0.011 to +0.018 | +0.004 to +0.008 |
+| ΔCD at α 8 to 14 | +0.005 to +0.010 | 0 to +0.010 |
+
+The gear's effect on lift and moment is inside the data's scatter; its drag is 0.01 to 0.02 at flaps 30 and half that at flaps 50, where the flaps' own wake hides it. For the model: **ΔCD_gear = 0.015**, constant, labelled as this tunnel's figure (the report's repeatability on CD is ± 0.002, and the scatter between the two flap settings is the same size as the increment).
+
+**Full-scale check, to come:** A3's D6-5599 lift coefficients (take-off CL 1.23 at flaps 30, touchdown 1.05, buffet 1.37; at flaps 50 touchdown 1.21, buffet 1.49, usable under the revised rule) against the plateaus above (1.39 and 1.50 on the model at Re 4 × 10⁶), when A3's section V is read.

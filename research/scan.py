@@ -11,6 +11,9 @@ Usage:
       gridline values, prints the residuals and writes the fits into the JSON as pixel_fit. When it
       finds more lines than values (a frame a grid step outside the labelled lines looks like one),
       --lines says which run to use, 1-based and inclusive; the overlay afterwards shows if it was wrong.
+  python3 -I research/scan.py research/charts/<chart>.json --symbols [name] [--area 15,700]
+      Finds the plotted symbols (closed shapes of symbol size once the gridlines are stripped) and prints their
+      centroids in chart units; with a name, writes them into the JSON as that curve, for the overlay to check.
   python3 -I research/scan.py research/charts/<chart>.json --zoom x0,x1,y0,y1[,zoom] name
       Writes <chart>-zoom-<name>.png beside the image: that range enlarged, with a labelled fine
       grid (every 1 in x, 0.1 in y by default; set "zoom_step": [dx, dy] in the JSON) for reading by eye.
@@ -49,9 +52,11 @@ if '--calibrate' in sys.argv:
                         d = (found[j] - found[i]) / (mj - mi); pred = [found[i] + (m - mi) * d for m in range(n)]
                         hits = [min(found, key=lambda f: abs(f - q)) for q in pred]
                         score = sum(abs(h - q) <= 4 for h, q in zip(hits, pred)); res = max(abs(h - q) for h, q in zip(hits, pred))
-                        if best is None or (score, -res) > (best[0], -best[1]): best = (score, res, hits); ties = []
-                        elif (score, round(res)) == (best[0], round(best[1])) and hits != best[2] and hits not in ties: ties.append(hits)
-        return best, ties
+                        span = hits[-1] - hits[0]       # among runs that fit, the one spanning most of the frame is the grid
+                        key = (score, round(span / 10), -res)
+                        if best is None or key > best[3]: best = (score, res, hits, key); ties = []
+                        elif key[:2] == best[3][:2] and hits != best[2] and hits not in ties: ties.append(hits)
+        return best[:3], ties
     fits = {}
     for i, t in enumerate(sys.argv):
         if t == '--fit':      # --fit x:0.1=573,1.15=3252 : two value=pixel pairs per axis, read off the image by hand
@@ -78,6 +83,7 @@ if '--calibrate' in sys.argv:
                 print('%s: %d equally spaced runs fit equally well: %s and %s; say which with --lines %s:a-b' % (
                     axis, 1 + len(ties), [round(f) for f in chosen], ' / '.join(str([round(f) for f in t]) for t in ties), axis)); sys.exit(1)
             found = chosen
+            print('%s: chose %s' % (axis, [round(f) for f in chosen]))
             print('%s: took the equally spaced %d of them (%d land within 4 px of the spacing, worst %.1f px); --lines %s:a-b overrides' % (axis, len(vals), score, res, axis))
             if score < len(vals) - 1: print('%s: too few lines on the spacing; check the overlay or give --lines' % axis)
         if len(found) != len(vals): print('%s: %d lines for %d values' % (axis, len(found), len(vals))); sys.exit(1)
@@ -88,6 +94,43 @@ if '--calibrate' in sys.argv:
 
 fx, fy = spec['x']['pixel_fit'], spec['y']['pixel_fit']
 x_of = lambda v: fx[0]*v + fx[1]; y_of = lambda v: fy[0]*v + fy[1]; v_of = lambda p: (p - fy[1]) / fy[0]
+
+if '--symbols' in sys.argv:
+    # the plotted test points are closed symbols (circle, square, diamond, triangle) about 25 px across at
+    # 400 dpi, drawn on top of the curve line. The curve joins them into one blob, so the ink can't be used;
+    # their white interiors can: small enclosed white regions inside the frame, which nothing else makes
+    # (grid cells are a hundred times larger, and the axis labels are outside the frame). The curve through
+    # a symbol splits its interior in two, so interiors within 15 px are grouped and their centroid taken.
+    # Overlapping data sets share one interior, whose centroid is where they agree. --symbols <name> writes
+    # the result into the JSON as that curve, for the overlay to check.
+    from scipy import ndimage
+    gx = [x_of(v) for v in spec['x']['gridlines']]; gy = [y_of(v) for v in spec['y']['gridlines']]
+    fx0, fx1 = int(min(gx)) + 4, int(max(gx)) - 4; fy0, fy1 = int(min(gy)) + 4, int(max(gy)) - 4
+    inside = np.zeros_like(a); inside[fy0:fy1, fx0:fx1] = True
+    white = ~a & inside
+    lab, n = ndimage.label(white); objs = ndimage.find_objects(lab)
+    amin, amax = [int(v) for v in sys.argv[sys.argv.index('--area') + 1].split(',')] if '--area' in sys.argv else (15, 700)
+    holes = []
+    for i_, sl in enumerate(objs):
+        hh, ww = sl[0].stop - sl[0].start, sl[1].stop - sl[1].start
+        if hh > 40 or ww > 40: continue
+        m = lab[sl] == i_ + 1; area = int(m.sum())
+        if not amin <= area <= amax: continue
+        if sl[0].start <= fy0 + 10 or sl[0].stop >= fy1 - 10 or sl[1].start <= fx0 + 10 or sl[1].stop >= fx1 - 10: continue   # labels at the frame
+        cy, cx = ndimage.center_of_mass(m); holes.append((cx + sl[1].start, cy + sl[0].start, area))
+    holes.sort(); groups_ = []
+    for hx, hy, ar in holes:
+        for g in groups_:
+            if abs(g['x'] / g['a'] - hx) < 15 and abs(g['y'] / g['a'] - hy) < 15:
+                g['x'] += hx * ar; g['y'] += hy * ar; g['a'] += ar; g['n'] += 1; break
+        else: groups_.append({'x': hx * ar, 'y': hy * ar, 'a': ar, 'n': 1})
+    pts = sorted((round((g['x'] / g['a'] - fx[1]) / fx[0], 2), round(float(v_of(g['y'] / g['a'])), 4), g['a'], g['n']) for g in groups_)
+    for q in pts: print('x %6.2f  y %8.4f  interior %4d px in %d parts' % q)
+    k = sys.argv.index('--symbols'); name = sys.argv[k + 1] if len(sys.argv) > k + 1 and not sys.argv[k + 1].startswith('--') else None
+    if name:
+        spec['curves'][name] = {'symbol': 'auto', 'description': 'symbol centroids found by scan.py --symbols (interiors of the plotted symbols)', 'points': [[q[0], q[1]] for q in pts]}
+        json.dump(spec, open(sys.argv[1], 'w'), indent=1); print('wrote curve', name)
+    sys.exit(0)
 
 if '--zoom' in sys.argv:
     i = sys.argv.index('--zoom'); parts = [float(t) for t in sys.argv[i+1].split(',')]; name = sys.argv[i+2]

@@ -1,0 +1,216 @@
+{
+ "source": "A1",
+ "document": "NASA TM 73,250 (Hedstrom & Whitcomb, 1977)",
+ "reference": {
+  "S_model_cm2": 2768.91,
+  "cbar_model_cm": 21.51,
+  "b_model_cm": 139.569,
+  "scale": 0.035,
+  "moment_centre": "M.S. 75.27 cm, W.L. 17.98 cm (0.25 MAC)",
+  "corrections": "wall interference and blockage applied by the report"
+ },
+ "image_note": "the panel cut from the PDF page rendered at 400 dpi; crop box in page pixels",
+ "figure": "Figure 9(c), data page 40 (PDF page 74), bottom-left panel: CD against alpha",
+ "image": "A1-fig9-p40-CD.png",
+ "crop": [
+  386,
+  1636,
+  2130,
+  2821
+ ],
+ "conditions": {
+  "mach": 0.28,
+  "RN_per_m": 16420000.0,
+  "beta_deg": 0,
+  "flaps_deg": 50,
+  "aileron_deg": 0,
+  "rudder_deg": 0,
+  "gear": "down",
+  "tail": "6 deg incidence, trailing edge up"
+ },
+ "x": {
+  "quantity": "alpha",
+  "unit": "deg",
+  "gridlines": [
+   -10.0,
+   -7.5,
+   -5.0,
+   -2.5,
+   0.0,
+   2.5,
+   5.0,
+   7.5,
+   10.0,
+   12.5,
+   15.0,
+   17.5,
+   20.0
+  ],
+  "pixel_fit": [
+   43.85454545454545,
+   728.9090909090909
+  ]
+ },
+ "y": {
+  "quantity": "CD",
+  "unit": "",
+  "gridlines": [
+   0.6,
+   0.5,
+   0.4,
+   0.3,
+   0.2,
+   0.1
+  ],
+  "pixel_fit": [
+   -1970.0,
+   1220.0
+  ]
+ },
+ "zoom_step": [
+  1,
+  0.02
+ ],
+ "breakpoints": [
+  -8,
+  -6,
+  -4,
+  -2,
+  0,
+  2,
+  4,
+  6,
+  8,
+  10,
+  12,
+  14,
+  16,
+  18,
+  20
+ ],
+ "curves": {
+  "auto": {
+   "symbol": "auto",
+   "description": "symbol centroids found by scan.py --symbols (interiors of the plotted symbols)",
+   "points": [
+    [
+     -7.68,
+     0.1578
+    ],
+    [
+     -5.26,
+     0.1491
+    ],
+    [
+     -3.17,
+     0.1519
+    ],
+    [
+     -0.84,
+     0.1571
+    ],
+    [
+     -0.2,
+     0.1541
+    ],
+    [
+     1.39,
+     0.1687
+    ],
+    [
+     1.76,
+     0.1741
+    ],
+    [
+     3.6,
+     0.1837
+    ],
+    [
+     5.77,
+     0.2062
+    ],
+    [
+     7.86,
+     0.2512
+    ],
+    [
+     10.0,
+     0.2868
+    ],
+    [
+     10.2,
+     0.2955
+    ],
+    [
+     10.26,
+     0.3038
+    ],
+    [
+     11.94,
+     0.3592
+    ],
+    [
+     12.06,
+     0.3416
+    ],
+    [
+     12.78,
+     0.391
+    ],
+    [
+     14.03,
+     0.416
+    ],
+    [
+     14.06,
+     0.4278
+    ],
+    [
+     15.91,
+     0.4623
+    ],
+    [
+     15.94,
+     0.4713
+    ],
+    [
+     16.84,
+     0.4857
+    ],
+    [
+     16.87,
+     0.4945
+    ],
+    [
+     17.42,
+     0.4964
+    ],
+    [
+     17.77,
+     0.5091
+    ],
+    [
+     17.94,
+     0.519
+    ],
+    [
+     18.78,
+     0.5342
+    ],
+    [
+     18.88,
+     0.5512
+    ],
+    [
+     19.46,
+     0.5511
+    ],
+    [
+     19.51,
+     0.5642
+    ]
+   ]
+  }
+ },
+ "curves_note": "five data sets: ZHG028 (circle) the basic configuration WBNH6V with gear (G), and four modified configurations, on the basic curve to about 14 deg"
+}
