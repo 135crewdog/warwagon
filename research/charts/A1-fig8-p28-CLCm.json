@@ -1,0 +1,221 @@
+{
+ "source": "A1",
+ "document": "NASA TM 73,250 (Hedstrom & Whitcomb, 1977)",
+ "conditions": {
+  "mach": 0.28,
+  "RN_per_m": 19690000.0,
+  "beta_deg": 0,
+  "flaps_deg": 0,
+  "aileron_deg": 0,
+  "rudder_deg": 0,
+  "gear": "up"
+ },
+ "reference": {
+  "S_model_cm2": 2768.91,
+  "cbar_model_cm": 21.51,
+  "b_model_cm": 139.569,
+  "scale": 0.035,
+  "moment_centre": "M.S. 75.27 cm, W.L. 17.98 cm (0.25 MAC)",
+  "corrections": "wall interference and blockage applied by the report"
+ },
+ "figure": "Figure 8(a), data page 28 (PDF page 62), bottom-right panel: CL against Cm",
+ "image": "A1-fig8-p28-CLCm.png",
+ "image_note": "the panel cut from the PDF page rendered at 400 dpi; crop box in page pixels",
+ "crop": [
+  2442,
+  1639,
+  3982,
+  2766
+ ],
+ "x": {
+  "quantity": "Cm",
+  "unit": "",
+  "gridlines": [
+   -0.25,
+   -0.2,
+   -0.15,
+   -0.1,
+   -0.05,
+   0.0,
+   0.05,
+   0.1,
+   0.15,
+   0.2,
+   0.25,
+   0.3,
+   0.35,
+   0.4
+  ],
+  "pixel_fit": [
+   2186.241758241758,
+   583.7461538461542
+  ]
+ },
+ "y": {
+  "quantity": "CL",
+  "unit": "",
+  "gridlines": [
+   1.25,
+   1.0,
+   0.75,
+   0.5,
+   0.25,
+   0.0,
+   -0.25,
+   -0.5,
+   -0.75
+  ],
+  "pixel_fit": [
+   -496.46666666666675,
+   674.172222222222
+  ]
+ },
+ "reading": "not read: the points are derived from the CL and Cm panels at the same test alphas, and drawn here as the consistency check of both readings",
+ "curves": {
+  "WBNH0V": {
+   "symbol": "square",
+   "description": "basic configuration, horizontal tail 0 deg incidence",
+   "points": [
+    [
+     0.19,
+     -0.493
+    ],
+    [
+     0.133,
+     -0.32
+    ],
+    [
+     0.09,
+     -0.13
+    ],
+    [
+     0.052,
+     0.057
+    ],
+    [
+     0.018,
+     0.247
+    ],
+    [
+     -0.026,
+     0.443
+    ],
+    [
+     -0.056,
+     0.63
+    ],
+    [
+     -0.087,
+     0.8
+    ],
+    [
+     -0.109,
+     0.96
+    ],
+    [
+     -0.11,
+     1.057
+    ],
+    [
+     -0.109,
+     1.133
+    ],
+    [
+     -0.138,
+     1.137
+    ],
+    [
+     -0.186,
+     1.137
+    ],
+    [
+     -0.21,
+     1.137
+    ],
+    [
+     -0.24,
+     1.137
+    ],
+    [
+     -0.243,
+     1.137
+    ]
+   ]
+  },
+  "WBNH6V": {
+   "symbol": "circle",
+   "description": "basic configuration, horizontal tail 6 deg incidence, trailing edge up",
+   "points": [
+    [
+     0.354,
+     -0.553
+    ],
+    [
+     0.304,
+     -0.38
+    ],
+    [
+     0.268,
+     -0.193
+    ],
+    [
+     0.23,
+     -0.008
+    ],
+    [
+     0.191,
+     0.177
+    ],
+    [
+     0.15,
+     0.377
+    ],
+    [
+     0.111,
+     0.56
+    ],
+    [
+     0.078,
+     0.737
+    ],
+    [
+     0.051,
+     0.897
+    ],
+    [
+     0.047,
+     1.0
+    ],
+    [
+     0.048,
+     1.073
+    ],
+    [
+     0.029,
+     1.08
+    ],
+    [
+     0.024,
+     1.08
+    ],
+    [
+     0.028,
+     1.08
+    ],
+    [
+     -0.027,
+     1.08
+    ],
+    [
+     -0.04,
+     1.073
+    ],
+    [
+     -0.069,
+     1.075
+    ]
+   ]
+  }
+ },
+ "breakpoints": []
+}

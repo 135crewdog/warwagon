@@ -1,0 +1,242 @@
+{
+ "source": "A1",
+ "document": "NASA TM 73,250 (Hedstrom & Whitcomb, 1977)",
+ "conditions": {
+  "mach": 0.28,
+  "RN_per_m": 19690000.0,
+  "beta_deg": 0,
+  "flaps_deg": 0,
+  "aileron_deg": 0,
+  "rudder_deg": 0,
+  "gear": "up"
+ },
+ "reference": {
+  "S_model_cm2": 2768.91,
+  "cbar_model_cm": 21.51,
+  "b_model_cm": 139.569,
+  "scale": 0.035,
+  "moment_centre": "M.S. 75.27 cm, W.L. 17.98 cm (0.25 MAC)",
+  "corrections": "wall interference and blockage applied by the report"
+ },
+ "figure": "Figure 8(a), data page 28 (PDF page 62), top-right panel: Cm against alpha",
+ "image": "A1-fig8-p28-Cm.png",
+ "image_note": "the panel cut from the PDF page rendered at 400 dpi; crop box in page pixels",
+ "crop": [
+  2442,
+  427,
+  3982,
+  1588
+ ],
+ "x": {
+  "quantity": "alpha",
+  "unit": "deg",
+  "gridlines": [
+   -10.0,
+   -7.5,
+   -5.0,
+   -2.5,
+   0.0,
+   2.5,
+   5.0,
+   7.5,
+   10.0,
+   12.5,
+   15.0,
+   17.5,
+   20.0
+  ],
+  "pixel_fit": [
+   43.77032967032969,
+   467.5714285714282
+  ]
+ },
+ "y": {
+  "quantity": "Cm",
+  "unit": "",
+  "gridlines": [
+   0.4,
+   0.30000000000000004,
+   0.2,
+   0.09999999999999998,
+   0.0,
+   -0.09999999999999998,
+   -0.20000000000000007,
+   -0.30000000000000004
+  ],
+  "pixel_fit": [
+   -1428.9880952380952,
+   644.0119047619047
+  ]
+ },
+ "zoom_step": [
+  1,
+  0.02
+ ],
+ "breakpoints": [
+  -8,
+  -6,
+  -4,
+  -2,
+  0,
+  2,
+  4,
+  6,
+  8,
+  10,
+  12,
+  14,
+  16,
+  18,
+  20
+ ],
+ "curves": {
+  "WBNH0V": {
+   "data_set": "ZHG001",
+   "symbol": "square",
+   "description": "basic configuration, horizontal tail 0 deg incidence",
+   "points": [
+    [
+     -8.82,
+     0.19
+    ],
+    [
+     -6.58,
+     0.133
+    ],
+    [
+     -4.27,
+     0.09
+    ],
+    [
+     -2.0,
+     0.052
+    ],
+    [
+     0.37,
+     0.018
+    ],
+    [
+     2.62,
+     -0.026
+    ],
+    [
+     4.87,
+     -0.056
+    ],
+    [
+     7.15,
+     -0.087
+    ],
+    [
+     9.38,
+     -0.109
+    ],
+    [
+     11.52,
+     -0.11
+    ],
+    [
+     13.67,
+     -0.109
+    ],
+    [
+     15.71,
+     -0.138
+    ],
+    [
+     17.7,
+     -0.186
+    ],
+    [
+     18.73,
+     -0.21
+    ],
+    [
+     19.64,
+     -0.24
+    ],
+    [
+     20.4,
+     -0.243
+    ]
+   ]
+  },
+  "WBNH6V": {
+   "data_set": "ZHG004",
+   "symbol": "circle",
+   "description": "basic configuration, horizontal tail 6 deg incidence, trailing edge up",
+   "points": [
+    [
+     -8.82,
+     0.354
+    ],
+    [
+     -6.58,
+     0.304
+    ],
+    [
+     -4.27,
+     0.268
+    ],
+    [
+     -2.0,
+     0.23
+    ],
+    [
+     0.37,
+     0.191
+    ],
+    [
+     2.62,
+     0.15
+    ],
+    [
+     4.87,
+     0.111
+    ],
+    [
+     7.15,
+     0.078
+    ],
+    [
+     9.38,
+     0.051
+    ],
+    [
+     11.52,
+     0.047
+    ],
+    [
+     13.67,
+     0.048
+    ],
+    [
+     15.71,
+     0.029
+    ],
+    [
+     16.66,
+     0.024
+    ],
+    [
+     17.7,
+     0.028
+    ],
+    [
+     18.73,
+     -0.027
+    ],
+    [
+     19.64,
+     -0.04
+    ],
+    [
+     20.4,
+     -0.069
+    ]
+   ]
+  }
+ },
+ "reading": "symbol centres read by eye against a 1 deg / 0.02 grid drawn from the pixel fit, 31 Oct 2026; the alphas are the test points' from the CL panel of the same runs, confirmed here within 0.1 deg. A first reading from crops 15 deg wide came out 0.01-0.02 high between -6.6 and 4.9 deg (the scan and the CL-Cm cross-check both showed it); those twelve points were re-read from a crop 12 deg wide at 3x, and now agree with the scan within 0.008. Accuracy about 0.005 in Cm",
+ "curves_not_read": "ZHG002 (diamond) and ZHG003 (triangle), the modified configurations: on the basic curves to 13.7 deg, then less nose-down (the radomes delay the pitch-down)"
+}

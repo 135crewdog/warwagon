@@ -1,0 +1,269 @@
+{
+ "source": "A1",
+ "document": "NASA TM 73,250 (Hedstrom & Whitcomb, 1977)",
+ "reference": {
+  "S_model_cm2": 2768.91,
+  "cbar_model_cm": 21.51,
+  "b_model_cm": 139.569,
+  "scale": 0.035,
+  "moment_centre": "M.S. 75.27 cm, W.L. 17.98 cm (0.25 MAC)",
+  "corrections": "wall interference and blockage applied by the report"
+ },
+ "image_note": "the panel cut from the PDF page rendered at 400 dpi; crop box in page pixels",
+ "figure": "Figure 8(c), data page 30 (PDF page 64), top-left panel: CL against alpha",
+ "image": "A1-fig8-p30-CL.png",
+ "crop": [
+  350,
+  449,
+  2098,
+  1592
+ ],
+ "conditions": {
+  "mach": 0.28,
+  "RN_per_m": 16400000.0,
+  "beta_deg": 0,
+  "flaps_deg": 50,
+  "aileron_deg": 0,
+  "rudder_deg": 0,
+  "gear": "up",
+  "tail": "6 deg incidence, trailing edge up"
+ },
+ "x": {
+  "quantity": "alpha",
+  "unit": "deg",
+  "gridlines": [
+   -10.0,
+   -7.5,
+   -5.0,
+   -2.5,
+   0.0,
+   2.5,
+   5.0,
+   7.5,
+   10.0,
+   12.5,
+   15.0,
+   17.5,
+   20.0
+  ],
+  "pixel_fit": [
+   44.08241758241759,
+   730.0494505494501
+  ]
+ },
+ "y": {
+  "quantity": "CL",
+  "unit": "",
+  "gridlines": [
+   1.75,
+   1.5,
+   1.25,
+   1.0,
+   0.75,
+   0.5,
+   0.25
+  ],
+  "pixel_fit": [
+   -665.7857142857144,
+   1198.3571428571431
+  ]
+ },
+ "zoom_step": [
+  1,
+  0.05
+ ],
+ "breakpoints": [
+  -8,
+  -6,
+  -4,
+  -2,
+  0,
+  2,
+  4,
+  6,
+  8,
+  10,
+  12,
+  14,
+  16,
+  18,
+  20
+ ],
+ "curves": {
+  "auto": {
+   "symbol": "auto",
+   "description": "symbol centroids found by scan.py --symbols (interiors of the plotted symbols)",
+   "points": [
+    [
+     -7.57,
+     0.2985
+    ],
+    [
+     -7.51,
+     0.3265
+    ],
+    [
+     -7.4,
+     0.3514
+    ],
+    [
+     -5.41,
+     0.512
+    ],
+    [
+     -3.11,
+     0.6961
+    ],
+    [
+     -3.06,
+     0.6726
+    ],
+    [
+     -2.61,
+     0.7082
+    ],
+    [
+     -0.89,
+     0.8767
+    ],
+    [
+     0.23,
+     0.9893
+    ],
+    [
+     1.35,
+     1.0407
+    ],
+    [
+     1.36,
+     1.0619
+    ],
+    [
+     3.6,
+     1.2316
+    ],
+    [
+     5.83,
+     1.3892
+    ],
+    [
+     7.9,
+     1.4969
+    ],
+    [
+     7.94,
+     1.4691
+    ],
+    [
+     9.27,
+     1.497
+    ],
+    [
+     9.92,
+     1.5041
+    ],
+    [
+     10.28,
+     1.4964
+    ],
+    [
+     11.11,
+     1.5007
+    ],
+    [
+     11.9,
+     1.4819
+    ],
+    [
+     12.03,
+     1.4933
+    ],
+    [
+     12.49,
+     1.4702
+    ],
+    [
+     13.93,
+     1.4008
+    ],
+    [
+     14.04,
+     1.4314
+    ],
+    [
+     14.77,
+     1.3958
+    ],
+    [
+     15.27,
+     1.3794
+    ],
+    [
+     15.27,
+     1.4005
+    ],
+    [
+     15.8,
+     1.3804
+    ],
+    [
+     15.91,
+     1.3419
+    ],
+    [
+     16.02,
+     1.4086
+    ],
+    [
+     16.45,
+     1.3729
+    ],
+    [
+     16.83,
+     1.331
+    ],
+    [
+     16.92,
+     1.3737
+    ],
+    [
+     17.46,
+     1.3583
+    ],
+    [
+     17.63,
+     1.3171
+    ],
+    [
+     17.8,
+     1.2892
+    ],
+    [
+     17.93,
+     1.35
+    ],
+    [
+     18.19,
+     1.3117
+    ],
+    [
+     18.6,
+     1.301
+    ],
+    [
+     18.78,
+     1.3246
+    ],
+    [
+     19.11,
+     1.3018
+    ],
+    [
+     19.51,
+     1.2712
+    ]
+   ]
+  }
+ },
+ "curves_note": "six data sets: ZHG030 (circle) the basic configuration WBNH6V, and five modified configurations, on the basic curve to about 14 deg"
+}
