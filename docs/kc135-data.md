@@ -91,6 +91,18 @@ Above 9.4° the curve rounds over; the plateau from 13.7° to 20.4° is CLmax fo
 - **KC-135A to R.** The R's CFM56 nacelles are larger and hang further forward. No public data; a small effect on lift, to be noted as an approximation.
 - **Centre of gravity.** None for CL.
 
+### 2.2 CL at the plateau against Reynolds number: A1 figure 15, data page 66
+
+**Record.** A1, figure 15 (*Effect of unit Reynolds number, basic configuration*), data page 66 (PDF page 100), top panel. Run AHG001, WBNH0V (tail 0°), Mach 0.28, flaps 0, β 0, gear up. Axes: unit Reynolds number RN/L, 6 to 27 million per metre, gridlines every 1; CL 1.075 to 1.150, gridlines every 0.025. Three curves, α 16°, 17°, 18°, each with test points at RN/L 6.6, 13.1, 19.7 and 26.2. Image `research/charts/A1-fig15-p66-CL.png`; calibration residuals 4.2 px in RN/L (0.03) and 3.4 px in CL (0.0004). Read by eye against the panel grid; the scan finds the same lines within 0.003. Overlay `research/check/A1-fig15-p66-CL.png`.
+
+| RN/L, million/m | 6.6 | 13.1 | 19.7 | 26.2 |
+|---|---|---|---|---|
+| CL at α 16° | 1.090 | 1.121 | 1.134 | 1.135 |
+| CL at α 17° | 1.084 | 1.121 | 1.134 | 1.126 |
+| CL at α 18° | 1.075 | 1.107 | 1.128 | 1.126 |
+
+**What it gives.** The plateau CL rises about 0.045 as the Reynolds number on c̄ goes from 1.4 × 10⁶ to 5.6 × 10⁶, and flattens above 4 × 10⁶: the curve is near its asymptote at the 19.7 million/m of 2.1. So the Reynolds correction to 2.1's plateau for the aircraft (1 to 4 × 10⁷ on c̄) is small and positive, of the order of 0.01 to 0.02, and is the first correction sized: **the model's CLmax of 1.14 is used as the aircraft's at this Mach, with that note.** The report's own repeatability is CN ± 0.025.
+
 ---
 
 ## 3. Pitching moment
@@ -135,7 +147,17 @@ The tail-0° curve is not quite straight: its −8.82° point sits 0.015 above t
 2. **Stabiliser effectiveness in moment.** The two curves differ by 0.170 in Cm (0.160 to 0.178 over the first nine points) for 6° of tail incidence: ΔCm/Δi_t = 0.0284 per degree trailing edge up. With the lift effectiveness of 2.1 (0.064), ΔCm/ΔCL = 2.66 c̄: the tail's moment arm about 0.25 c̄, 53.6 ft full scale, which is where a KC-135's tail is. These two numbers, with the elevator's share from Crenshaw or DATCOM, are the trim model.
 3. **The pitch-up** between 9° and 14° is real swept-wing behaviour the sim will show: the nose wants to keep rising as the limit is approached.
 
-**Corrections still to apply:** as 2.1 (Reynolds number, Mach, the elastic wing, the R's nacelles), plus the **CG transfer**: the data are about 0.25 c̄; the sim's CG, chosen in PR 6, moves Cm by (x_cg − 0.25)·CL.
+**Corrections still to apply:** as 2.1 (Mach, the elastic wing, the R's nacelles), plus the **CG transfer**: the data are about 0.25 c̄; the sim's CG, chosen in PR 6, moves Cm by (x_cg − 0.25)·CL. Reynolds number: none, by 3.2.
+
+### 3.2 Cm against Reynolds number: A1 figure 15, data page 64
+
+**Record.** The same figure, data page 64 (PDF page 98), bottom panel: Cm against RN/L at α −6°, −4°, −2°, 0°, 2° and 4°, run AHG001 (tail 0°). Axes: RN/L as 2.2; Cm 0.15 to −0.10, gridlines every 0.05. Image `research/charts/A1-fig15-p64-Cm.png`; calibration residuals 3.4 px in RN/L and 1.6 px in Cm (0.0007). The six curves are flat: one value each, read by eye, the scan agreeing within 0.005. Overlay `research/check/A1-fig15-p64-Cm.png`.
+
+| α, deg | −6 | −4 | −2 | 0 | 2 | 4 |
+|---|---|---|---|---|---|---|
+| Cm, all four Reynolds numbers | 0.119 | 0.079 | 0.043 | 0.012 | −0.023 | −0.054 |
+
+**What it gives.** No Reynolds-number effect on the pitching moment or the static margin at low α: Cmα from these six points is −0.0173 /deg, as 3.1. These values sit 0.005 to 0.010 below 3.1's at the same α, from a different run of the same model: that is the report's stated repeatability for Cm, ± 0.010, and is larger than the reading error. **The data's scatter, not the reading, now limits the accuracy of Cm**, and the sim's trim will be tuned on the phone within it.
 
 ---
 
@@ -178,4 +200,35 @@ Checks: 1/(π·AR·e) with AR 7.035 gives k = 0.048 at e = 0.94, high for a comp
 2. **The tail's drag**, 0.009 per 6° at low CL, is the start of a trim-drag model.
 3. **A number to correct:** CD₀ = 0.019 on the 0.035-scale model at Re 4.2 × 10⁶ is high for the aircraft. Full-scale skin friction at Re 1 to 4 × 10⁷ is about two-thirds of the model's, so the aircraft's CD₀ at this Mach will be near 0.015 to 0.017 before the flight-test polars (A5, A6) settle it. Until then the model's value is used and labelled.
 
-**Corrections still to apply:** Reynolds number (above; the largest correction in this file so far), Mach (the drag rise from A8 and A3), the R's nacelles and the elastic wing (small), and no CG transfer.
+**Corrections still to apply:** Reynolds number (4.2 sizes it: small on this model, because its transition was fixed), Mach (the drag rise from A8 and A3), the R's nacelles and the elastic wing (small), and no CG transfer.
+
+### 4.2 CD against Reynolds number: A1 figure 15, data page 64
+
+**Record.** The same figure and page as 3.2, middle panel: CD against RN/L at α −6° to 4°. Axes: RN/L as 2.2; CD 0.015 to 0.04, gridlines every 0.005. Image `research/charts/A1-fig15-p64-CD.png`; calibration residuals 2.7 px in RN/L and 2.8 px in CD (0.0001). Read by eye; the scan agrees within 0.001. Overlay `research/check/A1-fig15-p64-CD.png`.
+
+| RN/L, million/m | 6.6 | 13.1 | 19.7 | 26.2 |
+|---|---|---|---|---|
+| CD at α −6° | 0.0365 | 0.034 | 0.031 | 0.0295 |
+| CD at α −4° | 0.0228 | 0.0221 | 0.0211 | 0.0205 |
+| CD at α −2° | 0.0193 | 0.0195 | 0.0188 | 0.0185 |
+| CD at α 0° | 0.0215 | 0.021 | 0.0205 | 0.0203 |
+| CD at α 2° | 0.0275 | 0.0272 | 0.0265 | 0.026 |
+| CD at α 4° | 0.0355 | 0.0352 | 0.0345 | 0.0345 |
+
+**What it gives.** Near zero lift the drag falls only 0.0008 over a fourfold Reynolds-number range, because the model's boundary layer was tripped turbulent (the report's transition strips), so the skin friction already behaves as the aircraft's does and the Reynolds effect left is the turbulent one, Cf ∝ Re^−0.2, about 0.0015 to 0.002 more from the test's 4.2 × 10⁶ to the aircraft's 2 × 10⁷. At α −6° the fall is 0.007: a separation on the lower surface that the higher Reynolds number delays, irrelevant to flight. **So the model's polar is used with CD₀ lowered by 0.002**, labelled an estimate, until the flight-test polars (A5, A6) settle it; 4.1's guess of 0.015 to 0.017 was too low. The values at 19.7 million/m agree with 4.1's at the same α within 0.001.
+
+---
+
+## 5. Cross-checks from the second model (A2, TP-1119)
+
+TP-1119 tested a second 0.035-scale KC-135A model, with winglets on and off, at Mach 0.30, but only in its take-off and landing configurations (flaps 30° and 50°); its longitudinal and lateral figures are read in the flaps part of this file. One figure bears on the clean aircraft:
+
+### 5.1 Horizontal-tail effectiveness at flaps 30: A2 figure 14
+
+**Record.** A2, figure 14 (*Effect of winglets on horizontal-tail effectiveness*), PDF page 48: Cm per degree of stabiliser, Cm_δh, against CL, flaps 30°, ailerons 0, β 0; the solid curve is winglets off and the dashed, not read, winglets on. Axes: CL 0 to 1.2, gridlines every 0.05; Cm_δh 0 to −0.04, gridlines every 0.005. Image `research/charts/A2-fig14-Cmdh.png`. Four values read by eye against the grid (accuracy 0.0005); overlay `research/check/A2-fig14-Cmdh.png`.
+
+| CL | 0.3 | 0.6 | 0.9 | 1.2 |
+|---|---|---|---|---|
+| Cm_δh, per deg, winglets off | −0.0326 | −0.0324 | −0.0326 | −0.0349 |
+
+**What it gives.** Cm per degree of stabiliser trailing edge *down* is −0.0325 at flaps 30 on this model, against −0.0284 from A1's two tail settings at flaps 0 (3.1; A1's 0.0284 per degree trailing edge *up* is the same number with the opposite sign convention). The 14 % difference is the flaps' extra downwash and dynamic pressure at the tail, and the two models' differences; the two reports agree on the tail's effectiveness to that level, and the clean value stays A1's.

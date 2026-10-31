@@ -1,0 +1,158 @@
+{
+ "source": "A1",
+ "document": "NASA TM 73,250 (Hedstrom & Whitcomb, 1977)",
+ "reference": {
+  "S_model_cm2": 2768.91,
+  "cbar_model_cm": 21.51,
+  "b_model_cm": 139.569,
+  "scale": 0.035,
+  "moment_centre": "M.S. 75.27 cm, W.L. 17.98 cm (0.25 MAC)",
+  "corrections": "wall interference and blockage applied by the report"
+ },
+ "conditions": {
+  "mach": 0.28,
+  "RN_per_m": "6.6, 13.1, 19.7 and 26.2 million per metre",
+  "beta_deg": 0,
+  "flaps_deg": 0,
+  "aileron_deg": 0,
+  "rudder_deg": 0,
+  "gear": "up"
+ },
+ "figure": "Figure 15, data page 66 (PDF page 100), top panel: CL against unit Reynolds number at alpha 16, 17, 18 deg, basic configuration WBNH0V (tail 0 deg)",
+ "image": "A1-fig15-p66-CL.png",
+ "image_note": "the panel cut from the PDF page rendered at 400 dpi; crop box in page pixels",
+ "crop": [
+  616,
+  409,
+  4312,
+  1193
+ ],
+ "x": {
+  "quantity": "RN/L",
+  "unit": "million per metre",
+  "gridlines": [
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20,
+   21,
+   22,
+   23,
+   24,
+   25,
+   26,
+   27
+  ],
+  "pixel_fit": [
+   154.13099943534723,
+   -844.4796725014096
+  ]
+ },
+ "y": {
+  "quantity": "CL",
+  "unit": "",
+  "gridlines": [
+   1.15,
+   1.125,
+   1.1,
+   1.075
+  ],
+  "pixel_fit": [
+   -7948.000000000019,
+   9224.900000000018
+  ]
+ },
+ "zoom_step": [
+  1,
+  0.005
+ ],
+ "breakpoints": [
+  6.6,
+  13.1,
+  19.7,
+  26.2
+ ],
+ "reading": "symbol centres read by eye against the panel grid at 1600 px wide (the curves are flat), 31 Oct 2026; accuracy about half a minor grid step",
+ "curves": {
+  "alpha16": {
+   "data_set": "AHG001 (WBNH0V)",
+   "symbol": "circle",
+   "description": "alpha 16 deg",
+   "points": [
+    [
+     6.6,
+     1.09
+    ],
+    [
+     13.1,
+     1.121
+    ],
+    [
+     19.7,
+     1.134
+    ],
+    [
+     26.2,
+     1.135
+    ]
+   ]
+  },
+  "alpha17": {
+   "data_set": "AHG001 (WBNH0V)",
+   "symbol": "square",
+   "description": "alpha 17 deg",
+   "points": [
+    [
+     6.6,
+     1.0835
+    ],
+    [
+     13.1,
+     1.121
+    ],
+    [
+     19.7,
+     1.134
+    ],
+    [
+     26.2,
+     1.126
+    ]
+   ]
+  },
+  "alpha18": {
+   "data_set": "AHG001 (WBNH0V)",
+   "symbol": "diamond",
+   "description": "alpha 18 deg",
+   "points": [
+    [
+     6.6,
+     1.075
+    ],
+    [
+     13.1,
+     1.107
+    ],
+    [
+     19.7,
+     1.128
+    ],
+    [
+     26.2,
+     1.126
+    ]
+   ]
+  }
+ }
+}

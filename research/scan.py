@@ -6,7 +6,7 @@ Usage:
   python3 -I research/scan.py research/charts/<chart>.json
       Prints, per breakpoint, the eye reading of each curve and every line crossing the scan found
       in the column (thin-line pixels only, symbols excluded), so the two can be compared by hand.
-  python3 -I research/scan.py research/charts/<chart>.json --calibrate [--lines x:1-13,y:2-10]
+  python3 -I research/scan.py research/charts/<chart>.json --calibrate [--lines x:1-13,y:2-10] [--threshold 0.4] [--dark 110] [--fit x:0.1=573,1.15=3252;y:0=590,-0.04=1630]
       Finds the gridlines in the image, fits pixel = a*value + b for each axis against the JSON's
       gridline values, prints the residuals and writes the fits into the JSON as pixel_fit. When it
       finds more lines than values (a frame a grid step outside the labelled lines looks like one),
@@ -20,7 +20,8 @@ import numpy as np
 from PIL import Image, ImageDraw
 spec = json.load(open(sys.argv[1])); d = os.path.dirname(sys.argv[1])
 img = Image.open(os.path.join(d, spec['image'])).convert('L')
-a = np.array(img) < 110; h, w = a.shape
+dark = int(sys.argv[sys.argv.index('--dark') + 1]) if '--dark' in sys.argv else 110   # pixels darker than this are ink; raise it for a light scan
+a = np.array(img) < dark; h, w = a.shape
 colsum = a.sum(0); rowsum = a.sum(1)
 
 def groups(idx):
@@ -31,24 +32,55 @@ def groups(idx):
     return [(g[0] + g[-1]) / 2 for g in out]
 
 if '--calibrate' in sys.argv:
-    vx = groups(np.where(colsum > 0.55*h)[0]); hy = groups(np.where(rowsum > 0.55*w)[0])
+    thr = float(sys.argv[sys.argv.index('--threshold') + 1]) if '--threshold' in sys.argv else 0.4
+    pick = {}
+    for i, t in enumerate(sys.argv):
+        if t == '--lines':
+            for tok in sys.argv[i+1].split(','):
+                ax_, rng = tok.split(':'); lo, hi = [int(v) for v in rng.split('-')]; pick[ax_] = (lo, hi)
+    def equally_spaced(found, n):
+        # gridlines are equally spaced; frames, faint lines and flat data lines are not: take the n found
+        # lines that best fit one spacing, scored by how many found lines land on the predicted positions
+        best = None; ties = []
+        for i in range(len(found)):
+            for j in range(i + 1, len(found)):
+                for mi in range(n):
+                    for mj in range(mi + 1, n):
+                        d = (found[j] - found[i]) / (mj - mi); pred = [found[i] + (m - mi) * d for m in range(n)]
+                        hits = [min(found, key=lambda f: abs(f - q)) for q in pred]
+                        score = sum(abs(h - q) <= 4 for h, q in zip(hits, pred)); res = max(abs(h - q) for h, q in zip(hits, pred))
+                        if best is None or (score, -res) > (best[0], -best[1]): best = (score, res, hits); ties = []
+                        elif (score, round(res)) == (best[0], round(best[1])) and hits != best[2] and hits not in ties: ties.append(hits)
+        return best, ties
+    fits = {}
+    for i, t in enumerate(sys.argv):
+        if t == '--fit':      # --fit x:0.1=573,1.15=3252 : two value=pixel pairs per axis, read off the image by hand
+            for tok in sys.argv[i+1].split(';'):
+                ax_, pairs = tok.split(':'); pts = [tuple(float(u) for u in pr.split('=')) for pr in pairs.split(',')]
+                fits[ax_] = [(pts[1][1] - pts[0][1]) / (pts[1][0] - pts[0][0]), 0]; fits[ax_][1] = pts[0][1] - fits[ax_][0] * pts[0][0]
+    for ax_, f in fits.items():
+        spec[ax_]['pixel_fit'] = [float(f[0]), float(f[1])]; print('%s: pixel = %.3f * value + %.1f, from --fit' % (ax_, f[0], f[1]))
+    if len(fits) == 2: json.dump(spec, open(sys.argv[1], 'w'), indent=1); sys.exit(0)
+    vx = groups(np.where(colsum > thr*h)[0])
+    x0, x1 = int(vx[0]), int(vx[-1]) + 1
+    hy = groups(np.where(a[:, x0:x1].sum(1) > thr*(x1 - x0))[0])
     for axis, found, lines in (('x', vx, spec['x']['gridlines']), ('y', hy, spec['y']['gridlines'])):
+        if axis in fits: continue
         vals = sorted(lines) if axis == 'x' else sorted(lines, reverse=True)   # left to right; top to bottom
-        if len(found) < len(vals):
-            print('%s: found only %d lines at %s for %d values' % (axis, len(found), [round(f, 1) for f in found], len(vals))); sys.exit(1)
         print('%s: %d lines found at %s' % (axis, len(found), [round(f) for f in found]))
-        if len(found) > len(vals):
-            # a frame line can sit a grid step outside the labelled lines, equally spaced, so the fit cannot tell
-            # which run is right: say which with --lines x:a-b (1-based, inclusive), and check the overlay afterwards
-            pick = {}
-            for i, t in enumerate(sys.argv):
-                if t == '--lines':
-                    for tok in sys.argv[i+1].split(','):
-                        ax_, rng = tok.split(':'); lo, hi = [int(v) for v in rng.split('-')]; pick[ax_] = (lo, hi)
-            if axis not in pick:
-                print('%s: more lines than values; say which with --lines %s:a-b' % (axis, axis)); sys.exit(1)
+        if axis in pick:
             lo, hi = pick[axis]; found = found[lo-1:hi]
-            if len(found) != len(vals): print('%s: --lines gives %d lines for %d values' % (axis, len(found), len(vals))); sys.exit(1)
+        elif len(found) != len(vals):
+            if len(found) < len(vals): print('%s: only %d lines for %d values' % (axis, len(found), len(vals))); sys.exit(1)
+            (score, res, chosen), ties = equally_spaced(found, len(vals))
+            if ties:
+                # two runs fit equally well (a frame one grid step outside the labelled lines): the image can't say which
+                print('%s: %d equally spaced runs fit equally well: %s and %s; say which with --lines %s:a-b' % (
+                    axis, 1 + len(ties), [round(f) for f in chosen], ' / '.join(str([round(f) for f in t]) for t in ties), axis)); sys.exit(1)
+            found = chosen
+            print('%s: took the equally spaced %d of them (%d land within 4 px of the spacing, worst %.1f px); --lines %s:a-b overrides' % (axis, len(vals), score, res, axis))
+            if score < len(vals) - 1: print('%s: too few lines on the spacing; check the overlay or give --lines' % axis)
+        if len(found) != len(vals): print('%s: %d lines for %d values' % (axis, len(found), len(vals))); sys.exit(1)
         fit = np.polyfit(vals, found, 1); res = np.abs(np.polyval(fit, vals) - found).max()
         spec[axis]['pixel_fit'] = [float(fit[0]), float(fit[1])]
         print('%s: pixel = %.3f * value + %.1f, max residual %.2f px (%.4f in value)' % (axis, fit[0], fit[1], res, res / abs(fit[0])))
