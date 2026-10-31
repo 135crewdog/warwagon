@@ -15,9 +15,9 @@ This copies them out of the archive into this folder, where git ignores them, an
 ## What's here
 
 - `fetch.sh`, `sources.sha256`: as above.
-- `charts/`: the chart images cut from the documents, one per figure, named `<ID>-fig<number>.png`.
+- `charts/`: one chart per pair of files, named `<ID>-fig<number>-p<page>-<quantity>`: the `.png` is the panel cut from the document's page at 400 dpi, the `.json` its record (conditions, reference quantities, the pixel calibration of its axes, and the points as read). The tables in `docs/kc135-data.md` are made from the JSON.
 - `check/`: the overlay images, made by `overlay.py`, with the digitized points drawn over each chart.
-- `overlay.py`: a dev-only script, not part of the app (it will be added with the first chart).
+- `overlay.py`: draws a chart's points over its image. `scan.py`: the second, independent reading, from the chart's pixels at the breakpoints. Both are dev-only Python with Pillow (and numpy for `scan.py`), run with `python3 -I`, and not part of the app.
 
 The raw research notes behind `docs/kc135-sources.md` are kept out of this repo: some hold numbers from sources awaiting an owner decision.
 
