@@ -18,13 +18,14 @@ The owner's design philosophy applies to everything a person sees or touches: ht
 - Work in pull requests. A pull request waits for the owner's review; never merge one unasked.
 - Every pull request description ends with a short **What this teaches** section: the one to three ideas in it worth understanding, in plain words, the way you'd explain them to a pilot who isn't a programmer. No jargon without a one-line explanation. Keep it short.
 - When a test can't pass, stop and report what you found with numbers. Never loosen a test to make it pass.
-- **Public data only.** The repo and the app are public. Every source's distribution statement is recorded in `research/README.md` before anything is read from it. Anything not approved for public release (the current T.O. 1C-135(K)R-1 and its performance supplements, for example) is never committed, quoted or digitized here. Re-key numbers from primary sources; never copy files from other sims (several are GPL).
+- **The owner's rule on data.** Never use data from official US Air Force flight manuals or performance manuals (any T.O. 1C-135 series Dash-1, its performance supplements, checklists, air-refuelling T.O.s such as 1-1C-1, engine T.O.s), whether found directly, leaked, or quoted second-hand, unless the document carries a very clear and legally sturdy releasability statement. Even then, nothing from it is used without the owner's explicit permission. That includes the owner's own memory of the manual: where the data has a gap, the owner tunes the feel, not the numbers. `docs/kc135-sources.md` is the source register and says how the rule was applied; nothing marked there as an owner decision is used until the owner decides. Every upload's distribution statement is logged in `research/README.md` before it is read. Re-key numbers from primary sources; never copy files from other sims (several are GPL).
+- **The raw research notes stay out of this repo.** Some hold numbers from sources awaiting an owner decision. Only the register is here.
 
 ## Milestones
 
 | # | Scope | Status |
 |---|---|---|
-| 0 | **The data.** Find the public research, digitize its charts by the procedure in `docs/research-plan.md`, and write `docs/flight-model.md` and `docs/kc135-data.md`. No app code. | In progress: reading list compiled, waiting for the owner's uploads |
+| 0 | **The data.** Read the sources in `docs/kc135-sources.md`, digitize their charts by the procedure in `docs/research-plan.md`, and write `docs/flight-model.md` and `docs/kc135-data.md`. No app code. | In progress: source register done; waiting for the PDF uploads and Owner decision 1 |
 | 1a | **Simulation core.** Atmosphere (1976 standard, tropopause included), aero with Mach effects, four F108 engines, actuators, equations of motion, trim solver, air data. Rage's `src/sim/` reused where it fits. Test layers 1 and 3 passing. No visuals. | Not started |
 | 1b | **Flight controls, tuned.** Yoke to surfaces, spoiler roll assist, automatic trim, yaw damper with automatic coordination. Test layer 2 passing, and a headless flight script that prints time histories. | Not started |
 | 1c | **The app.** A flat world, the placeholder jet, chase camera, HUD, UI, tilt, throttle, menus, PWA, Pages. Ends with the owner flying it on the iPhone. | Not started |
@@ -61,15 +62,15 @@ Later milestones get specified when milestone 2 is done: the aircraft's features
 - One slider for all four engines, along the left edge, as in Rage.
 - **The bottom is flight idle N1.**
 - **A detent at MCT** (maximum continuous thrust): the thumb has to cross a small gap to go above it, up to maximum (takeoff) thrust.
-- **The maximum N1 falls with altitude** (and Mach), as the F108's power management controls (PMCs) stop the engines over-boosting. The slider asks for a fraction of the N1 that's available at the present condition. The PMC schedule, on a standard day, comes from the research.
-- **The spool lag is real**: idle to maximum takes seconds.
+- **The maximum N1 changes with altitude** (and Mach), as the F108's power management controls (PMCs) stop the engines over-boosting. The PMC's schedule isn't public, so the model caps thrust at the certified rating (take-off 22,000 lbf, or MCT below the detent, from EASA's type certificate) lapsed with Mach and altitude, and shows the N1 that gives it. The slider asks for a fraction of what's available at the present condition.
+- **The spool lag is real**: slow near idle, about a 1 s time constant above 20 % thrust, and flight idle to 95 % in under 5 s, the certification ceiling.
 
 ## HUD
 
 A Rage-style green HUD, with tanker numbers (see Departures: the real jet has none). Thin green symbols and numbers with a dark outline, no backgrounds, inside the safe area.
 
 - **KIAS** on the left, **Mach** under it.
-- **Altitude** in feet on the right, with the **VSI** at the top of the altitude display: a signed number (+ climbing, − descending) in feet per minute, lagged like a real vertical speed indicator, with the lag time from the research.
+- **Altitude** in feet on the right, with the **VSI** at the top of the altitude display: a signed number (+ climbing, − descending) in feet per minute, lagged like a real vertical speed indicator. The KC-135's lag isn't public; a generic instrument value is used and stated.
 - **Heading** across the top, degrees true.
 - **Pitch ladder** with the horizon line, the **flight path marker** and the **waterline**.
 - **N1 %**, from the engines, not the slider, so the spool lag shows.
@@ -90,8 +91,8 @@ Rage's apply unchanged (iPhone Safari, iOS 18.4 and later): motion permission re
 `node --test`, with nothing installed, and three layers, because there's no book check case this time:
 
 1. **The model is the data.** Each table reproduces its digitized source points; the trim solver reproduces the cruise points back-solved from the charts.
-2. **It handles like a 707-class jet.** Short period, phugoid, dutch roll with and without the yaw damper, roll response and spiral mode inside bands from NASA CR-2144 and MIL-F-8785C (Class III), plus tests of the automatic systems: released yoke after a throttle change holds 1 g at the trim rate; sideslip stays in its band in full-yoke rolls; the VSI's lag; the PMC's maximum N1 at sea level, FL200 and FL350.
-3. **It performs like a KC-135R.** Stall speeds at the chosen weight, cruise Mach, ceiling, maximum speed and climb, from public figures.
+2. **It handles like a 707-class jet.** Short period, phugoid, dutch roll with and without the yaw damper, roll response and spiral mode inside bands from MIL-F-8785C (Class III), checked against the Shell 77 board's measured dutch roll (about 5 s), the Dash 80's flight-measured modes, and Crenshaw's flight-test modes if Owner decision 1 clears them. Plus tests of the automatic systems: released yoke after a throttle change holds 1 g at the trim rate; sideslip stays in its band in full-yoke rolls; the VSI's lag; the thrust cap at sea level, FL200 and FL350.
+3. **It performs like a KC-135R**, from public figures only: 530 mph at 30,000 ft and the 50,000 ft ceiling (the fact sheet), the 1998 flight-test trim point (about 240,000 lb, 21,000 ft, 622 ft/s, 2.5° pitch), the full-scale cruise polars, and the zero-g parabola. Stall speeds, Vmo/Mmo and CG limits aren't public outside the T.O.s, so they're compared with the 707/720's FAA values, not tested.
 
 Plus Rage's browser smoke test and a debug overlay at `?debug=1`. Nothing replaces the phone.
 
