@@ -1,0 +1,253 @@
+{
+ "source": "A1",
+ "document": "NASA TM 73,250 (Hedstrom & Whitcomb, 1977)",
+ "reference": {
+  "S_model_cm2": 2768.91,
+  "cbar_model_cm": 21.51,
+  "b_model_cm": 139.569,
+  "scale": 0.035,
+  "moment_centre": "M.S. 75.27 cm, W.L. 17.98 cm (0.25 MAC)",
+  "corrections": "wall interference and blockage applied by the report"
+ },
+ "image_note": "the panel cut from the PDF page rendered at 400 dpi; crop box in page pixels",
+ "figure": "Figure 13, data page 57 (PDF page 91): rudder and aileron effects in yaw, basic configuration, gear down, middle panel: Cn against beta",
+ "image": "A1-fig13-p57-Cn.png",
+ "conditions": {
+  "mach": 0.28,
+  "RN_per_m": 16400000.0,
+  "alpha_deg": 0,
+  "flaps_deg": 50,
+  "gear": "down",
+  "tail": "6 deg incidence, trailing edge up"
+ },
+ "curves_note": "five data sets, all WBNH6V with gear: ZHG046 (circle) ailerons 0 rudder 0; ZHG050 (square) ailerons -10; ZHG049 (diamond) ailerons -20; ZHG059 (triangle) rudder -10; ZHG060 (right triangle) rudder -27",
+ "x": {
+  "quantity": "beta",
+  "unit": "deg",
+  "gridlines": [
+   -18,
+   -16,
+   -14,
+   -12,
+   -10,
+   -8,
+   -6,
+   -4,
+   -2,
+   0,
+   2,
+   4,
+   6,
+   8
+  ],
+  "pixel_fit": [
+   114.23076923076923,
+   2466.3846153846152
+  ]
+ },
+ "y": {
+  "quantity": "Cn (stability axes)",
+  "unit": "",
+  "gridlines": [
+   0.05,
+   0.025,
+   0.0,
+   -0.025,
+   -0.05,
+   -0.075
+  ],
+  "pixel_fit": [
+   -4624.0,
+   273.20000000000005
+  ]
+ },
+ "zoom_step": [
+  1,
+  0.005
+ ],
+ "breakpoints": [
+  -18,
+  -16,
+  -14,
+  -12,
+  -10,
+  -8,
+  -6,
+  -4,
+  -2,
+  0,
+  2,
+  4,
+  6,
+  8
+ ],
+ "curves": {
+  "ail0_rdr0": {
+   "symbol": "circle",
+   "description": "ZHG046 (circle): ailerons 0, rudder 0",
+   "points": [
+    [
+     -12.2,
+     -0.034
+    ],
+    [
+     -10.1,
+     -0.03
+    ],
+    [
+     -8.1,
+     -0.023
+    ],
+    [
+     -2.0,
+     -0.006
+    ],
+    [
+     0.0,
+     0.0
+    ],
+    [
+     2.0,
+     0.005
+    ]
+   ]
+  },
+  "ail-10": {
+   "symbol": "square",
+   "description": "ZHG050 (square): ailerons -10",
+   "points": [
+    [
+     -12.2,
+     -0.037
+    ],
+    [
+     -10.1,
+     -0.034
+    ],
+    [
+     -8.1,
+     -0.03
+    ],
+    [
+     -2.0,
+     -0.013
+    ],
+    [
+     0.0,
+     -0.007
+    ],
+    [
+     2.0,
+     -0.002
+    ]
+   ]
+  },
+  "ail-20": {
+   "symbol": "diamond",
+   "description": "ZHG049 (diamond): ailerons -20",
+   "points": [
+    [
+     -12.2,
+     -0.038
+    ],
+    [
+     -10.1,
+     -0.038
+    ],
+    [
+     -8.1,
+     -0.034
+    ],
+    [
+     -2.0,
+     -0.016
+    ],
+    [
+     0.0,
+     -0.01
+    ],
+    [
+     2.0,
+     -0.008
+    ]
+   ]
+  },
+  "rdr-10": {
+   "symbol": "triangle",
+   "description": "ZHG059 (triangle): rudder -10",
+   "points": [
+    [
+     -12.2,
+     -0.046
+    ],
+    [
+     -10.1,
+     -0.044
+    ],
+    [
+     -8.1,
+     -0.038
+    ],
+    [
+     -2.0,
+     -0.021
+    ],
+    [
+     0.0,
+     -0.019
+    ],
+    [
+     2.0,
+     -0.015
+    ]
+   ]
+  },
+  "rdr-27": {
+   "symbol": "right triangle",
+   "description": "ZHG060 (right triangle): rudder -27",
+   "points": [
+    [
+     -12.2,
+     -0.061
+    ],
+    [
+     -10.1,
+     -0.062
+    ],
+    [
+     -8.1,
+     -0.063
+    ],
+    [
+     -2.0,
+     -0.048
+    ],
+    [
+     0.0,
+     -0.043
+    ],
+    [
+     2.0,
+     -0.037
+    ]
+   ]
+  }
+ },
+ "reading": "the five data sets read by eye at the test points nearest beta -12, -10, -8, -2, 0 and 2, from 5-deg-wide zoom crops at 2x, 31 Oct 2026; accuracy about 0.005 in CY, 0.002 in Cn, 0.003 in Cl. scan.py --symbols finds every symbol but cannot tell the sets apart where they diverge, so it is not used here",
+ "third_reading": {
+  "who": "the owner, 31 Oct 2026",
+  "how": "four straight lines drawn by hand through the circle, square, diamond and triangle runs between beta -11 and +5 on the overlay image; their pixel positions fitted and scaled from the image's own gridlines (0.05 per 131.5 px)",
+  "Cn_at_beta_0": {
+   "ail0_rdr0": -0.001,
+   "ail-10": -0.0084,
+   "ail-20": -0.0128,
+   "rdr-10": -0.019
+  },
+  "offsets_from_ail0_rdr0": {
+   "ail-10": -0.0074,
+   "ail-20": -0.0118,
+   "rdr-10": -0.018
+  },
+  "compared_with_eye_reading": "offsets -0.007, -0.010, -0.019: agree within 0.002, the tolerance"
+ }
+}

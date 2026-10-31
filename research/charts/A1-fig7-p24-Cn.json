@@ -1,0 +1,232 @@
+{
+ "source": "A1",
+ "document": "NASA TM 73,250 (Hedstrom & Whitcomb, 1977)",
+ "reference": {
+  "S_model_cm2": 2768.91,
+  "cbar_model_cm": 21.51,
+  "b_model_cm": 139.569,
+  "scale": 0.035,
+  "moment_centre": "M.S. 75.27 cm, W.L. 17.98 cm (0.25 MAC)",
+  "corrections": "wall interference and blockage applied by the report"
+ },
+ "image_note": "the panel cut from the PDF page rendered at 400 dpi; crop box in page pixels",
+ "figure": "Figure 7, data page 24 (PDF page 58): lateral-directional characteristics in yaw, gear down, middle panel: Cn against beta",
+ "image": "A1-fig7-p24-Cn.png",
+ "conditions": {
+  "mach": 0.28,
+  "RN_per_m": 14510000.0,
+  "alpha_deg": 0,
+  "flaps_deg": 50,
+  "gear": "down",
+  "tail": "6 deg TEU"
+ },
+ "curves_note": "five data sets: ZHG046 (circle) the basic configuration with the vertical tail; ZHG040, ZHG041, ZHG044 modified without it; ZHG045 (right triangle) the basic configuration WITHOUT THE VERTICAL TAIL (W B N H6, G)",
+ "x": {
+  "quantity": "beta",
+  "unit": "deg",
+  "gridlines": [
+   -18,
+   -16,
+   -14,
+   -12,
+   -10,
+   -8,
+   -6,
+   -4,
+   -2,
+   0,
+   2,
+   4,
+   6,
+   8
+  ],
+  "pixel_fit": [
+   115.59829059829056,
+   2372.3988603988596
+  ]
+ },
+ "y": {
+  "quantity": "Cn",
+  "unit": "",
+  "gridlines": [
+   0.05,
+   0.025,
+   0.0,
+   -0.025,
+   -0.05
+  ],
+  "pixel_fit": [
+   -5999.999999999999,
+   336.19999999999993
+  ]
+ },
+ "zoom_step": [
+  1,
+  0.005
+ ],
+ "breakpoints": [
+  -18,
+  -16,
+  -14,
+  -12,
+  -10,
+  -8,
+  -6,
+  -4,
+  -2,
+  0,
+  2,
+  4,
+  6,
+  8
+ ],
+ "curves": {
+  "tail_on": {
+   "symbol": "circle",
+   "description": "ZHG046, the basic configuration with the vertical tail",
+   "points": [
+    [
+     -16.14,
+     -0.0468
+    ],
+    [
+     -13.32,
+     -0.0385
+    ],
+    [
+     -11.26,
+     -0.0359
+    ],
+    [
+     -9.22,
+     -0.0315
+    ],
+    [
+     -7.14,
+     -0.0243
+    ],
+    [
+     -6.28,
+     -0.02
+    ],
+    [
+     -5.07,
+     -0.0182
+    ],
+    [
+     -3.2,
+     -0.0118
+    ],
+    [
+     -1.16,
+     -0.0061
+    ],
+    [
+     0.18,
+     -0.0012
+    ],
+    [
+     0.81,
+     -0.0002
+    ],
+    [
+     1.88,
+     -0.0008
+    ],
+    [
+     2.87,
+     0.0057
+    ],
+    [
+     5.2,
+     0.0118
+    ],
+    [
+     6.92,
+     0.0182
+    ]
+   ],
+   "note": "the point near beta -6 was mis-split (a no-fin symbol taken for the circle) and set by eye to -0.020"
+  },
+  "tail_off": {
+   "symbol": "right triangle and others",
+   "description": "ZHG045 (basic, no vertical tail) and the three modified no-fin runs, which coincide; their mean",
+   "points": [
+    [
+     -16.14,
+     -0.0002
+    ],
+    [
+     -13.32,
+     0.0097
+    ],
+    [
+     -11.26,
+     0.0081
+    ],
+    [
+     -9.22,
+     0.0064
+    ],
+    [
+     -7.14,
+     0.005
+    ],
+    [
+     -6.28,
+     0.0044
+    ],
+    [
+     -5.07,
+     0.0041
+    ],
+    [
+     -3.2,
+     0.0032
+    ],
+    [
+     -1.16,
+     0.0011
+    ],
+    [
+     0.18,
+     -0.0012
+    ],
+    [
+     0.81,
+     -0.0003
+    ],
+    [
+     1.88,
+     -0.0008
+    ],
+    [
+     2.87,
+     -0.0014
+    ],
+    [
+     5.2,
+     -0.0039
+    ],
+    [
+     6.92,
+     -0.0037
+    ]
+   ]
+  }
+ },
+ "calibration": "x from the 27 one-degree gridlines (max residual 1.6 px), y from the 5 labelled lines (max residual 0.8 px)",
+ "reading": "scan.py --symbols centroids, split by hand into the tail-on run (the extreme symbol at each beta, on the side the fin pushes it) and the no-fin runs; near beta 0 the runs cross and the split is undefined there",
+ "third_reading": {
+  "who": "the owner, 31 Oct 2026",
+  "how": "two straight lines drawn by hand on the overlay image: purple through the fin-on circles from beta -6.5 to +6, green through the fin-off runs from -17 to +6; their pixel positions fitted and scaled from the image's own gridlines (65 px per degree, 0.0003 per px)",
+  "fin_on": {
+   "Cn_beta_per_deg": 0.0031,
+   "Cn_at_beta_0": -0.003
+  },
+  "fin_off": {
+   "Cn_beta_per_deg": -0.0008
+  },
+  "compared_with_the_split": "over beta +-6 the split gives 0.0029 and -0.0007: agreement within 0.0002"
+ }
+}

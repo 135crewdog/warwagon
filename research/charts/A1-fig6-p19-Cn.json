@@ -1,0 +1,222 @@
+{
+ "source": "A1",
+ "document": "NASA TM 73,250 (Hedstrom & Whitcomb, 1977)",
+ "reference": {
+  "S_model_cm2": 2768.91,
+  "cbar_model_cm": 21.51,
+  "b_model_cm": 139.569,
+  "scale": 0.035,
+  "moment_centre": "M.S. 75.27 cm, W.L. 17.98 cm (0.25 MAC)",
+  "corrections": "wall interference and blockage applied by the report"
+ },
+ "image_note": "the panel cut from the PDF page rendered at 400 dpi; crop box in page pixels",
+ "figure": "Figure 6, data page 19 (PDF page 53): lateral-directional characteristics in yaw, gear up, middle panel: Cn against beta",
+ "image": "A1-fig6-p19-Cn.png",
+ "conditions": {
+  "mach": 0.28,
+  "RN_per_m": 6180000.0,
+  "alpha_deg": 6,
+  "flaps_deg": 0,
+  "aileron_deg": 0,
+  "rudder_deg": 0,
+  "gear": "up",
+  "tail": "6 deg incidence, trailing edge up"
+ },
+ "curves_note": "three data sets: ZHG076 (circle) the basic configuration WBNH6V, read; ZHG078 and ZHG077 the modified configurations",
+ "x": {
+  "quantity": "beta",
+  "unit": "deg",
+  "gridlines": [
+   -18,
+   -16,
+   -14,
+   -12,
+   -10,
+   -8,
+   -6,
+   -4,
+   -2,
+   0,
+   2,
+   4,
+   6,
+   8
+  ],
+  "pixel_fit": [
+   115.73076923076923,
+   2489.153846153846
+  ]
+ },
+ "y": {
+  "quantity": "Cn (stability axes)",
+  "unit": "",
+  "gridlines": [
+   0.05,
+   0.025,
+   0.0,
+   -0.025,
+   -0.05
+  ],
+  "pixel_fit": [
+   -5946.0,
+   325.8
+  ]
+ },
+ "zoom_step": [
+  1,
+  0.005
+ ],
+ "breakpoints": [
+  -18,
+  -16,
+  -14,
+  -12,
+  -10,
+  -8,
+  -6,
+  -4,
+  -2,
+  0,
+  2,
+  4,
+  6,
+  8
+ ],
+ "curves": {
+  "WBNH6V": {
+   "symbol": "circle",
+   "description": "ZHG076, the basic configuration",
+   "points": [
+    [
+     -18.2,
+     -0.048
+    ],
+    [
+     -17.2,
+     -0.047
+    ],
+    [
+     -16.2,
+     -0.045
+    ],
+    [
+     -15.2,
+     -0.044
+    ],
+    [
+     -14.2,
+     -0.043
+    ],
+    [
+     -12.1,
+     -0.038
+    ],
+    [
+     -10.1,
+     -0.033
+    ],
+    [
+     -8.1,
+     -0.027
+    ],
+    [
+     -6.17,
+     -0.0137
+    ],
+    [
+     -6.15,
+     -0.0196
+    ],
+    [
+     -4.16,
+     -0.0141
+    ],
+    [
+     -4.16,
+     -0.0114
+    ],
+    [
+     -4.16,
+     -0.0083
+    ],
+    [
+     -3.8,
+     -0.011
+    ],
+    [
+     -3.61,
+     -0.0104
+    ],
+    [
+     -2.93,
+     -0.0085
+    ],
+    [
+     -2.32,
+     -0.007
+    ],
+    [
+     -2.2,
+     -0.0033
+    ],
+    [
+     -2.13,
+     -0.0059
+    ],
+    [
+     -2.12,
+     -0.0089
+    ],
+    [
+     -2.05,
+     -0.0032
+    ],
+    [
+     -0.16,
+     -0.0012
+    ],
+    [
+     -0.16,
+     0.0012
+    ],
+    [
+     0.84,
+     0.0014
+    ],
+    [
+     1.75,
+     0.0031
+    ],
+    [
+     1.86,
+     0.0054
+    ],
+    [
+     2.92,
+     0.0084
+    ],
+    [
+     3.06,
+     0.0088
+    ],
+    [
+     3.82,
+     0.0083
+    ],
+    [
+     3.84,
+     0.0121
+    ],
+    [
+     5.85,
+     0.0137
+    ],
+    [
+     5.85,
+     0.0186
+    ]
+   ]
+  }
+ },
+ "reading": "beta -18 to -8 read by eye (the three configurations diverge there; the circle taken), beta -6 to 8 from scan.py --symbols where they coincide"
+}
