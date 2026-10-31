@@ -27,25 +27,27 @@ Source IDs (A1, R2, E3 …) are the register's.
 
 **The owner's knowledge counts as a T.O. source.** The owner flies the jet, so numbers remembered from the Dash-1 or the checklist are flight-manual data second-hand, and don't go in. Where the data has a gap, the owner's judgement tunes the feel on the phone, by saying what feels wrong, not by supplying a number.
 
-## 2. Uploads
+## 2. The documents
 
-NTRS, DTIC, AFIT, MDPI and EASA are all blocked from Claude's cloud session, and the original research read every report through a text tool that saw poor scan text. So each PDF is uploaded by the owner into `research/`, named by its register ID. The scans are read page by page before any number is used. In order:
+`research/README.md` has the distribution log, and `sh research/fetch.sh` copies the archived PDFs out of the `research-archive` branch. Every scan is read page by page before any number is used: the original research saw these reports only through a text tool that garbled scans and stopped after about 100 pages. In priority order:
 
-| Priority | File | Source | Why first |
-|---|---|---|---|
-| 1 | `A1-tm73250.pdf` | NASA TM 73,250 | The only complete tail-on C-135 test: the low-speed model's backbone |
-| 1 | `A2-tp1119.pdf` | NASA TP-1119 | Tail on and off, stabiliser settings, aileron effectiveness |
-| 1 | `A3-affdl-tr-77-23.pdf` | AFFDL-TR-77-23 | Geometry table, drag rise, buffet, Mach tuck |
-| 1 | `G6-crenshaw.pdf` | Crenshaw 1976, ADA034940 | **Only to read its bibliography** for Owner decision 1. Nothing from it is used until the owner decides |
-| 2 | `A8-tnd8473.pdf` | NASA TN D-8473 | CL-α and Cm through cruise Mach |
-| 2 | `A5-montoya.pdf`, `A6-cp2211.pdf` | Montoya; NASA CP-2211 (Lux and Dodson papers) | Full-scale cruise polars |
-| 2 | `R1-d6-20659-appc.pdf`, `R1-cr73277.pdf` | Boeing D6-20659 Appendix C; NASA CR-73277 | Tabulated 707-320B derivatives, Mach 0.1–1.0 |
-| 2 | `R2-tnd3971.pdf`, `R3-tnd4804.pdf` | NASA TN D-3971, TN D-4804 | Tabulated Dash 80 derivatives, inertias; flight-measured modes |
-| 2 | `E3-openap.pdf` | Sun et al., *Aerospace* 2020 (CC BY) | The thrust-lapse constants |
-| 3 | `A4-tm85920.pdf`, `A7-tp1163.pdf`, `G2-shell77.pdf`, `G5-smith2007.pdf` | As named | Ground effect, transonic lateral data, the dutch-roll and trim checks |
-| 3 | E1, E2 | EASA TCDS E.066; the ICAO emissions databank spreadsheet | Ratings; fuel flows, re-keyed from ICAO, not OpenAP |
+| Priority | ID | Source | Why | Status |
+|---|---|---|---|---|
+| 1 | A1 | NASA TM 73,250 | The only complete tail-on C-135 test: the low-speed model's backbone | Archived |
+| 1 | A2 | NASA TP-1119 | Tail on and off, stabiliser settings, aileron effectiveness | Archived |
+| 1 | A3 | AFFDL-TR-77-23 | Geometry table, drag rise, buffet, Mach tuck | To upload (DTIC blocks the session) |
+| 1 | G6 | Crenshaw 1976 | **Only its bibliography**, for Owner decision 1. Nothing else from it is used until the owner decides | To upload (DTIC) |
+| 2 | A8 | NASA TN D-8473 | CL-α and Cm through cruise Mach | Archived |
+| 2 | A5, A6 | Montoya; NASA CP-2211 (Lux and Dodson papers) | Full-scale cruise polars | Archived |
+| 2 | R1 | Boeing D6-20659 Appendix C (CR-73276) and summary (CR-73277) | Tabulated 707-320B derivatives, Mach 0.1–1.0 | Archived |
+| 2 | R2, R3 | NASA TN D-3971, TN D-4804 | Tabulated Dash 80 derivatives, inertias; flight-measured modes | Archived |
+| 2 | E3 | Sun et al., *Aerospace* 2020 (CC BY) | The thrust-lapse constants | To upload (MDPI blocks the session) |
+| 3 | A4, A7 | NASA TM-85920, TP-1163 | Ground effect; transonic lateral data | Archived |
+| 3 | G2, G5 | Shell 77 report; J. Smith 2007 (AFIT) | The dutch-roll and trim checks | To upload |
+| 3 | E1 | EASA TCDS E.066 | Engine ratings | Read from EASA; not archived (EASA copyright) |
+| 3 | E2 | ICAO emissions databank spreadsheet | Fuel flows, re-keyed from ICAO, not OpenAP | To fetch |
 
-The URLs are in the register. Each upload's distribution statement is logged in `research/README.md` when it arrives.
+The URLs are in the register and the log.
 
 ## 3. How a chart becomes numbers
 
