@@ -341,3 +341,66 @@ Trimmed lift curve near CLmax, basic KC-135A (α, CL_trim):
 **What it gives.** Trimmed CLmax 1.31 at flaps 30 (α 11–12°) and 1.40 at flaps 50 (α 11°). A1's untrimmed plateaus with the tail at 6° TEU were 1.39 and 1.50 (6.2): trimming to 0.25 MAC costs about 0.08 to 0.10, which is the tail's download (A1's 0.064 per 6° of tail, 2.1, at the 8° to 10° of tail these flap moments need). The two models agree once trim is allowed for. The trimmed polar at flaps 30 is the one for the sim's approach configuration, with the gear's 0.015 added (6.2).
 
 **The D6-5599 figures, usable under the revised rule.** A3's section VI quotes Boeing's flight-manual substantiation report for the full-scale operating points: **take-off CL 1.23 at flaps 30** and **approach CL 1.05 at flaps 50** (the register's "touchdown 1.05 at flaps 30" was the wrong flap setting; the text says 50). Against the trimmed CLmax above, 1.23 is 94 % of the flaps-30 CLmax (a V2 of about 1.03 Vs on the tunnel's numbers, where the rules want 1.2 Vs: so the full-scale CLmax must be higher than the tunnel's, by the Reynolds-number effect on a flapped wing, of the order of 0.15 to 0.2) and 1.05 is 75 % of the flaps-50 figure (1.15 Vs). The register's other D6-5599 values (buffet CL 1.37 at flaps 30, touchdown 1.21 and buffet 1.49 at flaps 50) were not found in section VI's text; they are searched for when the rest of A3 is read.
+
+---
+
+## 7. Lateral-directional at low speed
+
+Signs as the reports plot them, which are the usual ones: β positive with the wind from the right; CY positive to the right; Cl positive right wing down; Cn positive nose right. Cl and Cn are in **stability axes** ("(STAB)" on the plots). A1's data are about the moment centre at 0.25 c̄; the tail is at 6° TEU throughout.
+
+### 7.1 The clean β sweep: A1 figure 6, data page 19
+
+**Record.** A1, figure 6 (*Lateral-directional aerodynamic characteristics in yaw, gear up*), data page 19 (PDF page 53): CY, Cn and Cl against β from −18° to 8°, at **α 6°**, flaps 0, ailerons and rudder 0, Mach 0.28, RN/L 6.18 × 10⁶ /m (the lowest of the test). Three data sets: ZHG076 (○) the basic configuration, read; two modified configurations, which coincide with it except in Cn beyond −8° of sideslip. The panels are `research/charts/A1-fig6-p19-{CY,Cn,Cl}`, their axes fitted from the gridlines (the 2° gridlines are 115 px apart at 400 dpi); the points by `scan.py --symbols` where the sets coincide and by eye where they diverge; overlays checked. The only clean β sweep in the report: figure 4's β runs at −6° and −12° are flaps 30 and 50 only.
+
+| β, deg | −18 | −16 | −14 | −12 | −10 | −8 | −6 | −4 | −2 | 0 | 2 | 4 | 6 | 8 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| CY | 0.22 | 0.203 | 0.184 | 0.158 | 0.131 | 0.104 | 0.073 | 0.044 | 0.020 | 0.001 | −0.027 | −0.048 | −0.074 | −0.10 |
+| Cn | −0.048 | −0.045 | −0.043 | −0.038 | −0.033 | −0.026 | −0.016 | −0.011 | −0.005 | 0.000 | 0.005 | 0.011 | 0.016 | 0.022 |
+| Cl | 0.049 | 0.042 | 0.039 | 0.033 | 0.029 | 0.022 | 0.015 | 0.010 | 0.003 | −0.003 | −0.008 | −0.015 | −0.020 | −0.027 |
+
+**Derivatives** (per degree; the slope over β ±6°, and over the full −18° to 8°):
+
+| | ±6° | −18° to 8° | Crenshaw, flight test, cruise (PR 4) |
+|---|---|---|---|
+| Cyβ | −0.0101 | −0.0123 | −0.0133 |
+| Cnβ | 0.0027 | 0.0027 | 0.0028 |
+| Clβ | −0.0029 | −0.0029 | −0.0035 |
+
+Cn is straight across the whole range: the fin isn't near stalling at 18° of sideslip. CY and Cl are straight to about ±8° and flatten beyond (the fin's and the wing's sideslip lift saturating). Cnβ matches the flight-test value; the tunnel's Cyβ and Clβ at α 6° are about 20 % below Crenshaw's cruise figures, which include the elastic wing and a different α. The static lateral-directional stability is well set: the ratio Clβ/Cnβ ≈ −1.1 is where a swept-wing transport's dutch roll comes from, and the model will show it.
+
+### 7.2 Aileron and rudder effects: A1 figure 13, data page 57
+
+**Record.** A1, figure 13 (*Rudder and aileron effects in yaw, basic configuration, gear down*), data page 57 (PDF page 91): CY, Cn, Cl against β at **α 0°, flaps 50°, gear down**, RN/L 16.4 × 10⁶ /m, five runs of the basic configuration WBNH6V with gear: ailerons 0 / rudder 0 (○, ZHG046), ailerons −10° (□, ZHG050), ailerons −20° (◇, ZHG049), rudder −10° (△, ZHG059), rudder −27° (▷, ZHG060). This is the report's only control-effects page for the basic configuration; figures 12 and 14 are the modified one. The panels are `research/charts/A1-fig13-p57-{CY,Cn,Cl}`; the five sets diverge everywhere, so `--symbols` finds the points but can't tell the sets apart, and each set was read by eye at the test points nearest β −12, −10, −8, −2, 0 and 2 from 5°-wide crops (accuracy 0.005 in CY, 0.002 in Cn, 0.003 in Cl); overlays checked.
+
+| β, deg | −12.2 | −10.1 | −8.1 | −2.0 | 0.0 | 2.0 |
+|---|---|---|---|---|---|---|
+| **CY** ail 0, rdr 0 | 0.19 | 0.165 | 0.13 | 0.03 | −0.015 | −0.04 |
+| CY ail −10 | 0.22 | 0.19 | 0.16 | 0.055 | −0.005 | −0.02 |
+| CY ail −20 | 0.225 | 0.19 | 0.16 | 0.055 | −0.005 | −0.02 |
+| CY rdr −10 | 0.225 | 0.19 | 0.165 | 0.06 | 0.02 | 0.0 |
+| CY rdr −27 | 0.25 | 0.23 | 0.21 | 0.10 | 0.085 | 0.055 |
+| **Cn** ail 0, rdr 0 | −0.034 | −0.030 | −0.023 | −0.006 | 0.000 | 0.005 |
+| Cn ail −10 | −0.037 | −0.034 | −0.030 | −0.013 | −0.007 | −0.002 |
+| Cn ail −20 | −0.038 | −0.038 | −0.034 | −0.016 | −0.010 | −0.008 |
+| Cn rdr −10 | −0.046 | −0.044 | −0.038 | −0.021 | −0.019 | −0.015 |
+| Cn rdr −27 | −0.061 | −0.062 | −0.063 | −0.048 | −0.043 | −0.037 |
+| **Cl** ail 0, rdr 0 | 0.065 | 0.055 | 0.042 | 0.010 | −0.005 | −0.010 |
+| Cl ail −10 | −0.007 | −0.012 | −0.022 | −0.050 | −0.060 | −0.070 |
+| Cl ail −20 | −0.040 | −0.045 | −0.052 | −0.080 | −0.090 | −0.095 |
+| Cl rdr −10 | 0.068 | 0.060 | 0.045 | 0.015 | 0.000 | −0.008 |
+| Cl rdr −27 | 0.070 | 0.065 | 0.050 | 0.020 | 0.000 | −0.005 |
+
+**Control effectiveness** (the offset of each deflected run from the undeflected one, averaged over the six β; the sign is for the report's negative deflection, which rolls and yaws the model to the left):
+
+| | Ailerons −10° | Ailerons −20° | Per degree | Rudder −10° | Rudder −27° | Per degree |
+|---|---|---|---|---|---|---|
+| ΔCl | −0.060 | −0.095 | 0.0060 then 0.0035 (the second 10° gives 60 % of the first) | +0.005 | +0.010 | −0.0004 |
+| ΔCn | −0.007 | −0.010 | 0.0007 then 0.0003 | −0.016 | −0.040 | 0.0015 |
+| ΔCY | +0.02 | +0.02 | small | +0.035 | +0.10 | −0.0036 |
+
+- **Ailerons** (the outboard ailerons alone on this model; the KC-135's inboard ailerons and spoilers aren't modelled): Clδa ≈ 0.006 /deg for the first 10°, falling off above it. The yaw that goes with it is in the same direction as the roll (proverse) on this model at flaps 50, about a tenth of the rolling moment. The full-scale aileron and spoiler system is a gap (register section 9) to be estimated from these and DATCOM.
+- **Rudder:** Cnδr ≈ 0.0015 /deg, linear to 27°; Cyδr ≈ −0.0036 /deg; Clδr ≈ −0.0004 /deg. Crenshaw's flight-test lateral derivatives (register section 5) give |Cyδr| 0.0046 and |Clδr| 0.0006, and FLEXSTAB |Cnδr| 0.0028 to 0.0036: the tunnel's rudder makes half the yawing moment FLEXSTAB gives it, with the side force and rolling moment in proportion. Flaps 50 and gear down change the fin's flow a little, not that much; PR 4 reads Crenshaw's tables from the scan and settles which to use.
+
+**Checks against TP-1119.** Its figures 20–25 plot Clβ, Cnβ and Cyβ against CL at flaps 30 and 50 (tail at −10°, ailerons deflected on most): Clβ from −0.003 at CL 0.2 to −0.005 at CL 1.0 (the dihedral effect growing with lift, as a swept wing's does), Cnβ 0.0035 falling to 0.0027, Cyβ −0.013 to −0.015. A1's clean α-6° values (Cl −0.0029, Cn 0.0027, CY −0.010 to −0.012) sit at the low-CL end of those, as they should at CL 0.65.
+
+**What the model needs from this section**, and what is still missing: Clβ, Cnβ and Cyβ as functions of α (one point here, at α 6°; the flaps runs at other α in A1 figure 4 and the TP-1119 curves give the trend with CL, and Crenshaw's three flight conditions the rest); the rudder and aileron derivatives above, to be reconciled with Crenshaw; the rate derivatives Clp, Cnr, Clr, Cnp, which no tunnel measured and PR 4 takes from Crenshaw.

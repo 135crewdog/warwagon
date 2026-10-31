@@ -1,0 +1,232 @@
+{
+ "source": "A1",
+ "document": "NASA TM 73,250 (Hedstrom & Whitcomb, 1977)",
+ "reference": {
+  "S_model_cm2": 2768.91,
+  "cbar_model_cm": 21.51,
+  "b_model_cm": 139.569,
+  "scale": 0.035,
+  "moment_centre": "M.S. 75.27 cm, W.L. 17.98 cm (0.25 MAC)",
+  "corrections": "wall interference and blockage applied by the report"
+ },
+ "image_note": "the panel cut from the PDF page rendered at 400 dpi; crop box in page pixels",
+ "figure": "Figure 6, data page 19 (PDF page 53): lateral-directional characteristics in yaw, gear up, bottom panel: Cl against beta",
+ "image": "A1-fig6-p19-Cl.png",
+ "conditions": {
+  "mach": 0.28,
+  "RN_per_m": 6180000.0,
+  "alpha_deg": 6,
+  "flaps_deg": 0,
+  "aileron_deg": 0,
+  "rudder_deg": 0,
+  "gear": "up",
+  "tail": "6 deg incidence, trailing edge up"
+ },
+ "curves_note": "three data sets: ZHG076 (circle) the basic configuration WBNH6V, read; ZHG078 and ZHG077 the modified configurations",
+ "x": {
+  "quantity": "beta",
+  "unit": "deg",
+  "gridlines": [
+   -18,
+   -16,
+   -14,
+   -12,
+   -10,
+   -8,
+   -6,
+   -4,
+   -2,
+   0,
+   2,
+   4,
+   6,
+   8
+  ],
+  "pixel_fit": [
+   115.61538461538461,
+   2495.076923076923
+  ]
+ },
+ "y": {
+  "quantity": "Cl (stability axes)",
+  "unit": "",
+  "gridlines": [
+   0.05,
+   0.0,
+   -0.05
+  ],
+  "pixel_fit": [
+   -4710.0,
+   385.5
+  ]
+ },
+ "zoom_step": [
+  1,
+  0.01
+ ],
+ "breakpoints": [
+  -18,
+  -16,
+  -14,
+  -12,
+  -10,
+  -8,
+  -6,
+  -4,
+  -2,
+  0,
+  2,
+  4,
+  6,
+  8
+ ],
+ "curves": {
+  "WBNH6V": {
+   "symbol": "circle",
+   "description": "ZHG076, the basic configuration; the three configurations coincide within the reading",
+   "points": [
+    [
+     -17.23,
+     0.0417
+    ],
+    [
+     -17.22,
+     0.0453
+    ],
+    [
+     -17.05,
+     0.0441
+    ],
+    [
+     -16.23,
+     0.0441
+    ],
+    [
+     -16.21,
+     0.0399
+    ],
+    [
+     -15.27,
+     0.0385
+    ],
+    [
+     -15.19,
+     0.0426
+    ],
+    [
+     -14.23,
+     0.0363
+    ],
+    [
+     -14.18,
+     0.0397
+    ],
+    [
+     -14.1,
+     0.043
+    ],
+    [
+     -12.26,
+     0.0317
+    ],
+    [
+     -12.22,
+     0.0352
+    ],
+    [
+     -10.44,
+     0.0301
+    ],
+    [
+     -10.19,
+     0.0262
+    ],
+    [
+     -10.19,
+     0.0298
+    ],
+    [
+     -10.12,
+     0.0331
+    ],
+    [
+     -9.93,
+     0.0285
+    ],
+    [
+     -9.45,
+     0.0271
+    ],
+    [
+     -9.13,
+     0.0261
+    ],
+    [
+     -8.26,
+     0.0202
+    ],
+    [
+     -8.18,
+     0.0238
+    ],
+    [
+     -8.12,
+     0.0201
+    ],
+    [
+     -7.95,
+     0.0225
+    ],
+    [
+     -7.41,
+     0.0211
+    ],
+    [
+     -7.0,
+     0.0195
+    ],
+    [
+     -6.28,
+     0.014
+    ],
+    [
+     -6.18,
+     0.0173
+    ],
+    [
+     -6.08,
+     0.0138
+    ],
+    [
+     -4.17,
+     0.0107
+    ],
+    [
+     -2.13,
+     0.0048
+    ],
+    [
+     -2.03,
+     0.0014
+    ],
+    [
+     -0.16,
+     -0.0021
+    ],
+    [
+     1.87,
+     -0.0078
+    ],
+    [
+     3.86,
+     -0.0141
+    ],
+    [
+     5.86,
+     -0.0199
+    ]
+   ]
+  }
+ },
+ "reading": "scan.py --symbols centroids; overlay checked"
+}
