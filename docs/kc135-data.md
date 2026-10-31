@@ -221,7 +221,39 @@ Checks: 1/(π·AR·e) with AR 7.035 gives k = 0.048 at e = 0.94, high for a comp
 
 ## 5. Cross-checks from the second model (A2, TP-1119)
 
-TP-1119 tested a second 0.035-scale KC-135A model, with winglets on and off, at Mach 0.30, but only in its take-off and landing configurations (flaps 30° and 50°); its longitudinal and lateral figures are read in the flaps part of this file. One figure bears on the clean aircraft:
+TP-1119 tested a second 0.035-scale KC-135A model (the same Boeing FR-174I model as A3's low-speed test), winglets on and off, at Mach 0.30 in the Langley V/STOL tunnel. Its figures 5 to 11 are flaps 30 and 50 with the tail on; figure 12 is **tail off at flaps 0, 30 and 50**, and figures 13 and 14 the tail's effectiveness at flaps 30. The winglets-off curves are read, by eye at the gridlines from the page at 1300 px wide (accuracy about 0.01 in CL, 0.005 in Cm): these are cross-checks, not model data, so they were not cut into chart files.
+
+### 5.0 Tail-off lift and moment, flaps 0, 30 and 50: A2 figure 12
+
+**Record.** Figure 12 (PDF pages 42–44): *Effect of winglets on longitudinal aerodynamic characteristics for three flap deflections with horizontal tail removed*, ailerons 0, **β 5°** (the report's tail-off runs were made at 5° of sideslip). CL against α; CD and Cm against CL.
+
+| α, deg | −6 | −4 | −2 | 0 | 2 | 4 | 6 | 8 | 10 | 12 | 14 |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| CL, tail off, flaps 0 | −0.23 | −0.07 | 0.09 | 0.26 | 0.42 | 0.58 | 0.75 | 0.88 | 1.00 | 1.08 | 1.12 |
+| CL, tail off, flaps 30 | 0.29 | 0.46 | 0.63 | 0.80 | 0.97 | 1.12 | 1.26 | 1.31 | 1.34 | 1.36 | 1.35 |
+| CL, tail off, flaps 50 | 0.62 | 0.78 | 0.95 | 1.10 | 1.26 | 1.41 | 1.46 | 1.46 | 1.47 | 1.46 | 1.45 |
+
+Cm, tail off, about 0.25 MAC, against CL: flaps 0 about −0.08 to −0.09 from CL −0.2 to 1.0, rising to −0.04 at 1.1; flaps 30 about −0.24 to −0.26 from CL 0.3 to 1.25, then up to −0.14 at the stall; flaps 50 about −0.35 to −0.37 from CL 0.6 to 1.4, then up to −0.19.
+
+**What it gives.**
+- **The lift-curve slope**, tail off, flaps 0: 0.082 /deg from −6° to 6°, with zero lift at −3.1°. A1's tail-on, tail-0° slope (2.1) is 0.081 /deg with zero lift at −2.7°; the tail at 0° adds nothing to the slope on this scale (its 0.2 area ratio × 0.065 /deg × 0.8 downwash factor ≈ 0.01, inside the reading) and shifts the curve by the tail's own lift. The two reports agree.
+- **The tail-off aerodynamic centre** is at 0.25 MAC within the reading (Cm flat against CL), so the whole 21 % static margin of 3.1 is the tail's: the tail-on neutral point at 0.46 c̄ less 0.25 gives a tail contribution of 0.21 c̄, against the 0.206 × 0.065/0.081 × 0.8 × 2.66 c̄ ≈ 0.35 c̄ a simple estimate gives, the difference being the fuselage's destabilising moment, which the simple estimate leaves out and the tunnel includes.
+- **The flaps' pitching moment, tail off:** −0.16 at flaps 30 and −0.28 at flaps 50 (relative to flaps 0 at the same CL). A1 measured −0.08 and −0.14 tail on (6.2): the tail, at 6° TEU, cancels half of it, as its 0.028 per degree (3.1) says it should at the 3° to 5° of extra download the flaps' downwash gives it.
+- **Flap lift increments, tail off:** +0.54 (flaps 30) and +0.84 (flaps 50) at α 0, the same as A1's tail-on +0.54 and +0.82 (6.2).
+
+### 5.0.1 Tail effectiveness in lift at flaps 30: A2 figure 13
+
+**Record.** Figure 13 (PDF pages 45–47): flaps 30, tail at 0°, −4° and −10°, β 0, winglets on and off. CL against α, winglets off:
+
+| α, deg | −6 | −4 | −2 | 0 | 2 | 4 | 6 | 8 | 10 | 12 | 14 |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| CL, δh 0° | 0.25 | 0.40 | 0.59 | 0.78 | 0.96 | 1.12 | 1.27 | 1.33 | 1.37 | 1.40 | 1.41 |
+| CL, δh −4° | 0.22 | 0.37 | 0.56 | 0.74 | 0.92 | 1.08 | 1.23 | 1.28 | 1.32 | 1.35 | 1.35 |
+| CL, δh −10° | 0.16 | 0.30 | 0.48 | 0.66 | 0.84 | 1.00 | 1.15 | 1.22 | 1.27 | 1.30 | 1.30 |
+
+**What it gives.** ΔCL per degree of stabiliser, trailing edge up: 0.010 from 0° to −4° and 0.012 from 0° to −10°, over the linear range; A1's clean figure (2.1) was 0.0107. Agreed to the reading. At the plateau the tail at −10° costs 0.11 in CLmax, which is where A3's trimmed CLmax (6.3) comes from.
+
+One figure bears on the clean aircraft's tail directly:
 
 ### 5.1 Horizontal-tail effectiveness at flaps 30: A2 figure 14
 
@@ -290,4 +322,22 @@ The flaps shift the lift curve up without changing its slope, bring the stall fo
 
 The gear's effect on lift and moment is inside the data's scatter; its drag is 0.01 to 0.02 at flaps 30 and half that at flaps 50, where the flaps' own wake hides it. For the model: **ΔCD_gear = 0.015**, constant, labelled as this tunnel's figure (the report's repeatability on CD is ± 0.002, and the scatter between the two flap settings is the same size as the increment).
 
-**Full-scale check, to come:** A3's D6-5599 lift coefficients (take-off CL 1.23 at flaps 30, touchdown 1.05, buffet 1.37; at flaps 50 touchdown 1.21, buffet 1.49, usable under the revised rule) against the plateaus above (1.39 and 1.50 on the model at Re 4 × 10⁶), when A3's section V is read.
+### 6.3 Trimmed polars and CLmax from the Boeing test: A3 figures 78 and 79
+
+**Record.** A3 (AFFDL-TR-77-23), section VI: a second 0.035-scale KC-135A model (Boeing FR-174I) in the Langley 8-ft transonic tunnel at Mach 0.30 and 3.7 × 10⁶ per foot (2.6 × 10⁶ on c̄), α −6° to 14°, stabiliser 0°, −4° and −10°, flaps 30° and 50°, gear up. Figure 78 (PDF page 115): the drag polars **trimmed to a CG at 0.25 MAC**; figure 79 (PDF page 116): the trimmed lift curves near CLmax. The basic KC-135A's curves (○) read by eye from the rotated page at 1600 px wide (`research/charts` has no cut for these: hand-drawn plots with a handful of points; accuracy about 0.01 in CL and 0.002 in CD). The winglet curves are not read.
+
+Trimmed polar, basic KC-135A (CL, CD):
+
+| Flaps 30 | 0.21, 0.057 | 0.61, 0.070 | 0.81, 0.082 | 0.91, 0.091 | 1.02, 0.103 | 1.12, 0.113 | 1.22, 0.166 |
+|---|---|---|---|---|---|---|---|
+| **Flaps 50** | 0.72, 0.150 | 0.82, 0.153 | 0.92, 0.157 | 1.02, 0.163 | 1.12, 0.171 | 1.22, 0.178 | 1.28, 0.186; 1.32, 0.194 |
+
+Trimmed lift curve near CLmax, basic KC-135A (α, CL_trim):
+
+| Flaps 30 | 7.3°, 1.21 | 9.3°, 1.27 | 11.3°, 1.31 | 13.1°, 1.30 |
+|---|---|---|---|---|
+| **Flaps 50** | 3.4°, 1.28 | 5.3°, 1.35 | 7.3°, 1.38 | 9.3°, 1.39; 11.3°, 1.40; 13.1°, 1.38 |
+
+**What it gives.** Trimmed CLmax 1.31 at flaps 30 (α 11–12°) and 1.40 at flaps 50 (α 11°). A1's untrimmed plateaus with the tail at 6° TEU were 1.39 and 1.50 (6.2): trimming to 0.25 MAC costs about 0.08 to 0.10, which is the tail's download (A1's 0.064 per 6° of tail, 2.1, at the 8° to 10° of tail these flap moments need). The two models agree once trim is allowed for. The trimmed polar at flaps 30 is the one for the sim's approach configuration, with the gear's 0.015 added (6.2).
+
+**The D6-5599 figures, usable under the revised rule.** A3's section VI quotes Boeing's flight-manual substantiation report for the full-scale operating points: **take-off CL 1.23 at flaps 30** and **approach CL 1.05 at flaps 50** (the register's "touchdown 1.05 at flaps 30" was the wrong flap setting; the text says 50). Against the trimmed CLmax above, 1.23 is 94 % of the flaps-30 CLmax (a V2 of about 1.03 Vs on the tunnel's numbers, where the rules want 1.2 Vs: so the full-scale CLmax must be higher than the tunnel's, by the Reynolds-number effect on a flapped wing, of the order of 0.15 to 0.2) and 1.05 is 75 % of the flaps-50 figure (1.15 Vs). The register's other D6-5599 values (buffet CL 1.37 at flaps 30, touchdown 1.21 and buffet 1.49 at flaps 50) were not found in section VI's text; they are searched for when the rest of A3 is read.
