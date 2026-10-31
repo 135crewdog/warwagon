@@ -1,0 +1,204 @@
+{
+ "source": "A1",
+ "document": "NASA TM 73,250 (Hedstrom & Whitcomb, 1977)",
+ "reference": {
+  "S_model_cm2": 2768.91,
+  "cbar_model_cm": 21.51,
+  "b_model_cm": 139.569,
+  "scale": 0.035,
+  "moment_centre": "M.S. 75.27 cm, W.L. 17.98 cm (0.25 MAC)",
+  "corrections": "wall interference and blockage applied by the report"
+ },
+ "image_note": "the panel cut from the PDF page rendered at 400 dpi; crop box in page pixels",
+ "figure": "Figure 7, data page 24 (PDF page 58): lateral-directional characteristics in yaw, gear down, top panel: CY against beta",
+ "image": "A1-fig7-p24-CY.png",
+ "conditions": {
+  "mach": 0.28,
+  "RN_per_m": 14510000.0,
+  "alpha_deg": 0,
+  "flaps_deg": 50,
+  "gear": "down",
+  "tail": "6 deg TEU"
+ },
+ "curves_note": "five data sets: ZHG046 (circle) the basic configuration with the vertical tail; ZHG040, ZHG041, ZHG044 modified without it; ZHG045 (right triangle) the basic configuration WITHOUT THE VERTICAL TAIL (W B N H6, G)",
+ "x": {
+  "quantity": "beta",
+  "unit": "deg",
+  "gridlines": [
+   -18,
+   -16,
+   -14,
+   -12,
+   -10,
+   -8,
+   -6,
+   -4,
+   -2,
+   0,
+   2,
+   4,
+   6,
+   8
+  ],
+  "pixel_fit": [
+   115.6355311355311,
+   2372.029507529507
+  ]
+ },
+ "y": {
+  "quantity": "CY",
+  "unit": "",
+  "gridlines": [
+   0.3,
+   0.2,
+   0.1,
+   -0.0,
+   -0.1,
+   -0.2
+  ],
+  "pixel_fit": [
+   -1209.1428571428573,
+   398.45714285714286
+  ]
+ },
+ "zoom_step": [
+  1,
+  0.02
+ ],
+ "breakpoints": [
+  -18,
+  -16,
+  -14,
+  -12,
+  -10,
+  -8,
+  -6,
+  -4,
+  -2,
+  0,
+  2,
+  4,
+  6,
+  8
+ ],
+ "curves": {
+  "tail_on": {
+   "symbol": "circle",
+   "description": "ZHG046, the basic configuration with the vertical tail",
+   "points": [
+    [
+     -17.32,
+     0.2767
+    ],
+    [
+     -16.24,
+     0.2584
+    ],
+    [
+     -15.28,
+     0.2445
+    ],
+    [
+     -12.56,
+     0.2286
+    ],
+    [
+     -9.24,
+     0.1521
+    ],
+    [
+     -7.5,
+     0.1161
+    ],
+    [
+     -5.13,
+     0.097
+    ],
+    [
+     -3.13,
+     0.0488
+    ],
+    [
+     -1.16,
+     0.0268
+    ],
+    [
+     1.11,
+     -0.0099
+    ],
+    [
+     2.87,
+     -0.0375
+    ],
+    [
+     4.89,
+     -0.0595
+    ],
+    [
+     7.14,
+     -0.0886
+    ]
+   ]
+  },
+  "tail_off": {
+   "symbol": "right triangle and others",
+   "description": "ZHG045 (basic, no vertical tail) and the three modified no-fin runs, which coincide; their mean",
+   "points": [
+    [
+     -17.32,
+     0.166
+    ],
+    [
+     -16.24,
+     0.1556
+    ],
+    [
+     -15.28,
+     0.1458
+    ],
+    [
+     -12.56,
+     0.1356
+    ],
+    [
+     -9.24,
+     0.0704
+    ],
+    [
+     -7.5,
+     0.0668
+    ],
+    [
+     -5.13,
+     0.0458
+    ],
+    [
+     -3.13,
+     0.0236
+    ],
+    [
+     -1.16,
+     0.003
+    ],
+    [
+     1.11,
+     0.0033
+    ],
+    [
+     2.87,
+     -0.0097
+    ],
+    [
+     4.89,
+     -0.0198
+    ],
+    [
+     7.14,
+     -0.0473
+    ]
+   ]
+  }
+ },
+ "calibration": "x from the 27 one-degree gridlines (max residual 2.2 px), y from the 6 labelled lines (max residual 0.6 px)",
+ "reading": "scan.py --symbols centroids, split by hand into the tail-on run (the extreme symbol at each beta, on the side the fin pushes it) and the no-fin runs; near beta 0 the runs cross and the split is undefined there"
+}

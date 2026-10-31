@@ -404,3 +404,34 @@ Cn is straight across the whole range: the fin isn't near stalling at 18° of si
 **Checks against TP-1119.** Its figures 20–25 plot Clβ, Cnβ and Cyβ against CL at flaps 30 and 50 (tail at −10°, ailerons deflected on most): Clβ from −0.003 at CL 0.2 to −0.005 at CL 1.0 (the dihedral effect growing with lift, as a swept wing's does), Cnβ 0.0035 falling to 0.0027, Cyβ −0.013 to −0.015. A1's clean α-6° values (Cl −0.0029, Cn 0.0027, CY −0.010 to −0.012) sit at the low-CL end of those, as they should at CL 0.65.
 
 **What the model needs from this section**, and what is still missing: Clβ, Cnβ and Cyβ as functions of α (one point here, at α 6°; the flaps runs at other α in A1 figure 4 and the TP-1119 curves give the trend with CL, and Crenshaw's three flight conditions the rest); the rudder and aileron derivatives above, to be reconciled with Crenshaw; the rate derivatives Clp, Cnr, Clr, Cnp, which no tunnel measured and PR 4 takes from Crenshaw.
+
+### 7.3 Flaps and gear down, and the fin's share (for the flaps milestone): A1 figure 7
+
+**Record.** A1, figure 7 (*Lateral-directional aerodynamic characteristics in yaw, gear down*), three of its eight pages: data page 22 (PDF 56, flaps 50, α 0, five configurations), page 24 (PDF 58, flaps 50, α 0, the basic configuration **with and without the vertical tail**, ZHG046 and ZHG045, plus three modified no-fin runs), and page 26 (PDF 60, flaps 30, α 6, three configurations). Panels `research/charts/A1-fig7-p22-*`, `-p24-*`, `-p26-*`, calibrated from their own one-degree gridlines (residuals under 4 px) and labelled lines (under 1.5 px), read by `--symbols`; on page 24 the symbols were split into the fin-on run (the extreme one at each β, on the side the fin pushes it) and the no-fin runs, which coincide; overlays checked. The pages not read (20, 21, 23, 25, 27) are the same conditions with other α or the modified configurations.
+
+| β, deg | −16 | −14 | −12 | −10 | −8 | −6 | −4 | −2 | 0 | 2 | 4 | 6 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| **Flaps 50, gear down, α 0** (p22) CY | 0.277 | 0.235 | 0.211 | 0.177 | 0.140 | 0.104 | 0.068 | 0.041 | 0.004 | −0.015 | −0.045 | −0.078 |
+| Cn | −0.038 | −0.035 | −0.035 | −0.031 | −0.025 | −0.019 | −0.014 | −0.007 | −0.001 | 0.002 | 0.007 | 0.013 |
+| Cl | 0.075 | 0.068 | 0.062 | 0.054 | 0.046 | 0.033 | 0.025 | 0.015 | 0.004 | −0.005 | −0.016 | −0.025 |
+| **Same, fin on** (p24) CY | 0.255 | 0.237 | 0.216 | 0.170 | 0.126 | 0.104 | 0.070 | 0.036 | 0.008 | −0.024 | −0.050 | −0.074 |
+| Cn | −0.046 | −0.041 | −0.037 | −0.033 | −0.027 | −0.020 | −0.015 | −0.008 | −0.002 | 0.000 | 0.009 | 0.015 |
+| Cl | 0.079 | 0.071 | 0.064 | 0.056 | 0.046 | 0.036 | 0.026 | 0.015 | 0.002 | −0.006 | −0.016 | −0.028 |
+| **Same, fin off** (p24) CY | 0.153 | 0.141 | 0.125 | 0.085 | 0.068 | 0.054 | 0.033 | 0.012 | 0.003 | −0.003 | −0.015 | −0.033 |
+| Cn | 0.000 | 0.007 | 0.009 | 0.007 | 0.006 | 0.004 | 0.004 | 0.002 | −0.001 | −0.001 | −0.003 | −0.004 |
+| Cl | 0.070 | 0.062 | 0.054 | 0.049 | 0.039 | 0.029 | 0.019 | 0.010 | 0.002 | −0.003 | −0.014 | −0.022 |
+| **Flaps 30, gear down, α 6** (p26) CY | 0.284 | 0.246 | 0.214 | 0.187 | 0.147 | 0.109 | 0.074 | 0.043 | 0.007 | −0.012 | −0.036 | −0.067 |
+| Cn | −0.047 | −0.045 | −0.042 | −0.038 | −0.026 | −0.025 | −0.019 | −0.012 | −0.005 | −0.001 | 0.002 | 0.008 |
+| Cl | 0.045 | 0.040 | 0.036 | 0.031 | 0.026 | 0.020 | 0.013 | 0.006 | 0.000 | −0.008 | −0.015 | −0.023 |
+
+**Derivatives** (per degree, the slope from −16° to 6°):
+
+| | Cyβ | Cnβ | Clβ |
+|---|---|---|---|
+| Clean, gear up, α 6 (7.1) | −0.011 | 0.0027 | −0.0029 |
+| Flaps 30, gear down, α 6 | −0.016 | 0.0025 | −0.0031 |
+| Flaps 50, gear down, α 0 | −0.016 | 0.0023 (p22), 0.0028 (p24) | −0.0045 (p22), −0.0049 (p24) |
+| Flaps 50, gear down, α 0, **no fin** | −0.0085 | −0.0002 | −0.0042 |
+| **The fin alone** (fin on minus off) | −0.0065 | +0.0030 | −0.0007 |
+
+**What it gives.** Without its fin the aircraft has no weathercock stability at all (Cnβ −0.0002): the whole of the 0.003 per degree is the vertical tail's. The fin also makes about half the side force and a small part of the rolling moment (its lift acts above the roll axis). Those three numbers are the data for the yaw damper's and the rudder's model: the fin's side force per degree of sideslip, −0.0065, with the fin's arm from Cnβ/Cyβ = 0.46 of the span (60 ft, which is where the fin is), is what the rudder deflects a part of. Flaps 50 nearly doubles the dihedral effect (Clβ −0.0045 against −0.0029 clean) through the lift it adds; flaps 30 at α 6 leaves it alone. The two flaps-50 pages were run at the same conditions and differ by 0.0005 in Cnβ and 0.0004 in Clβ: the data's own repeatability, again larger than the reading.
