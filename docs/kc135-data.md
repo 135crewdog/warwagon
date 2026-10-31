@@ -90,3 +90,92 @@ Above 9.4° the curve rounds over; the plateau from 13.7° to 20.4° is CLmax fo
 - **Elastic wing.** A rigid model; the real wing washes out under load. Crenshaw's rigid/elastic pairs (if cleared) or the winglet flight test (A5, A6) against TN D-8473 give the size: of the order of 10 % on CLα at cruise.
 - **KC-135A to R.** The R's CFM56 nacelles are larger and hang further forward. No public data; a small effect on lift, to be noted as an approximation.
 - **Centre of gravity.** None for CL.
+
+---
+
+## 3. Pitching moment
+
+### 3.1 Cm(α), tail on, flaps up, Mach 0.28: A1 figure 8(a), data page 28
+
+**Record.** The same page, runs and conditions as 2.1; the top-right panel. Axes: α as in 2.1; Cm, pitching-moment coefficient about the moment centre at 0.25 c̄, −0.3 to 0.4, gridlines every 0.1. Image `research/charts/A1-fig8-p28-Cm.png`; calibration residuals 2.3 px in α (0.05°) and 1.0 px in Cm (0.0007). Curves read: the two basic runs, tail at 0° (□) and 6° trailing edge up (○); the modified configurations lie on them to 13.7° and then fall away nose-down less steeply (the radomes delay the pitch-down).
+
+**Points as read** (at the test points' α from 2.1; symbol centres by eye against a 1° / 0.02 grid; accuracy about 0.005):
+
+| α, deg | −8.82 | −6.58 | −4.27 | −2.00 | 0.37 | 2.62 | 4.87 | 7.15 | 9.38 | 11.52 | 13.67 | 15.71 | 16.66 | 17.70 | 18.73 | 19.64 | 20.40 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Cm, tail 0° | 0.190 | 0.133 | 0.090 | 0.052 | 0.018 | −0.026 | −0.056 | −0.087 | −0.109 | −0.110 | −0.109 | −0.138 | — | −0.186 | −0.210 | −0.240 | −0.243 |
+| Cm, tail 6° TEU | 0.354 | 0.304 | 0.268 | 0.230 | 0.191 | 0.150 | 0.111 | 0.078 | 0.051 | 0.047 | 0.048 | 0.029 | 0.024 | 0.028 | −0.027 | −0.040 | −0.069 |
+
+**At the breakpoints:**
+
+| α, deg | −8 | −6 | −4 | −2 | 0 | 2 | 4 | 6 | 8 | 10 | 12 | 14 | 16 | 18 | 20 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Cm, tail 0° | 0.169 | 0.122 | 0.085 | 0.052 | 0.023 | −0.014 | −0.044 | −0.071 | −0.095 | −0.109 | −0.110 | −0.114 | −0.145 | −0.193 | −0.241 |
+| Cm, tail 6° TEU | 0.336 | 0.295 | 0.263 | 0.230 | 0.197 | 0.161 | 0.126 | 0.095 | 0.068 | 0.050 | 0.047 | 0.045 | 0.027 | 0.012 | −0.054 |
+
+**Second reading and what it caught.** A first eye reading from crops 15° wide came out 0.012–0.022 high on the tail-0° curve between −6.6° and 4.9° (and 0.003–0.013 high on the other). The scan showed it, and so did the CL–Cm cross-check below: the derived points sat 0.02 to the right of the plotted ones. Those twelve points were re-read from a crop 12° wide at three times the scale, and now agree with the scan within 0.008 at every breakpoint from −8° to 12° where the scan finds the lines (at α 0 the scan's figure on the tail-6° curve is 0.017 low, but there a test point sits on the breakpoint and the scan catches its symbol). Tolerance 0.007 (1 % of the 0.7 span): met after the re-read. The procedure now says crops are to be no wider than about 12°.
+
+**Overlay.** `research/check/A1-fig8-p28-Cm.png`.
+
+**Cross-check: the CL–Cm panel.** The page's bottom-right panel plots CL against Cm for the same runs. It was not read; instead the CL of 2.1 and the Cm above, at the same test α, were drawn over it (`research/charts/A1-fig8-p28-CLCm.json`, `research/check/A1-fig8-p28-CLCm.png`). Every derived point lies on its plotted symbol, so the three readings are consistent with one another.
+
+**Fit** (least squares, the eight points to 7.15°, the straight part):
+
+| | Tail 0° | Tail 6° TEU |
+|---|---|---|
+| Cm = Cm₀ + Cmα·α | 0.025 − 0.0170·α (max error 0.015) | 0.197 − 0.0171·α (max error 0.006) |
+| Cm = a + (dCm/dCL)·CL | 0.071 − 0.208·CL (max error 0.016) | 0.230 − 0.211·CL (max error 0.008) |
+| Neutral point (0.25 c̄ − dCm/dCL) | 0.458 c̄ | 0.460 c̄ |
+
+The tail-0° curve is not quite straight: its −8.82° point sits 0.015 above the line, so its fit errors are larger. Between 9° and 14° both curves go flat (the swept wing's pitch-up as the tips stall; Cm stops falling while CL still rises), then the basic tail-0° run drops nose-down from 15°. The tables, not the fit, go into the model.
+
+**What the chart gives.**
+
+1. **Static stability**, rigid, tail on, Mach 0.28: the neutral point at 0.46 c̄, so the static margin is 21 % c̄ at the 0.25 c̄ reference, and about 20 % at Crenshaw's 0.242 c̄ cruise CG (his rigid FLEXSTAB static margins, PR 4, are the cross-check).
+2. **Stabiliser effectiveness in moment.** The two curves differ by 0.170 in Cm (0.160 to 0.178 over the first nine points) for 6° of tail incidence: ΔCm/Δi_t = 0.0284 per degree trailing edge up. With the lift effectiveness of 2.1 (0.064), ΔCm/ΔCL = 2.66 c̄: the tail's moment arm about 0.25 c̄, 53.6 ft full scale, which is where a KC-135's tail is. These two numbers, with the elevator's share from Crenshaw or DATCOM, are the trim model.
+3. **The pitch-up** between 9° and 14° is real swept-wing behaviour the sim will show: the nose wants to keep rising as the limit is approached.
+
+**Corrections still to apply:** as 2.1 (Reynolds number, Mach, the elastic wing, the R's nacelles), plus the **CG transfer**: the data are about 0.25 c̄; the sim's CG, chosen in PR 6, moves Cm by (x_cg − 0.25)·CL.
+
+---
+
+## 4. Drag
+
+### 4.1 CD(α), tail on, flaps up, Mach 0.28: A1 figure 8(a), data page 28
+
+**Record.** The same page, runs and conditions as 2.1; the bottom-left panel. Axes: α as in 2.1; CD, stability-axis drag coefficient, drag/q̄S, 0 to 0.45, gridlines every 0.05. Image `research/charts/A1-fig8-p28-CD.png`; calibration residuals 1.7 px in α (0.04°) and 1.8 px in CD (0.0008). Curves read: tail at 0° (□) and 6° trailing edge up (○).
+
+**Points as read** (symbol centres against a 1° / 0.02 grid from crops 6° wide; accuracy about 0.003 below 10° and 0.01 above, where the four data sets' symbols overlap; the separation of the two curves is at the reading accuracy):
+
+| α, deg | −8.82 | −6.58 | −4.27 | −2.00 | 0.37 | 2.62 | 4.87 | 7.15 | 9.38 | 11.52 | 13.67 | 15.71 | 16.66 | 17.70 | 18.73 | 19.64 | 20.40 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| CD, tail 0° | 0.067 | 0.036 | 0.0215 | 0.0205 | 0.0212 | 0.0273 | 0.0356 | 0.052 | 0.083 | 0.143 | 0.213 | 0.279 | 0.310 | 0.339 | 0.367 | 0.393 | 0.400 |
+| CD, tail 6° TEU | 0.074 | 0.0457 | 0.0331 | 0.0288 | 0.0295 | 0.037 | 0.0446 | 0.0605 | 0.074 | 0.132 | 0.200 | 0.268 | 0.303 | 0.325 | 0.357 | 0.379 | 0.393 |
+
+**At the breakpoints:**
+
+| α, deg | −8 | −6 | −4 | −2 | 0 | 2 | 4 | 6 | 8 | 10 | 12 | 14 | 16 | 18 | 20 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| CD, tail 0° | 0.056 | 0.032 | 0.021 | 0.021 | 0.021 | 0.026 | 0.032 | 0.044 | 0.064 | 0.100 | 0.159 | 0.224 | 0.289 | 0.347 | 0.396 |
+| CD, tail 6° TEU | 0.064 | 0.043 | 0.033 | 0.029 | 0.029 | 0.035 | 0.042 | 0.053 | 0.066 | 0.091 | 0.147 | 0.211 | 0.279 | 0.334 | 0.386 |
+
+**Second reading.** The scan finds the plotted lines from −8° to 8° and agrees within 0.004 (tolerance 0.0045, 1 % of the span); above 10° the curve is too steep for a column scan and the eye reading stands alone. The first calibration of this panel had picked the wrong run of vertical gridlines (the frame sits a grid step beyond α 20°, equally spaced), which shifted every α by 2.5°; the page overview showed it before any point was recorded, and the calibrator now takes the gridline choice explicitly and the overlay is the check.
+
+**Overlay.** `research/check/A1-fig8-p28-CD.png`.
+
+**Fit** (least squares over α −4.27° to 7.15°, six points, where the polar is parabolic):
+
+| | Tail 0° | Tail 6° TEU |
+|---|---|---|
+| CD = CD₀ + k·CL² | 0.0191 + 0.0481·CL² (max error 0.0026) | 0.0289 + 0.0563·CL² (max error 0.0021) |
+| With a linear term | 0.0198 − 0.0110·CL + 0.0623·CL² (max error 0.0020; minimum at CL 0.09) | 0.0290 − 0.0076·CL + 0.0676·CL² (max error 0.0013) |
+
+Checks: 1/(π·AR·e) with AR 7.035 gives k = 0.048 at e = 0.94, high for a complete aircraft (0.8 would give 0.057); the tunnel's k is at the low end of plausible, which suits a clean wing-body-tail at this Reynolds number. The tail at 6° adds about 0.009 everywhere at low CL (its own drag at incidence) and, at high CL, loses about 0.009 (less lift, less induced drag): the two curves cross near 8°. Below −6° and above 9° the drag rises faster than the parabola as the flow separates.
+
+**What the chart gives.**
+
+1. **The low-speed clean polar**, as a table in α (or in CL through 2.1). The model uses the table; the fit is for checks and for the Mach correction's shape.
+2. **The tail's drag**, 0.009 per 6° at low CL, is the start of a trim-drag model.
+3. **A number to correct:** CD₀ = 0.019 on the 0.035-scale model at Re 4.2 × 10⁶ is high for the aircraft. Full-scale skin friction at Re 1 to 4 × 10⁷ is about two-thirds of the model's, so the aircraft's CD₀ at this Mach will be near 0.015 to 0.017 before the flight-test polars (A5, A6) settle it. Until then the model's value is used and labelled.
+
+**Corrections still to apply:** Reynolds number (above; the largest correction in this file so far), Mach (the drag rise from A8 and A3), the R's nacelles and the elastic wing (small), and no CG transfer.

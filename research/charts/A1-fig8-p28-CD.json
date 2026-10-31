@@ -1,0 +1,247 @@
+{
+ "source": "A1",
+ "document": "NASA TM 73,250 (Hedstrom & Whitcomb, 1977)",
+ "conditions": {
+  "mach": 0.28,
+  "RN_per_m": 19690000.0,
+  "beta_deg": 0,
+  "flaps_deg": 0,
+  "aileron_deg": 0,
+  "rudder_deg": 0,
+  "gear": "up"
+ },
+ "reference": {
+  "S_model_cm2": 2768.91,
+  "cbar_model_cm": 21.51,
+  "b_model_cm": 139.569,
+  "scale": 0.035,
+  "moment_centre": "M.S. 75.27 cm, W.L. 17.98 cm (0.25 MAC)",
+  "corrections": "wall interference and blockage applied by the report"
+ },
+ "figure": "Figure 8(a), data page 28 (PDF page 62), bottom-left panel: CD against alpha",
+ "image": "A1-fig8-p28-CD.png",
+ "image_note": "the panel cut from the PDF page rendered at 400 dpi; crop box in page pixels",
+ "crop": [
+  594,
+  1639,
+  2178,
+  2766
+ ],
+ "x": {
+  "quantity": "alpha",
+  "unit": "deg",
+  "gridlines": [
+   -10.0,
+   -7.5,
+   -5.0,
+   -2.5,
+   0.0,
+   2.5,
+   5.0,
+   7.5,
+   10.0,
+   12.5,
+   15.0,
+   17.5,
+   20.0
+  ],
+  "pixel_fit": [
+   43.71758241758243,
+   510.0274725274721
+  ]
+ },
+ "y": {
+  "quantity": "CD",
+  "unit": "",
+  "gridlines": [
+   0.45,
+   0.4,
+   0.35,
+   0.3,
+   0.25,
+   0.2,
+   0.15,
+   0.1,
+   0.05,
+   0.0
+  ],
+  "pixel_fit": [
+   -2210.666666666668,
+   1047.4000000000003
+  ]
+ },
+ "zoom_step": [
+  1,
+  0.02
+ ],
+ "breakpoints": [
+  -8,
+  -6,
+  -4,
+  -2,
+  0,
+  2,
+  4,
+  6,
+  8,
+  10,
+  12,
+  14,
+  16,
+  18,
+  20
+ ],
+ "curves": {
+  "WBNH0V": {
+   "data_set": "ZHG001",
+   "symbol": "square",
+   "description": "basic configuration, horizontal tail 0 deg incidence",
+   "points": [
+    [
+     -8.82,
+     0.067
+    ],
+    [
+     -6.58,
+     0.036
+    ],
+    [
+     -4.27,
+     0.0215
+    ],
+    [
+     -2.0,
+     0.0205
+    ],
+    [
+     0.37,
+     0.0212
+    ],
+    [
+     2.62,
+     0.0273
+    ],
+    [
+     4.87,
+     0.0356
+    ],
+    [
+     7.15,
+     0.052
+    ],
+    [
+     9.38,
+     0.083
+    ],
+    [
+     11.52,
+     0.143
+    ],
+    [
+     13.67,
+     0.213
+    ],
+    [
+     15.71,
+     0.279
+    ],
+    [
+     16.66,
+     0.31
+    ],
+    [
+     17.7,
+     0.339
+    ],
+    [
+     18.73,
+     0.367
+    ],
+    [
+     19.64,
+     0.393
+    ],
+    [
+     20.4,
+     0.4
+    ]
+   ]
+  },
+  "WBNH6V": {
+   "data_set": "ZHG004",
+   "symbol": "circle",
+   "description": "basic configuration, horizontal tail 6 deg incidence, trailing edge up",
+   "points": [
+    [
+     -8.82,
+     0.074
+    ],
+    [
+     -6.58,
+     0.0457
+    ],
+    [
+     -4.27,
+     0.0331
+    ],
+    [
+     -2.0,
+     0.0288
+    ],
+    [
+     0.37,
+     0.0295
+    ],
+    [
+     2.62,
+     0.037
+    ],
+    [
+     4.87,
+     0.0446
+    ],
+    [
+     7.15,
+     0.0605
+    ],
+    [
+     9.38,
+     0.074
+    ],
+    [
+     11.52,
+     0.132
+    ],
+    [
+     13.67,
+     0.2
+    ],
+    [
+     15.71,
+     0.268
+    ],
+    [
+     16.66,
+     0.303
+    ],
+    [
+     17.7,
+     0.325
+    ],
+    [
+     18.73,
+     0.357
+    ],
+    [
+     19.64,
+     0.379
+    ],
+    [
+     20.4,
+     0.393
+    ]
+   ]
+  }
+ },
+ "reading": "symbol centres read by eye against a 1 deg / 0.02 grid drawn from the pixel fit, from crops 6 deg wide, 31 Oct 2026; alphas are the test points' from the CL panel of the same runs; accuracy about 0.003 in CD below 10 deg, 0.01 above, where four data sets' symbols overlap; the separation of the two curves is at the reading accuracy"
+}
