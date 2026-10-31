@@ -14,7 +14,8 @@ Source IDs (A1, R2, E3 …) are the register's.
 | Full-scale cruise lift and drag | A5 (Mach 0.78 polar), A6 (Lux: Mach 0.70–0.80) | Yes, plots; A5's NTRS record to confirm |
 | Lateral-directional static derivatives | A1, A2 (tail on, low speed); A7 (wing-body, Mach 0.50–0.95) | Yes, plots |
 | Ground effect | A4 | Yes; for landing, later |
-| Rate derivatives (Cmq, Clp, Cnr …), control effectiveness, inertias | G6 Crenshaw (Owner decision 1); otherwise R1 (707-320B tables, re-referenced), R2 (Dash 80 at approach), DATCOM | Depends on decision 1 |
+| Rate derivatives (Cmq, Clp, Cnr …), inertias, modes | G6 Crenshaw (cleared 31 October 2026): flight-test and FLEXSTAB values at cruise, climb and approach; R1 (707-320B tables) and R2 (Dash 80) as cross-checks | Yes, from a 1973 Boeing summary via the thesis |
+| Control effectiveness (elevator, aileron, spoiler, rudder) | G6's rudder derivatives; A1, A2 (aileron and rudder settings, tail incidence); G2's inflight-manual passages for the rudder system; otherwise DATCOM | Partly |
 | Engine: ratings, limits | E1 (take-off 22,000 lbf, MCT 21,579 lbf, max N1 102 %) | Yes |
 | Engine: thrust with Mach and altitude | E3 (Bartel & Young constants from the open OpenAP paper), E4 to cross-check | Yes; cruise reference thrust is an estimate |
 | Engine: spool-up | E5 (5 s from flight idle to 95 % at most; about 1 s time constant above 20 % thrust) | Yes, as a bound and a shape |
@@ -23,9 +24,10 @@ Source IDs (A1, R2, E3 …) are the register's.
 | VSI lag | Not public for the KC-135 | **Gap**: a generic instrument value, stated as such |
 | Dutch roll, measured | G2 (Shell 77 board findings: period about 5 s) | Yes, board findings only |
 | Validation points | A10 (530 mph at 30,000 ft, 50,000 ft ceiling); G5 (about 240,000 lb, 21,000 ft, 622 ft/s, 2.5° pitch); G4 (zero-g parabolas); A5/A6 cruise polars | Yes |
-| Stall speeds, CG limits, Vmo/Mmo, Vmca | Not public outside T.O.s | **Gap**: 707/720 FAA values (R4) for comparison only |
+| Stall speed, Vmca | G6 quotes the 1974 C-135A manuals: stall 107 kt, Vmca 116 kt with rudder boost (conditions to read from the scan); A3 quotes D6-5599's take-off, touchdown and buffet CL by flap setting | Yes, 1960s–70s KC-135A figures, usable under the revised rule; the R's own are not public |
+| CG limits, Vmo/Mmo | Not public outside the current T.O.s | **Gap**: 707/720 FAA values (R4) for comparison only |
 
-**The owner's knowledge counts as a T.O. source.** The owner flies the jet, so numbers remembered from the Dash-1 or the checklist are flight-manual data second-hand, and don't go in. Where the data has a gap, the owner's judgement tunes the feel on the phone, by saying what feels wrong, not by supplying a number.
+**The owner's own documents and memory stay out.** The owner flies the jet and holds its current manuals; nothing from them is supplied, quoted or recalled. What is already published with a public-release statement is fair game, old flight-manual-derived figures included, each logged with its provenance. Where the data has a gap, the owner's judgement tunes the feel on the phone, by saying what feels wrong, not by supplying a number.
 
 ## 2. The documents
 
@@ -87,8 +89,8 @@ The register's section 7 lists six. Two matter for milestones 0 and 1:
 
    **Mortensen 1997** (F2), whose tanker condition and inertias repeat Crenshaw's, does not cite Crenshaw or any Boeing document. Its bibliography (thesis page 142) has Russell's 1984 AFIT thesis on KC-135 controllers, Locken's 1993 thesis (excluded by the register as T.O.-based), Campbell 1989 on the boom, and telephone interviews with two Boeing Wichita engineers. So Mortensen's numbers don't add provenance to Crenshaw's; they stand or fall with it.
 
-   **The decision is the owner's.** The register's recommendation applies: if the owner accepts that Ref 7, a Boeing stability-and-control summary, is not flight-manual data, the thesis is used minus the two struck values. Until then nothing from it is read into data.
-2. **D6-5599's two items in AFFDL-TR-77-23** (decision 2) and **CR-66125/66126** (decision 3): the register recommends not using them.
+   **Decided, 31 October 2026: use it.** The thesis's inertias, flight-test and FLEXSTAB derivatives and modes go into `docs/kc135-data.md`, each labelled with its lineage (the 1973 Boeing summary, via Crenshaw). The same day the owner revised the data rule (CLAUDE.md): their own Air Force documents stay out, but published public-release material is fair game even where it quotes an old T.O., so the two speeds Crenshaw quotes from the 1974 manuals are usable too, as 1970s KC-135A figures.
+2. **D6-5599's two items in AFFDL-TR-77-23** (decision 2): usable under the revised rule, as checks on the tunnel data. **CR-66125/66126** (decision 3): the register's advice stands, not needed unless the Dash 80 reports prove insufficient.
 
 Decisions 4 to 6 are about the boom and refuelling, which is parked.
 

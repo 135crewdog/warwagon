@@ -6,7 +6,9 @@ Compiled 26 October 2026 from five parallel searches (airframe, relatives, engin
 
 ## The owner's rule
 
-Never use data from official US Air Force flight manuals or performance manuals (any T.O. 1C-135 series "Dash-1", its performance supplements, checklists, air-refuelling T.O.s such as 1-1C-1, engine T.O.s), whether found directly, leaked, or quoted second-hand, unless the document carries a very clear and legally sturdy releasability statement. **Even then, nothing from it is used without the owner's explicit permission.** Ill-begotten USAF data must not be used.
+**Revised 31 October 2026.** The owner, a serving Air Force pilot, has the official KC-135 documents (the T.O. 1C-135 series flight manuals, performance supplements, checklists, air-refuelling and engine T.O.s) and will never supply, quote or recall them for this project. What is already published with a clear public-release statement is fair game, old flight-manual-derived numbers quoted in a public-release report included; leaked or unofficial copies are not. The rule below is the one the searches were made under, kept so the statuses read correctly; items it excluded for quoting a T.O. second-hand are usable now, and section 8 says which.
+
+*As first written:* never use data from official US Air Force flight manuals or performance manuals (any T.O. 1C-135 series "Dash-1", its performance supplements, checklists, air-refuelling T.O.s such as 1-1C-1, engine T.O.s), whether found directly, leaked, or quoted second-hand, unless the document carries a very clear and legally sturdy releasability statement. Even then, nothing from it is used without the owner's explicit permission. Ill-begotten USAF data must not be used.
 
 How the searches applied it:
 
@@ -97,10 +99,10 @@ A credible KC-135R model can be built without any flight manual, but it will be 
 
 ## 7. Owner decisions
 
-None of these is used until the owner says so. Recommendations in brackets.
+Recommendations in brackets; decisions, where made, in bold.
 
-1. **Crenshaw thesis**, AFIT GAE/MC/76D-5, 1976. https://apps.dtic.mil/sti/pdfs/ADA034940.pdf. "Approved for public release; distribution unlimited." It holds the only public KC-135 inertias and full derivative set, flight test and Boeing's analysis code, at cruise, climb and approach, plus mode data. Its stall speed and minimum control speed cite references with flight-manual-style page numbers; those two values are struck out regardless. Its inertias and flight-test derivatives come from "a Boeing document on -135 series aircraft", unidentified because the bibliography wasn't readable (two separate attempts couldn't reach it). Mortensen 1997 (F2) repeats its cruise condition and inertias, and Locken 1983 (excluded) has derivatives from an equally unidentified reference; they stand or fall together. *[Read its bibliography from the scan first. If that Boeing document isn't a flight manual or its substantiation report, use the thesis minus the two struck values.]*
-2. **AFFDL-TR-77-23's two items from Boeing D6-5599**, "Substantiation Data Report for the KC-135A Flight Manual": take-off, touchdown and buffet lift coefficients by flap setting, and a full-scale drag figure. Boeing's engineering backup for the flight manual, not the manual itself. *[Don't use. The wind-tunnel data cover the same ground.]*
+1. **Crenshaw thesis**, AFIT GAE/MC/76D-5, 1976. https://apps.dtic.mil/sti/pdfs/ADA034940.pdf. "Approved for public release; distribution unlimited." It holds the only public KC-135 inertias and full derivative set, flight test and Boeing's analysis code, at cruise, climb and approach, plus mode data. Its stall speed and minimum control speed cite references with flight-manual-style page numbers. Its inertias and flight-test derivatives come from "a Boeing document on -135 series aircraft". Mortensen 1997 (F2) repeats its cruise condition and inertias, and Locken 1983 (excluded) has derivatives from an equally unidentified reference; they stand or fall together. *[Read its bibliography from the scan first. If that Boeing document isn't a flight manual or its substantiation report, use the thesis minus the two struck values.]* **Decided 31 October 2026: use it.** The bibliography, read from the scan (PDF page 117), names Ref 7 as *"Summary of the Stability, Control and Flying Qualities Information for All the -135 Series,"* Boeing Commercial Airplane Company, October 1973: an engineering summary, not a T.O. Refs 9 and 10 are T.O. 1C-135A-1 (September 1974) and T.O. 1C-135B-1-1 (October 1974); under the revised rule the two values quoted from them are usable too, as 1970s KC-135A figures published in a public-release thesis.
+2. **AFFDL-TR-77-23's two items from Boeing D6-5599**, "Substantiation Data Report for the KC-135A Flight Manual": take-off, touchdown and buffet lift coefficients by flap setting, and a full-scale drag figure. Boeing's engineering backup for the flight manual, not the manual itself. *[Don't use. The wind-tunnel data cover the same ground.]* **Under the revised rule, usable**: published in a public-release Air Force report. They are the only public full-scale lift coefficients by flap setting, so they will be used as checks on the tunnel data, with their provenance noted.
 3. **NASA CR-66125 and CR-66126** (Boeing, Dash 80). Covers say "see limitations sheet", the sheet is missing, NTRS marks them public. *[Don't use unless R2 and R3 prove insufficient; they're Dash 80 approach data only.]*
 4. **ARSAG boom-receptacle documents** AD1053142, AD1090244, AD1048313. Distribution A on the first and last (the second's statement needs checking by eye), but written as text for NATO's refuelling standards. Also **NATO ATP-3.3.4.2 / 3.3.4.5**, not opened. *[Leave until the refuelling milestone; decide then.]*
 5. **Mortensen's envelope table**, credited to an unidentified "Philips", matching the generic NATO envelope. *[Same as 4.]*
@@ -108,15 +110,17 @@ None of these is used until the owner says so. Recommendations in brackets.
 
 ## 8. Excluded
 
+Under the revised rule (31 October 2026), public-release documents that quote a T.O. are no longer excluded for that. The rows marked **usable now** were excluded only for that reason; each still has to be read from its scan and logged before use.
+
 | What | Why |
 |---|---|
-| Any T.O. 1C-135 Dash-1, performance manual, checklist; T.O. 1-1C-1 and supplements; ATP-56 | Owner's rule. None was opened. |
-| Locken 1983 AFIT thesis (ADA141118) | Describes the controls "as described by the current Tech. Order". |
-| Hoganson 1983 AFIT thesis (ADA136895), procedures | Cites a refuelling T.O.; only its aerodynamic method is kept. |
-| Gray 1979 (ADA079796), Stephenson 1998 (ADA391836), Williamson 2018 (AD1107533), Dittus 2003 (ADA431694) | Their refuelling or offload numbers cite T.O.s or ATP-56. |
-| Boeing fuel freeze-point study (ADA152801) | States its KC-135 fuel data came from the technical orders. |
-| Crenshaw's stall speed and minimum control speed | Flight-manual-style references. |
-| Shell 77 report passages cited to the inflight manual | Second-hand T.O. content. |
+| Any T.O. 1C-135 Dash-1, performance manual, checklist; T.O. 1-1C-1 and supplements; ATP-56 | Owner's rule: the owner's own documents. None was opened; none will be. |
+| Locken 1983 AFIT thesis (ADA141118) | Describes the controls "as described by the current Tech. Order". **Usable now** if its own statement is public release. |
+| Hoganson 1983 AFIT thesis (ADA136895), procedures | Cites a refuelling T.O.; only its aerodynamic method was kept. **Usable now.** |
+| Gray 1979 (ADA079796), Stephenson 1998 (ADA391836), Williamson 2018 (AD1107533), Dittus 2003 (ADA431694) | Their refuelling or offload numbers cite T.O.s or ATP-56. **Usable now**, subject to each one's own statement; needed only for refuelling, which is parked. |
+| Boeing fuel freeze-point study (ADA152801) | States its KC-135 fuel data came from the technical orders. **Usable now**; not needed (no fuel burn). |
+| Crenshaw's stall speed and minimum control speed | Flight-manual references (Refs 9 and 10, 1974 C-135A/B manuals). **Usable now**, as 1970s KC-135A figures. |
+| Shell 77 report passages cited to the inflight manual | Second-hand T.O. content. **Usable now**: published in a publicly releasable report. They describe the KC-135R's rudder power unit, feel unit and series yaw damper. |
 | Code7700 case study and 1980 KC-135A take-off data page; forum threads | Pilot commentary that quotes, or is built from, the Dash-1. Not opened. |
 | Scribd and similar copies of manuals, CFM operating instructions, copyrighted books | Proprietary or copyrighted; not opened. |
 | AFFDL-TR-78-124 (ADA068324) | Couldn't be read twice; distribution unknown. Worth another try: it may be a useful KC-135 winglet report. |
