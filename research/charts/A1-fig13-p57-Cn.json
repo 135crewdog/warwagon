@@ -233,5 +233,21 @@
    ]
   }
  },
- "reading": "the five data sets read by eye at the test points nearest beta -12, -10, -8, -2, 0 and 2, from 5-deg-wide zoom crops at 2x, 31 Oct 2026; accuracy about 0.005 in CY, 0.002 in Cn, 0.003 in Cl. scan.py --symbols finds every symbol but cannot tell the sets apart where they diverge, so it is not used here"
+ "reading": "the five data sets read by eye at the test points nearest beta -12, -10, -8, -2, 0 and 2, from 5-deg-wide zoom crops at 2x, 31 Oct 2026; accuracy about 0.005 in CY, 0.002 in Cn, 0.003 in Cl. scan.py --symbols finds every symbol but cannot tell the sets apart where they diverge, so it is not used here",
+ "third_reading": {
+  "who": "the owner, 31 Oct 2026",
+  "how": "four straight lines drawn by hand through the circle, square, diamond and triangle runs between beta -11 and +5 on the overlay image; their pixel positions fitted and scaled from the image's own gridlines (0.05 per 131.5 px)",
+  "Cn_at_beta_0": {
+   "ail0_rdr0": -0.001,
+   "ail-10": -0.0084,
+   "ail-20": -0.0128,
+   "rdr-10": -0.019
+  },
+  "offsets_from_ail0_rdr0": {
+   "ail-10": -0.0074,
+   "ail-20": -0.0118,
+   "rdr-10": -0.018
+  },
+  "compared_with_eye_reading": "offsets -0.007, -0.010, -0.019: agree within 0.002, the tolerance"
+ }
 }
