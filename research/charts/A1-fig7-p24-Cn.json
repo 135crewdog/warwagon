@@ -216,5 +216,17 @@
   }
  },
  "calibration": "x from the 27 one-degree gridlines (max residual 1.6 px), y from the 5 labelled lines (max residual 0.8 px)",
- "reading": "scan.py --symbols centroids, split by hand into the tail-on run (the extreme symbol at each beta, on the side the fin pushes it) and the no-fin runs; near beta 0 the runs cross and the split is undefined there"
+ "reading": "scan.py --symbols centroids, split by hand into the tail-on run (the extreme symbol at each beta, on the side the fin pushes it) and the no-fin runs; near beta 0 the runs cross and the split is undefined there",
+ "third_reading": {
+  "who": "the owner, 31 Oct 2026",
+  "how": "two straight lines drawn by hand on the overlay image: purple through the fin-on circles from beta -6.5 to +6, green through the fin-off runs from -17 to +6; their pixel positions fitted and scaled from the image's own gridlines (65 px per degree, 0.0003 per px)",
+  "fin_on": {
+   "Cn_beta_per_deg": 0.0031,
+   "Cn_at_beta_0": -0.003
+  },
+  "fin_off": {
+   "Cn_beta_per_deg": -0.0008
+  },
+  "compared_with_the_split": "over beta +-6 the split gives 0.0029 and -0.0007: agreement within 0.0002"
+ }
 }
