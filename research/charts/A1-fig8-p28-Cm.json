@@ -238,5 +238,10 @@
   }
  },
  "reading": "symbol centres read by eye against a 1 deg / 0.02 grid drawn from the pixel fit, 31 Oct 2026; the alphas are the test points' from the CL panel of the same runs, confirmed here within 0.1 deg. A first reading from crops 15 deg wide came out 0.01-0.02 high between -6.6 and 4.9 deg (the scan and the CL-Cm cross-check both showed it); those twelve points were re-read from a crop 12 deg wide at 3x, and now agree with the scan within 0.008. Accuracy about 0.005 in Cm",
- "curves_not_read": "ZHG002 (diamond) and ZHG003 (triangle), the modified configurations: on the basic curves to 13.7 deg, then less nose-down (the radomes delay the pitch-down)"
+ "curves_not_read": "ZHG002 (diamond) and ZHG003 (triangle), the modified configurations: on the basic curves to 13.7 deg, then less nose-down (the radomes delay the pitch-down)",
+ "third_reading": {
+  "who": "the owner, 2 Nov 2026",
+  "how": "PowerPoint Draw Curve through every symbol, one colour per data set (blue circles, yellow squares; red and green the modified configurations); the curves measured at each test alpha, scaled from the image's own gridlines",
+  "result": "the owner's curves sit 0.002-0.009 below the recorded points from -9 to 9 deg on both tail settings (0.016 at the square at -8.8 deg), within 0.005 above 9 deg. The offset is the same on both curves, so the slope (Cm-alpha), the gap between them (the stabiliser's moment) and the neutral point are unchanged; the absolute level carries an uncertainty of about 0.006, the report's own repeatability"
+ }
 }
