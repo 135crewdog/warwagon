@@ -650,3 +650,82 @@ Lux, *In-flight lift and drag measurements on a first generation jet transport e
 ### Still to read for the Mach model
 - A8 (TN D-8473, the semispan model, Mach 0.30–0.80) and A7 (TP-1163, lateral derivatives against Mach), as cross-checks.
 - Montoya's flight results (A5) as a second full-scale reading; not needed now that Lux's polars and Crenshaw's flight-test point agree.
+
+---
+
+## 10. Geometry, weight and inertias
+
+### 10.1 Full-scale geometry (A3 Table 1, page 17)
+
+| | Wing | Horizontal tail | Vertical tail |
+|---|---|---|---|
+| Area, ft² | 2,433 | 500.0 | 337.0 |
+| Span, ft | 130.83 | 39.67 | 24.7 |
+| Aspect ratio | 7.035 | 3.2 | 1.80 |
+| Taper ratio | 0.33 | 0.447 | 0.36 |
+| Sweep, 0.25 chord | 35° | 35° | 31° |
+| Dihedral | 7° | 7° | — |
+| Incidence | 2° | +0.5° to −14° (the stabiliser's travel) | 0 |
+| Root / tip chord, in | 337.8 / 112.0 | 208 / 95.05 | 242.0 / 86.9 |
+| MAC, in | 241.88 | 157.8 | 174.6 |
+| Airfoils | BAC 310 root, BAC 313 tip | BAC 319 / 317 | BAC 277 / 279 |
+
+Agrees with A1's model table divided by 0.035 (section 1). The stabiliser's travel, "+0.5 to −14", settles the one value the register had as unclear in the scan. Tail arm (0.25 MAC wing to 0.25 MAC tail): from A1's model stations, (140.77 − 75.26) cm / 0.035 = 61.4 ft; the tunnel's moment arm from the stabiliser data (section 3.1) was 54 ft, the difference being the downwash's share.
+
+### 10.2 The sim's weight and CG
+
+**War Wagon flies at 240,000 lb, CG 0.25 c̄, fixed** (no fuel burn). Reasons: it is the weight of the one public KC-135 flight-test trim point (J. Smith, G5: about 240,000 lb at 21,000 ft, 622 ft/s, 2.5° pitch), so test layer 3 has a check exactly there; it is a mid-mission tanker (empty about 124,000 lb operating, so about 116,000 lb of fuel, roughly half the 200,000 lb capacity); it sits between Crenshaw's 130,000 and 284,000 lb conditions; and 0.25 c̄ is the data's own reference, between Crenshaw's 0.242 (heavy cruise) and 0.321 (light), so no CG transfer is applied to the tables.
+
+### 10.3 Inertias at 240,000 lb
+
+Scaled from the KC-135A's flight-test values at 268,500 lb (8.2: Ixx 2.90, Iyy 4.60, Izz 7.35 × 10⁶ slug·ft²) by weight, keeping the radii of gyration; then the R's heavier engines added (the CFM56 installation is about 1,000 lb heavier per engine than the J57's, at about 33 and 52 ft from the centreline): +0.17 × 10⁶ to Ixx and Izz. **Estimates, labelled:**
+
+| slug·ft² × 10⁶ | Ixx | Iyy | Izz | Ixz |
+|---|---|---|---|---|
+| War Wagon, 240,000 lb | 2.76 | 4.11 | 6.74 | 0.25 (FLEXSTAB's structural model, 8.2) |
+
+## 11. Controls
+
+### 11.1 Surfaces and what drives them
+
+- **Stabiliser** (the trim): the whole tail, +0.5° to −14° (10.1). Effectiveness 0.028–0.0325 per degree in Cm and 0.0097–0.011 in CL (sections 3, 8.4: tunnel and FLEXSTAB agree). Driven only by the automatic trim. **Trim rate: not public; 0.5° per second, an estimate** typical of jet-transport stabiliser trim, to be tuned so a big speed change needs the yoke for a few seconds.
+- **Elevator** (the yoke): **no public KC-135 elevator data** (FLEXSTAB modelled the whole stabiliser as the elevator, Crenshaw page 19). Estimated from the stabiliser by the elevator's effectiveness ratio τ for a 25–30 % chord elevator, τ ≈ 0.5 (DATCOM's flap-effectiveness method): **Cmδe ≈ −0.015 per degree, CLδe ≈ 0.0055 per degree**, travel ±20° (estimate). Checked in test layer 2 by the short-period response and by the yoke needed to hold a 1.5 g pull at cruise.
+- **Ailerons and spoilers:** the outboard aileron measured in the tunnel, 0.006 per degree in roll for the first 10° (7.2); the inboard aileron from FLEXSTAB, 0.0006 per degree (8.4); the spoilers are not in any public data. **Roll control is modelled as one surface** with the tunnel's outboard-aileron effectiveness, travel ±20°, and its total roll power tuned so the flight-test roll mode (8.5: time to half amplitude 0.5–0.7 s) and a full-yoke roll rate in the 707 class come out. Labelled as a tuning value.
+- **Rudder:** effectiveness from the tunnel, 0.0015–0.0017 per degree in yaw (7.2); FLEXSTAB's 0.0028–0.0036 (a full-size rudder in a potential-flow code, which leaves out the gaps and viscous losses) is the upper bound. **Travel limited by the rudder power unit, about 7° at 320 kt** (the Shell 77 board, G2, from the inflight manual: usable under the revised rule), and larger at low speed; driven only by the yaw damper and the automatic coordination.
+
+### 11.2 The yaw damper
+
+The KC-135R has a series yaw damper (G2). The bare airframe's dutch roll is damped at 0.056 (8.5); "since the yaw damper is normally in use at all times, it eliminates any tendency toward dutch roll" (G2, quoting the inflight manual). The damper's gains are ours, tuned in 1b to bring the dutch roll's damping to the MIL-F-8785C Class III level (ζ ≥ 0.08, and in practice about 0.3) within the 7° authority.
+
+## 12. Engine: four F108-CF-100 (CFM56-2B)
+
+| | Value | Source |
+|---|---|---|
+| Take-off thrust, sea-level static | 9,786 daN = **22,000 lbf** | EASA TCDS E.066 (E1) |
+| Maximum continuous, SLS | 9,599 daN = **21,579 lbf** | E1 |
+| Max N1 | 5,280 rpm = **102 %** | E1 |
+| Bypass ratio, pressure ratio | 6.0, 23.5 | ICAO databank v32, CFM56-2B-1 (E2) |
+| Fuel flow at 100 / 85 / 30 / 7 % thrust, SLS | 0.985 / 0.819 / 0.311 / 0.128 kg/s | E2 |
+| Fact-sheet thrust | 21,634 lbf | A10; unexplained against E1; E1 used |
+
+**Thrust with Mach and altitude** (the maximum available, per engine), the Bartel and Young model as printed in the OpenAP paper (E3, read from its pages 7–9, equations 17–29):
+- Below 10,000 ft and Mach 0.4, take-off rating: T/T₀ = A − 0.377(1+λ)/√((1+0.82λ)G₀) · Z·M + (0.23 + 0.19√λ) · X·M², with G₀ = 0.0606λ + 0.6337, A, Z, X cubic in p/p₀ as printed; λ = 6.0, T₀ = 22,000 lbf.
+- In the climb and cruise (10,000 to 40,000 ft): T/T_cr from equations 22–28, with the reference cruise thrust **T_cr = 0.2 T₀ + 890 N = 4,600 lbf** at an assumed reference of Mach 0.78, 35,000 ft (OpenAP's equation 29; no primary F108 cruise figure is public).
+- **The PMC stand-in:** the slider's top (take-off) and the detent (MCT, 98.1 % of take-off) ask for those fractions of this maximum; the N1 shown is mapped from thrust by N1 ≈ 102 % × √(T/T_max)… (a stated approximation, to be fitted so flight idle and maximum land on plausible N1 values: the HUD number is a cue, not data).
+- **Flight idle:** 7 % of T₀ at sea level static (the ICAO idle point), lapsed with the same model; an assumption.
+- **Spool-up:** first-order lag on N1 with a time constant of about 1 s above 20 % thrust, slower near idle, so that flight idle to 95 % takes just under 5 s at sea level (14 CFR 33.73's ceiling, E5). Tuned in 1a's tests.
+
+**Check against the airframe:** at 240,000 lb, FL300, Mach 0.78: q̄ = 268 psf, CL = 0.37, CD ≈ 0.023 (flight polar, 9.4), drag ≈ 15,000 lb, 3,750 lb per engine against about 5,400 lb available from the lapse model at FL300. Cruise is possible with about 30 % in hand, and the ceiling falls out where the two meet; test layer 3 checks it against the fact sheet's 50,000 ft at light weight.
+
+## 13. Validation points, collected
+
+| Check | Value | Source |
+|---|---|---|
+| Cruise speed | 530 mph (461 kt TAS, Mach 0.78) at 30,000 ft | A10, fact sheet |
+| Service ceiling | 50,000 ft | A10 |
+| Trim point | about 240,000 lb, 21,000 ft, 622 ft/s, pitch 2.5° | G5 |
+| Cruise drag | CD 0.024 at Mach 0.77–0.78, CL 0.42–0.43 | A6 Lux; G6 flight test |
+| Short period, phugoid, dutch roll, roll, spiral | 8.5 (flight test) | G6 via Boeing 1973 |
+| Dutch roll period | about 5 s | G2 (Shell 77 board) |
+| Stall | 107 kt, flaps 30, 130,000 lb, SL (CLmax 1.38) | G6, from the 1974 manual |
+| Zero-g parabola | 20–25 s of zero g, 350 KIAS entry, about 1.8 g pull-up | G4 (NASA) |
