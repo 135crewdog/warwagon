@@ -354,8 +354,8 @@ Signs as the reports plot them, which are the usual ones: β positive with the w
 
 | β, deg | −18 | −16 | −14 | −12 | −10 | −8 | −6 | −4 | −2 | 0 | 2 | 4 | 6 | 8 |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| CY | 0.22 | 0.196 | 0.173 | 0.147 | 0.123 | 0.094 | 0.067 | 0.043 | 0.021 | 0.000 | −0.020 | −0.043 | −0.063 | −0.087 |
-| Cn | −0.049 | −0.047 | −0.043 | −0.039 | −0.034 | −0.027 | −0.019 | −0.012 | −0.006 | 0.000 | 0.006 | 0.013 | 0.019 | 0.026 |
+| CY | — (0.209 at −17.2°) | 0.196 | 0.173 | 0.147 | 0.123 | 0.094 | 0.067 | 0.043 | 0.021 | 0.000 | −0.020 | −0.043 | −0.063 | −0.087 |
+| Cn | — (−0.049 at −17.2°) | −0.047 | −0.043 | −0.039 | −0.034 | −0.027 | −0.019 | −0.012 | −0.006 | 0.000 | 0.006 | 0.013 | 0.019 | 0.026 |
 | Cl | 0.048 | 0.045 | 0.040 | 0.035 | 0.030 | 0.024 | 0.017 | 0.011 | 0.005 | −0.002 | −0.007 | −0.015 | −0.021 | −0.026 |
 
 **Derivatives** (per degree; the slope over β ±6°, and over the full −18° to 8°):
@@ -366,7 +366,7 @@ Signs as the reports plot them, which are the usual ones: β positive with the w
 | Cnβ | 0.0032 | 0.0031 | 0.0028 |
 | Clβ | −0.0032 | −0.0030 | −0.0035 |
 
-Cn is straight across the whole range: the fin isn't near stalling at 18° of sideslip. CY and Cl are straight to about ±8° and flatten beyond (the fin's and the wing's sideslip lift saturating). The rigid tunnel model's Cnβ is 14 % above the flight-test value (the flexible fin and fuselage give some of it away in flight), and its Cyβ and Clβ about 10–20 % below Crenshaw's cruise figures, which include the elastic wing and a different α. The static lateral-directional stability is well set: the ratio Clβ/Cnβ ≈ −1.0 is where a swept-wing transport's dutch roll comes from, and the model will show it.
+Cn is straight from −10° to +8°, then flattens: from −18° to −14° its slope is about 0.0015 per degree, half the 0.0032 near zero, as the fin begins to lose its grip (7.3 shows the same on the fin-on run). The model keeps the table, not a single slope, so large sideslip is weaker than small. CY and Cl are straight to about ±8° and flatten beyond (the fin's and the wing's sideslip lift saturating). The rigid tunnel model's Cnβ is 14 % above the flight-test value (the flexible fin and fuselage give some of it away in flight), and its Cyβ and Clβ about 10–20 % below Crenshaw's cruise figures, which include the elastic wing and a different α. The static lateral-directional stability is well set: the ratio Clβ/Cnβ ≈ −1.0 is where a swept-wing transport's dutch roll comes from, and the model will show it.
 
 ### 7.2 Aileron and rudder effects: A1 figure 13, data page 57
 
@@ -396,10 +396,10 @@ Cn is straight across the whole range: the fin isn't near stalling at 18° of si
 |---|---|---|---|---|---|---|
 | ΔCl | −0.060 (owner's trace −0.067) | −0.095 (−0.095) | 0.0060–0.0067 then 0.0028–0.0035 (the second 10° gives about half the first) | +0.005 (+0.004) | +0.010 (+0.009) | −0.0004 |
 | ΔCn | −0.007 (−0.007) | −0.010 (−0.011) | 0.0007 then 0.0004 | −0.016 (−0.017) | −0.040 (−0.038) | 0.0015–0.0017 |
-| ΔCY | +0.02 | +0.02 | small | +0.035 | +0.10 | −0.0036 |
+| ΔCY | +0.02 | +0.02 | small | +0.033 | +0.078 | −0.0029 to −0.0033 |
 
 - **Ailerons** (the outboard ailerons alone on this model; the KC-135's inboard ailerons and spoilers aren't modelled): Clδa ≈ 0.006 /deg for the first 10°, falling off above it. The yaw that goes with it is in the same direction as the roll (proverse) on this model at flaps 50, about a tenth of the rolling moment. The full-scale aileron and spoiler system is a gap (register section 9) to be estimated from these and DATCOM.
-- **Rudder:** Cnδr ≈ 0.0015 /deg, linear to 27°; Cyδr ≈ −0.0036 /deg; Clδr ≈ −0.0004 /deg. Crenshaw's flight-test lateral derivatives (register section 5) give |Cyδr| 0.0046 and |Clδr| 0.0006, and FLEXSTAB |Cnδr| 0.0028 to 0.0036: the tunnel's rudder makes half the yawing moment FLEXSTAB gives it, with the side force and rolling moment in proportion. Flaps 50 and gear down change the fin's flow a little, not that much; PR 4 reads Crenshaw's tables from the scan and settles which to use.
+- **Rudder:** Cnδr ≈ 0.0015 /deg, linear to 27°; Cyδr ≈ −0.003 /deg (the six offsets averaged: −0.0033 for −10°, −0.0029 for −27°); Clδr ≈ −0.0004 /deg. Crenshaw's flight-test lateral derivatives (register section 5) give |Cyδr| 0.0046 and |Clδr| 0.0006, and FLEXSTAB |Cnδr| 0.0028 to 0.0036: the tunnel's rudder makes half the yawing moment FLEXSTAB gives it, with the side force and rolling moment in proportion. Flaps 50 and gear down change the fin's flow a little, not that much; PR 4 reads Crenshaw's tables from the scan and settles which to use.
 
 **Checks against TP-1119.** Its figures 20–25 plot Clβ, Cnβ and Cyβ against CL at flaps 30 and 50 (tail at −10°, ailerons deflected on most): Clβ from −0.003 at CL 0.2 to −0.005 at CL 1.0 (the dihedral effect growing with lift, as a swept wing's does), Cnβ 0.0035 falling to 0.0027, Cyβ −0.013 to −0.015. A1's clean α-6° values (Cl −0.0032, Cn 0.0032, CY −0.011 to −0.012) sit at the low-CL end of those, as they should at CL 0.65.
 
@@ -459,9 +459,11 @@ Read from the scan at 150–220 dpi, every value by eye; the thesis's text layer
 | Flaps | 0 | 0 | 0 | 0 | 30° |
 | γ | 0 | 0 | 0 | 4.01° | −2.5° |
 | θ_B (FLEX) | 2.52° | 1.63° | −0.89° | 7.07° | 0.066° |
-| α_wing (FLEX) | 4.52° | 3.63° | 1.11° | 9.07° | 2.07° |
+| α_wing (FLEX) | 4.52° | 3.63° | 1.11° | 9.07°* | 2.07°* |
 | Stabiliser trim δ_S (FLEX) | −2.28° | −1.87° | −0.83° | −3.84° | −1.83° |
 | Thrust T₁ (FLEX), lb | 16,320 | 7,510 | 2,600 | 45,910 | 13,080 |
+
+\* As printed in the thesis. They equal θ_B + 2° (the wing's incidence), which is the wing's angle only in level flight; in the climb and approach, with γ 4.01° and −2.5°, θ_B − γ + 2° gives 5.06° and 4.57°. The transcription is kept as printed and these two values are not used; the model's trim solver computes α itself.
 
 ### 8.2 Inertias (Table 3 page 29; Table 5 page 32)
 
@@ -574,7 +576,7 @@ Elastic over rigid, FLEXSTAB, no winglets, 268,500 lb at 0.23 c̄:
 | CLδs, /deg | 0.0109 → 0.0121 | 0.0096 → 0.0103 |
 | Cmδs, /deg | −0.0326 → −0.0300 (−8 %) | −0.0281 → −0.0267 (−5 %) |
 
-So the flexible aircraft loses about a third of its static margin at cruise dynamic pressure (the wing washes out and the fuselage bends); this is the size of the "elastic wing" correction the tunnel data (sections 2–4) have been waiting for, and it is applied in `docs/flight-model.md` (PR 7) as a function of q̄.
+So at cruise dynamic pressure the flexible aircraft loses a third of its Cmα, and since CLα falls too, about **a quarter of its static margin** (−Cmα/CLα: 0.224 c̄ rigid to 0.171 c̄ elastic, −23 %; at the 10,000 ft condition 0.221 to 0.187, −16 %) (the wing washes out and the fuselage bends); this is the size of the "elastic wing" correction the tunnel data (sections 2–4) have been waiting for, and it is applied in `docs/flight-model.md` (PR 7) as a function of q̄.
 
 ### 8.7 Cross-checks against the tunnel
 
@@ -650,3 +652,82 @@ Lux, *In-flight lift and drag measurements on a first generation jet transport e
 ### Still to read for the Mach model
 - A8 (TN D-8473, the semispan model, Mach 0.30–0.80) and A7 (TP-1163, lateral derivatives against Mach), as cross-checks.
 - Montoya's flight results (A5) as a second full-scale reading; not needed now that Lux's polars and Crenshaw's flight-test point agree.
+
+---
+
+## 10. Geometry, weight and inertias
+
+### 10.1 Full-scale geometry (A3 Table 1, page 17)
+
+| | Wing | Horizontal tail | Vertical tail |
+|---|---|---|---|
+| Area, ft² | 2,433 | 500.0 | 337.0 |
+| Span, ft | 130.83 | 39.67 | 24.7 |
+| Aspect ratio | 7.035 | 3.2 | 1.80 |
+| Taper ratio | 0.33 | 0.447 | 0.36 |
+| Sweep, 0.25 chord | 35° | 35° | 31° |
+| Dihedral | 7° | 7° | — |
+| Incidence | 2° | +0.5° to −14° (the stabiliser's travel) | 0 |
+| Root / tip chord, in | 337.8 / 112.0 | 208 / 95.05 | 242.0 / 86.9 |
+| MAC, in | 241.88 | 157.8 | 174.6 |
+| Airfoils | BAC 310 root, BAC 313 tip | BAC 319 / 317 | BAC 277 / 279 |
+
+Agrees with A1's model table divided by 0.035 (section 1). The stabiliser's travel, "+0.5 to −14", settles the one value the register had as unclear in the scan. Tail arm (0.25 MAC wing to 0.25 MAC tail): from A1's model stations, (140.77 − 75.26) cm / 0.035 = 61.4 ft; the tunnel's moment arm from the stabiliser data (section 3.1) was 54 ft, the difference being the downwash's share.
+
+### 10.2 The sim's weight and CG
+
+**War Wagon flies at 240,000 lb, CG 0.25 c̄, fixed** (no fuel burn). Reasons: it is the weight of the one public KC-135 flight-test trim point (J. Smith, G5: about 240,000 lb at 21,000 ft, 622 ft/s, 2.5° pitch), so test layer 3 has a check exactly there; it is a mid-mission tanker (empty about 124,000 lb operating, so about 116,000 lb of fuel, roughly half the 200,000 lb capacity); it sits between Crenshaw's 130,000 and 284,000 lb conditions; and 0.25 c̄ is the data's own reference, between Crenshaw's 0.242 (heavy cruise) and 0.321 (light), so no CG transfer is applied to the tables.
+
+### 10.3 Inertias at 240,000 lb
+
+Scaled from the KC-135A's flight-test values at 268,500 lb (8.2: Ixx 2.90, Iyy 4.60, Izz 7.35 × 10⁶ slug·ft²) by weight, keeping the radii of gyration; then the R's heavier engines added (the CFM56 installation is about 1,000 lb heavier per engine than the J57's, at about 33 and 52 ft from the centreline): +0.17 × 10⁶ to Ixx and Izz. **Estimates, labelled:**
+
+| slug·ft² × 10⁶ | Ixx | Iyy | Izz | Ixz |
+|---|---|---|---|---|
+| War Wagon, 240,000 lb | 2.76 | 4.11 | 6.74 | 0.25 (FLEXSTAB's structural model, 8.2) |
+
+## 11. Controls
+
+### 11.1 Surfaces and what drives them
+
+- **Stabiliser** (the trim): the whole tail, +0.5° to −14° (10.1). Effectiveness 0.028–0.0325 per degree in Cm and 0.0097–0.011 in CL (sections 3, 8.4: tunnel and FLEXSTAB agree). Driven only by the automatic trim. **Trim rate: not public; 0.5° per second, an estimate** typical of jet-transport stabiliser trim, to be tuned so a big speed change needs the yoke for a few seconds.
+- **Elevator** (the yoke): **no public KC-135 elevator data** (FLEXSTAB modelled the whole stabiliser as the elevator, Crenshaw page 19). Estimated from the stabiliser by the elevator's effectiveness ratio τ for a 25–30 % chord elevator, τ ≈ 0.5 (DATCOM's flap-effectiveness method): **Cmδe ≈ −0.015 per degree, CLδe ≈ 0.0055 per degree**, travel ±20° (estimate). Checked in test layer 2 by the short-period response and by the yoke needed to hold a 1.5 g pull at cruise.
+- **Ailerons and spoilers:** the outboard aileron measured in the tunnel, 0.006 per degree in roll for the first 10° (7.2); the inboard aileron from FLEXSTAB, 0.0006 per degree (8.4); the spoilers are not in any public data. **Roll control is modelled as one surface** with the tunnel's outboard-aileron effectiveness, travel ±20°, its total roll power a tuning value set so a full-yoke roll rate in the 707 class comes out. The roll *mode* (8.5: time to half amplitude 0.5–0.7 s) is a free decay with the controls neutral, so it is set by the roll damping Clp and Ixx, not by the aileron: Clp is tuned toward the flight-test value against that mode, and the aileron's power separately against the full-yoke rate.
+- **Rudder:** effectiveness from the tunnel, 0.0015–0.0017 per degree in yaw (7.2); FLEXSTAB's 0.0028–0.0036 (a full-size rudder in a potential-flow code, which leaves out the gaps and viscous losses) is the upper bound. **Travel limited by the rudder power unit, about 7° at 320 kt** (the Shell 77 board, G2, from the inflight manual: usable under the revised rule), and larger at low speed; driven only by the yaw damper and the automatic coordination.
+
+### 11.2 The yaw damper
+
+The KC-135R has a series yaw damper (G2). The bare airframe's dutch roll is damped at 0.056 (8.5); "since the yaw damper is normally in use at all times, it eliminates any tendency toward dutch roll" (G2, quoting the inflight manual). The damper's gains are ours, tuned in 1b to bring the dutch roll's damping to the MIL-F-8785C Class III level (ζ ≥ 0.08, and in practice about 0.3) within the 7° authority.
+
+## 12. Engine: four F108-CF-100 (CFM56-2B)
+
+| | Value | Source |
+|---|---|---|
+| Take-off thrust, sea-level static | 9,786 daN = **22,000 lbf** | EASA TCDS E.066 (E1) |
+| Maximum continuous, SLS | 9,599 daN = **21,579 lbf** | E1 |
+| Max N1 | 5,280 rpm = **102 %** | E1 |
+| Bypass ratio, pressure ratio | 6.0, 23.5 | ICAO databank v32, CFM56-2B-1 (E2) |
+| Fuel flow at 100 / 85 / 30 / 7 % thrust, SLS | 0.985 / 0.819 / 0.311 / 0.128 kg/s | E2 |
+| Fact-sheet thrust | 21,634 lbf | A10; unexplained against E1; E1 used |
+
+**Thrust with Mach and altitude** (the maximum available, per engine), the Bartel and Young model as printed in the OpenAP paper (E3, read from its pages 7–9, equations 17–29):
+- Below 10,000 ft and Mach 0.4, take-off rating: T/T₀ = A − 0.377(1+λ)/√((1+0.82λ)G₀) · Z·M + (0.23 + 0.19√λ) · X·M², with G₀ = 0.0606λ + 0.6337, A, Z, X cubic in p/p₀ as printed; λ = 6.0, T₀ = 22,000 lbf.
+- In the climb and cruise (10,000 to 40,000 ft): T/T_cr from equations 22–28, with the reference cruise thrust **T_cr = 0.2 T₀ + 890 N = 4,600 lbf** at an assumed reference of Mach 0.78, 35,000 ft (OpenAP's equation 29; no primary F108 cruise figure is public).
+- **The PMC stand-in:** the slider's top (take-off) and the detent (MCT, 98.1 % of take-off) ask for those fractions of this maximum; the N1 shown is mapped from thrust by N1 ≈ 102 % × √(T/T_max) (a stated approximation, to be fitted so flight idle and maximum land on plausible N1 values: the HUD number is a cue, not data).
+- **Flight idle:** 7 % of T₀ at sea level static (the ICAO idle point), lapsed with the same model; an assumption.
+- **Spool-up:** first-order lag on N1 with a time constant of about 1 s above 20 % thrust, slower near idle, so that flight idle to 95 % takes just under 5 s at sea level (14 CFR 33.73's ceiling, E5). Tuned in 1a's tests.
+
+**Check against the airframe:** at 240,000 lb, FL300, Mach 0.78: q̄ = 268 psf, CL = 0.37, CD ≈ 0.023 (flight polar, 9.4), drag ≈ 15,000 lb, 3,750 lb per engine against about 5,300 lb available from the lapse model at FL300 (equation 22 at Mach 0.78: 1.15 × 4,600). Cruise is possible with about 40 % in hand, and the ceiling falls out where the two meet; test layer 3 checks it against the fact sheet's 50,000 ft at light weight.
+
+## 13. Validation points, collected
+
+| Check | Value | Source |
+|---|---|---|
+| Cruise speed | 530 mph (461 kt TAS, Mach 0.78) at 30,000 ft | A10, fact sheet |
+| Service ceiling | 50,000 ft | A10 |
+| Trim point | about 240,000 lb, 21,000 ft, 622 ft/s, pitch 2.5° | G5 |
+| Cruise drag | CD 0.024 at Mach 0.77–0.78, CL 0.42–0.43 | A6 Lux; G6 flight test |
+| Short period, phugoid, dutch roll, roll, spiral | 8.5 (flight test) | G6 via Boeing 1973 |
+| Dutch roll period | about 5 s | G2 (Shell 77 board) |
+| Stall | 107 kt, flaps 30, 130,000 lb, SL (CLmax 1.38) | G6, from the 1974 manual |
+| Zero-g parabola | 20–25 s of zero g, 350 KIAS entry, about 1.8 g pull-up | G4 (NASA) |
