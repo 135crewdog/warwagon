@@ -711,11 +711,11 @@ The KC-135R has a series yaw damper (G2). The bare airframe's dutch roll is damp
 **Thrust with Mach and altitude** (the maximum available, per engine), the Bartel and Young model as printed in the OpenAP paper (E3, read from its pages 7–9, equations 17–29):
 - Below 10,000 ft and Mach 0.4, take-off rating: T/T₀ = A − 0.377(1+λ)/√((1+0.82λ)G₀) · Z·M + (0.23 + 0.19√λ) · X·M², with G₀ = 0.0606λ + 0.6337, A, Z, X cubic in p/p₀ as printed; λ = 6.0, T₀ = 22,000 lbf.
 - In the climb and cruise (10,000 to 40,000 ft): T/T_cr from equations 22–28, with the reference cruise thrust **T_cr = 0.2 T₀ + 890 N = 4,600 lbf** at an assumed reference of Mach 0.78, 35,000 ft (OpenAP's equation 29; no primary F108 cruise figure is public).
-- **The PMC stand-in:** the slider's top (take-off) and the detent (MCT, 98.1 % of take-off) ask for those fractions of this maximum; the N1 shown is mapped from thrust by N1 ≈ 102 % × √(T/T_max)… (a stated approximation, to be fitted so flight idle and maximum land on plausible N1 values: the HUD number is a cue, not data).
+- **The PMC stand-in:** the slider's top (take-off) and the detent (MCT, 98.1 % of take-off) ask for those fractions of this maximum; the N1 shown is mapped from thrust by N1 ≈ 102 % × √(T/T_max) (a stated approximation, to be fitted so flight idle and maximum land on plausible N1 values: the HUD number is a cue, not data).
 - **Flight idle:** 7 % of T₀ at sea level static (the ICAO idle point), lapsed with the same model; an assumption.
 - **Spool-up:** first-order lag on N1 with a time constant of about 1 s above 20 % thrust, slower near idle, so that flight idle to 95 % takes just under 5 s at sea level (14 CFR 33.73's ceiling, E5). Tuned in 1a's tests.
 
-**Check against the airframe:** at 240,000 lb, FL300, Mach 0.78: q̄ = 268 psf, CL = 0.37, CD ≈ 0.023 (flight polar, 9.4), drag ≈ 15,000 lb, 3,750 lb per engine against about 5,400 lb available from the lapse model at FL300. Cruise is possible with about 30 % in hand, and the ceiling falls out where the two meet; test layer 3 checks it against the fact sheet's 50,000 ft at light weight.
+**Check against the airframe:** at 240,000 lb, FL300, Mach 0.78: q̄ = 268 psf, CL = 0.37, CD ≈ 0.023 (flight polar, 9.4), drag ≈ 15,000 lb, 3,750 lb per engine against about 5,300 lb available from the lapse model at FL300 (equation 22 at Mach 0.78: 1.15 × 4,600). Cruise is possible with about 40 % in hand, and the ceiling falls out where the two meet; test layer 3 checks it against the fact sheet's 50,000 ft at light weight.
 
 ## 13. Validation points, collected
 
