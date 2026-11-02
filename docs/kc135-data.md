@@ -354,8 +354,8 @@ Signs as the reports plot them, which are the usual ones: β positive with the w
 
 | β, deg | −18 | −16 | −14 | −12 | −10 | −8 | −6 | −4 | −2 | 0 | 2 | 4 | 6 | 8 |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| CY | 0.22 | 0.196 | 0.173 | 0.147 | 0.123 | 0.094 | 0.067 | 0.043 | 0.021 | 0.000 | −0.020 | −0.043 | −0.063 | −0.087 |
-| Cn | −0.049 | −0.047 | −0.043 | −0.039 | −0.034 | −0.027 | −0.019 | −0.012 | −0.006 | 0.000 | 0.006 | 0.013 | 0.019 | 0.026 |
+| CY | — (0.209 at −17.2°) | 0.196 | 0.173 | 0.147 | 0.123 | 0.094 | 0.067 | 0.043 | 0.021 | 0.000 | −0.020 | −0.043 | −0.063 | −0.087 |
+| Cn | — (−0.049 at −17.2°) | −0.047 | −0.043 | −0.039 | −0.034 | −0.027 | −0.019 | −0.012 | −0.006 | 0.000 | 0.006 | 0.013 | 0.019 | 0.026 |
 | Cl | 0.048 | 0.045 | 0.040 | 0.035 | 0.030 | 0.024 | 0.017 | 0.011 | 0.005 | −0.002 | −0.007 | −0.015 | −0.021 | −0.026 |
 
 **Derivatives** (per degree; the slope over β ±6°, and over the full −18° to 8°):
@@ -366,7 +366,7 @@ Signs as the reports plot them, which are the usual ones: β positive with the w
 | Cnβ | 0.0032 | 0.0031 | 0.0028 |
 | Clβ | −0.0032 | −0.0030 | −0.0035 |
 
-Cn is straight across the whole range: the fin isn't near stalling at 18° of sideslip. CY and Cl are straight to about ±8° and flatten beyond (the fin's and the wing's sideslip lift saturating). The rigid tunnel model's Cnβ is 14 % above the flight-test value (the flexible fin and fuselage give some of it away in flight), and its Cyβ and Clβ about 10–20 % below Crenshaw's cruise figures, which include the elastic wing and a different α. The static lateral-directional stability is well set: the ratio Clβ/Cnβ ≈ −1.0 is where a swept-wing transport's dutch roll comes from, and the model will show it.
+Cn is straight from −10° to +8°, then flattens: from −18° to −14° its slope is about 0.0015 per degree, half the 0.0032 near zero, as the fin begins to lose its grip (7.3 shows the same on the fin-on run). The model keeps the table, not a single slope, so large sideslip is weaker than small. CY and Cl are straight to about ±8° and flatten beyond (the fin's and the wing's sideslip lift saturating). The rigid tunnel model's Cnβ is 14 % above the flight-test value (the flexible fin and fuselage give some of it away in flight), and its Cyβ and Clβ about 10–20 % below Crenshaw's cruise figures, which include the elastic wing and a different α. The static lateral-directional stability is well set: the ratio Clβ/Cnβ ≈ −1.0 is where a swept-wing transport's dutch roll comes from, and the model will show it.
 
 ### 7.2 Aileron and rudder effects: A1 figure 13, data page 57
 
@@ -396,10 +396,10 @@ Cn is straight across the whole range: the fin isn't near stalling at 18° of si
 |---|---|---|---|---|---|---|
 | ΔCl | −0.060 (owner's trace −0.067) | −0.095 (−0.095) | 0.0060–0.0067 then 0.0028–0.0035 (the second 10° gives about half the first) | +0.005 (+0.004) | +0.010 (+0.009) | −0.0004 |
 | ΔCn | −0.007 (−0.007) | −0.010 (−0.011) | 0.0007 then 0.0004 | −0.016 (−0.017) | −0.040 (−0.038) | 0.0015–0.0017 |
-| ΔCY | +0.02 | +0.02 | small | +0.035 | +0.10 | −0.0036 |
+| ΔCY | +0.02 | +0.02 | small | +0.033 | +0.078 | −0.0029 to −0.0033 |
 
 - **Ailerons** (the outboard ailerons alone on this model; the KC-135's inboard ailerons and spoilers aren't modelled): Clδa ≈ 0.006 /deg for the first 10°, falling off above it. The yaw that goes with it is in the same direction as the roll (proverse) on this model at flaps 50, about a tenth of the rolling moment. The full-scale aileron and spoiler system is a gap (register section 9) to be estimated from these and DATCOM.
-- **Rudder:** Cnδr ≈ 0.0015 /deg, linear to 27°; Cyδr ≈ −0.0036 /deg; Clδr ≈ −0.0004 /deg. Crenshaw's flight-test lateral derivatives (register section 5) give |Cyδr| 0.0046 and |Clδr| 0.0006, and FLEXSTAB |Cnδr| 0.0028 to 0.0036: the tunnel's rudder makes half the yawing moment FLEXSTAB gives it, with the side force and rolling moment in proportion. Flaps 50 and gear down change the fin's flow a little, not that much; PR 4 reads Crenshaw's tables from the scan and settles which to use.
+- **Rudder:** Cnδr ≈ 0.0015 /deg, linear to 27°; Cyδr ≈ −0.003 /deg (the six offsets averaged: −0.0033 for −10°, −0.0029 for −27°); Clδr ≈ −0.0004 /deg. Crenshaw's flight-test lateral derivatives (register section 5) give |Cyδr| 0.0046 and |Clδr| 0.0006, and FLEXSTAB |Cnδr| 0.0028 to 0.0036: the tunnel's rudder makes half the yawing moment FLEXSTAB gives it, with the side force and rolling moment in proportion. Flaps 50 and gear down change the fin's flow a little, not that much; PR 4 reads Crenshaw's tables from the scan and settles which to use.
 
 **Checks against TP-1119.** Its figures 20–25 plot Clβ, Cnβ and Cyβ against CL at flaps 30 and 50 (tail at −10°, ailerons deflected on most): Clβ from −0.003 at CL 0.2 to −0.005 at CL 1.0 (the dihedral effect growing with lift, as a swept wing's does), Cnβ 0.0035 falling to 0.0027, Cyβ −0.013 to −0.015. A1's clean α-6° values (Cl −0.0032, Cn 0.0032, CY −0.011 to −0.012) sit at the low-CL end of those, as they should at CL 0.65.
 
@@ -459,9 +459,11 @@ Read from the scan at 150–220 dpi, every value by eye; the thesis's text layer
 | Flaps | 0 | 0 | 0 | 0 | 30° |
 | γ | 0 | 0 | 0 | 4.01° | −2.5° |
 | θ_B (FLEX) | 2.52° | 1.63° | −0.89° | 7.07° | 0.066° |
-| α_wing (FLEX) | 4.52° | 3.63° | 1.11° | 9.07° | 2.07° |
+| α_wing (FLEX) | 4.52° | 3.63° | 1.11° | 9.07°* | 2.07°* |
 | Stabiliser trim δ_S (FLEX) | −2.28° | −1.87° | −0.83° | −3.84° | −1.83° |
 | Thrust T₁ (FLEX), lb | 16,320 | 7,510 | 2,600 | 45,910 | 13,080 |
+
+\* As printed in the thesis. They equal θ_B + 2° (the wing's incidence), which is the wing's angle only in level flight; in the climb and approach, with γ 4.01° and −2.5°, θ_B − γ + 2° gives 5.06° and 4.57°. The transcription is kept as printed and these two values are not used; the model's trim solver computes α itself.
 
 ### 8.2 Inertias (Table 3 page 29; Table 5 page 32)
 
@@ -574,7 +576,7 @@ Elastic over rigid, FLEXSTAB, no winglets, 268,500 lb at 0.23 c̄:
 | CLδs, /deg | 0.0109 → 0.0121 | 0.0096 → 0.0103 |
 | Cmδs, /deg | −0.0326 → −0.0300 (−8 %) | −0.0281 → −0.0267 (−5 %) |
 
-So the flexible aircraft loses about a third of its static margin at cruise dynamic pressure (the wing washes out and the fuselage bends); this is the size of the "elastic wing" correction the tunnel data (sections 2–4) have been waiting for, and it is applied in `docs/flight-model.md` (PR 7) as a function of q̄.
+So at cruise dynamic pressure the flexible aircraft loses a third of its Cmα, and since CLα falls too, about **a quarter of its static margin** (−Cmα/CLα: 0.224 c̄ rigid to 0.171 c̄ elastic, −23 %; at the 10,000 ft condition 0.221 to 0.187, −16 %) (the wing washes out and the fuselage bends); this is the size of the "elastic wing" correction the tunnel data (sections 2–4) have been waiting for, and it is applied in `docs/flight-model.md` (PR 7) as a function of q̄.
 
 ### 8.7 Cross-checks against the tunnel
 

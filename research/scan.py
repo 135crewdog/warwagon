@@ -43,8 +43,10 @@ if '--calibrate' in sys.argv:
                 ax_, rng = tok.split(':'); lo, hi = [int(v) for v in rng.split('-')]; pick[ax_] = (lo, hi)
     def equally_spaced(found, n):
         # gridlines are equally spaced; frames, faint lines and flat data lines are not: take the n found
-        # lines that best fit one spacing, scored by how many found lines land on the predicted positions
-        best = None; ties = []
+        # lines that best fit one spacing, scored by how many land on the predicted positions, then by how
+        # much of the frame they span. Every run that ties on those two is kept, so a frame one grid step
+        # outside the labelled lines is reported as a tie rather than silently chosen.
+        cands = []
         for i in range(len(found)):
             for j in range(i + 1, len(found)):
                 for mi in range(n):
@@ -52,11 +54,13 @@ if '--calibrate' in sys.argv:
                         d = (found[j] - found[i]) / (mj - mi); pred = [found[i] + (m - mi) * d for m in range(n)]
                         hits = [min(found, key=lambda f: abs(f - q)) for q in pred]
                         score = sum(abs(h - q) <= 4 for h, q in zip(hits, pred)); res = max(abs(h - q) for h, q in zip(hits, pred))
-                        span = hits[-1] - hits[0]       # among runs that fit, the one spanning most of the frame is the grid
-                        key = (score, round(span / 10), -res)
-                        if best is None or key > best[3]: best = (score, res, hits, key); ties = []
-                        elif key[:2] == best[3][:2] and hits != best[2] and hits not in ties: ties.append(hits)
-        return best[:3], ties
+                        cands.append(((score, round((hits[-1] - hits[0]) / 10)), res, hits))
+        top = max(c[0] for c in cands)
+        best = min((c for c in cands if c[0] == top), key=lambda c: c[1])
+        ties = []
+        for c in cands:
+            if c[0] == top and c[2] != best[2] and c[2] not in ties: ties.append(c[2])
+        return (best[0][0], best[1], best[2]), ties
     fits = {}
     for i, t in enumerate(sys.argv):
         if t == '--fit':      # --fit x:0.1=573,1.15=3252 : two value=pixel pairs per axis, read off the image by hand
