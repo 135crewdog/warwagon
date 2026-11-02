@@ -435,3 +435,164 @@ Cn is straight across the whole range: the fin isn't near stalling at 18° of si
 | **The fin alone** (fin on minus off) | −0.0065 | +0.0030 | −0.0007 |
 
 **What it gives.** Without its fin the aircraft has no weathercock stability at all (Cnβ −0.0002 over the sweep, −0.0008 near zero): the whole of the 0.003 per degree is the vertical tail's. Near zero sideslip (±6°) the fin's share is larger, 0.0038 per degree (fin on 0.0030–0.0031, fin off −0.0008 to −0.0009; the owner's two traced readings agree with the split within 0.0002), because the fin-on curve flattens beyond −10° of sideslip as the fin begins to lose its grip; **the small-sideslip figure, 0.0038, is the one for the yaw damper.** The fin also makes about half the side force and a small part of the rolling moment (its lift acts above the roll axis). Those three numbers are the data for the yaw damper's and the rudder's model: the fin's side force per degree of sideslip, −0.0065, with the fin's arm from Cnβ/Cyβ = 0.46 of the span (60 ft, which is where the fin is), is what the rudder deflects a part of. Flaps 50 nearly doubles the dihedral effect (Clβ −0.0045 against −0.0029 clean) through the lift it adds; flaps 30 at α 6 leaves it alone. The two flaps-50 pages were run at the same conditions and differ by 0.0005 in Cnβ and 0.0004 in Clβ: the data's own repeatability, again larger than the reading.
+
+---
+
+## 8. Crenshaw's tables: inertias, rate derivatives, modes (G6)
+
+From Crenshaw, *Stability and Control Characteristics of the Winglet Configured KC-135A*, AFIT GAE/MC/76D-5, December 1976, cleared for use by the owner (Owner decision 1). Two kinds of number, always labelled:
+- **F.T.**, flight test: from Ref 7, Boeing's *Summary of the Stability, Control and Flying Qualities Information for All the -135 Series* (October 1973), via the thesis.
+- **FLEX**, computed: Boeing's FLEXSTAB program, rigid unless marked elastic, for the KC-135A **without winglets** (the thesis's "NW" columns, the only ones used here).
+
+Read from the scan at 150–220 dpi, every value by eye; the thesis's text layer, where legible, agrees. Thesis page numbers are given (PDF page = thesis page + 13). All derivatives in stability axes; Cl and Cn on span b = 130.83 ft, Cm on c̄ = 20.16 ft, S = 2,433 ft².
+
+### 8.1 Flight conditions (Table 1, page 6; Appendix E Table I, page 155)
+
+| | Cruise 1 | Cruise 2 | Cruise 2A | Climb 3 | Approach 4 |
+|---|---|---|---|---|---|
+| Altitude, ft | 28,500 | 45,600 | 28,500 | SL | SL |
+| Mach | 0.77 | 0.77 | 0.77 | 0.422 | 0.211 |
+| V_T, ft/s | 771.47 | 745.89 | 771.47 | 471.44 | 235.72 |
+| q̄, psf | 279.98 | 124.96 | 279.98 | 264.14 | 66.04 |
+| Weight, lb | 284,000 | 130,000 | 130,000 | 297,000 | 130,000 |
+| CG, c̄ | 0.242 | 0.321 | 0.321 | 0.247 | 0.321 |
+| Flaps | 0 | 0 | 0 | 0 | 30° |
+| γ | 0 | 0 | 0 | 4.01° | −2.5° |
+| θ_B (FLEX) | 2.52° | 1.63° | −0.89° | 7.07° | 0.066° |
+| α_wing (FLEX) | 4.52° | 3.63° | 1.11° | 9.07° | 2.07° |
+| Stabiliser trim δ_S (FLEX) | −2.28° | −1.87° | −0.83° | −3.84° | −1.83° |
+| Thrust T₁ (FLEX), lb | 16,320 | 7,510 | 2,600 | 45,910 | 13,080 |
+
+### 8.2 Inertias (Table 3 page 29; Table 5 page 32)
+
+| slug·ft² × 10⁶ | Cruise 1 (284,000 lb) | Climb 3 (297,000 lb) | Approach 4 (130,000 lb) | **KC-135A at 268,500 lb, 0.25 c̄ (F.T., Ref 7)** | FLEXSTAB structural model, 268,500 lb | 707-320B, 268,500 lb |
+|---|---|---|---|---|---|---|
+| Ixx | 2.93 | 3.17 | 2.05 | **2.90** | 3.694 | 4.928 |
+| Iyy | 4.66 | 4.72 | 2.46 | **4.60** | 3.716 | 4.966 |
+| Izz | 7.48 | 7.7 | 4.36 | **7.35** | 7.256 | 9.746 |
+| Ixz | 0 | 0 | 0 | — | 0.252 | 0.245 |
+
+The first three columns are principal axes as the thesis entered them; Ixz in body axes is given only for the structural model (0.252 × 10⁶). These are the only public KC-135 inertias; PR 6 scales them to War Wagon's weight.
+
+### 8.3 Flight test against FLEXSTAB rigid (Table 3, page 29)
+
+| | Cruise 1 F.T. | FLEX | Climb 3 F.T. | FLEX | Approach 4 F.T. | FLEX |
+|---|---|---|---|---|---|---|
+| θ_trim, deg | 2.40 | 2.52 | 7.00 | 7.07 | −0.10 | 0.07 |
+| Thrust T₁, lb | 16,352 | 16,323 | 38,800 | 45,910 | 9,000 | 13,080 |
+| CLα, /deg | 0.0825 | 0.0986 | 0.0715 | 0.0837 | 0.0781 | 0.0791 |
+| Cmα, /deg | −0.015 | −0.0212 | −0.012 | −0.0173 | −0.0175 | −0.0106 |
+| Cmq, /rad | −14.65 | −18.27 | −13.35 | −15.636 | −14.05 | −14.252 |
+| CL₁ | 0.426 | 0.416 | 0.463 | 0.460 | 0.811 | 0.804 |
+| CD₁ | 0.024 | 0.024 | 0.025 | 0.039 | 0.091 | 0.117 |
+| Cmα̇, /rad | −6.57 | −10.22 | −5.47 | −6.79 | −5.52 | −6.23 |
+| Cyβ, /deg | −0.0133 | −0.0116 | −0.0122 | −0.0105 | −0.0134 | −0.0102 |
+| Clβ, /deg | −0.0035 | −0.0025 | −0.0031 | −0.0022 | −0.0040 | −0.0022 |
+| Cnβ, /deg | 0.0028 | 0.0034 | 0.0024 | 0.0029 | 0.0023 | 0.0026 |
+| Clp, /rad | −0.3450 | −0.4969 | −0.3150 | −0.4428 | −0.3850 | −0.4277 |
+| Cnr, /rad | −0.1940 | −0.2926 | −0.1720 | −0.2648 | −0.1860 | −0.2580 |
+| Cyδr, /deg | 0.0046 | 0.0076 | 0.0041 | 0.0064 | 0.0040 | 0.0061 |
+| Clδr, /deg | 0.0006 | 0.0007 | 0.0005 | 0.0006 | 0.0005 | 0.0005 |
+| Cnδr, /deg | −0.0002 | −0.0036 | −0.0002 | −0.0030 | −0.0002 | −0.0028 |
+
+The F.T. longitudinal derivatives include the elastic aircraft; the lateral ones don't (the thesis's note). **Cnδr's flight-test −0.0002 is printed so in the scan, not an OCR loss**; the thesis calls it the one derivative that doesn't correlate. It is an order of magnitude below FLEXSTAB and the tunnel (A1 figure 13: 0.0015–0.0017 in magnitude, 7.2), and is not used.
+
+### 8.4 FLEXSTAB rigid, the full set, no winglets (Appendix E Table I, pages 155–159)
+
+| | Cruise 1 | Cruise 2 | Cruise 2A | Climb 3 | Approach 4 |
+|---|---|---|---|---|---|
+| CLu, /rad | 1.1413 | 1.1675 | 0.5361 | 0.9836 | 1.6375 |
+| CDu, /rad | 0.0634 | 0.0658 | 0.0077 | 0.0826 | 0.2376 |
+| Cmu, /rad | −0.0063 | −0.0048 | 0.00096 | 0.0160 | 0.0100 |
+| CLα, /deg | 0.0986 | 0.0986 | 0.0989 | 0.0837 | 0.0791 |
+| CDα, /deg | 0.0077 | 0.0071 | 0.0017 | 0.0081 | 0.0106 |
+| Cmα, /deg | −0.0212 | −0.0133 | −0.0129 | −0.0173 | −0.0106 |
+| CLq, /rad | 11.2739 | 10.385 | 10.386 | 9.6091 | 8.5395 |
+| CDq, /rad | 0.3060 | 0.2080 | −0.1459 | 0.3149 | 0.2826 |
+| Cmq, /rad | −18.2668 | −17.251 | −17.243 | −15.636 | −14.252 |
+| **CLδs, /deg (stabiliser)** | 0.0109 | 0.0109 | 0.0110 | 0.0097 | 0.0094 |
+| CDδs, /deg | 0.0004 | 0.0002 | −0.0004 | 0.0005 | 0.0007 |
+| **Cmδs, /deg (stabiliser)** | −0.0325 | −0.0317 | −0.0317 | −0.028 | −0.0262 |
+| CL₁ | 0.4163 | 0.4271 | 0.191 | 0.4596 | 0.8041 |
+| CD₁ | 0.0239 | 0.0247 | 0.0038 | 0.0391 | 0.1166 |
+| Cm₁ | 0.00262 | 0.0019 | 0.00029 | 0.0082 | 0.0063 |
+| CLα̇, /rad | −5.1742 | −5.1871 | −5.198 | −1.022 | −0.3655 |
+| CDα̇, /rad | −0.3324 | −0.3534 | −0.126 | 0.1536 | −0.0724 |
+| Cmα̇, /rad | −10.219 | −10.634 | −10.634 | −6.791 | −6.2301 |
+| CLq̇, /rad | −20.673 | −19.882 | −19.903 | −9.562 | −7.647 |
+| CDq̇, /rad | −1.0887 | −0.9182 | −0.047 | −0.6897 | −0.4788 |
+| Cmq̇, /rad | −4.252 | −4.219 | −4.219 | −4.401 | −4.1069 |
+| Static margin, c̄ | 0.2152 | 0.1344 | 0.1300 | 0.2069 | 0.1340 |
+| Neutral point x_ac, c̄ | 0.4576 | 0.4554 | 0.4510 | 0.4539 | 0.4550 |
+| Manoeuvre point, c̄ | 0.4819 | 0.4793 | 0.5017 | 0.5048 | 0.5645 |
+| Cyβ, /deg | −0.0116 | −0.0116 | −0.0116 | −0.0105 | −0.0102 |
+| Clβ, /deg | −0.0025 | −0.0025 | −0.0026 | −0.0022 | −0.0022 |
+| Cnβ, /deg | 0.0034 | 0.0032 | 0.0032 | 0.0029 | 0.0026 |
+| Cyp, /rad | −0.1850 | −0.1786 | −0.1786 | −0.1799 | −0.1709 |
+| Clp, /rad | −0.4969 | −0.4952 | −0.4956 | −0.4428 | −0.4277 |
+| Cnp, /rad | 0.0188 | 0.0129 | 0.0135 | 0.0211 | −0.0052 |
+| Cyr, /rad | 0.7078 | 0.696 | 0.6615 | 0.6258 | 0.6250 |
+| Clr, /rad | 0.2502 | 0.2632 | 0.1892 | 0.2230 | 0.2715 |
+| Cnr, /rad | −0.2926 | −0.2815 | −0.2677 | −0.2648 | −0.2580 |
+| Cyδa, /deg (inboard aileron) | 1.31e−4 | 1.31e−4 | 1.31e−4 | 0.95e−4 | 0.88e−4 |
+| Clδa, /deg (inboard aileron) | −5.82e−4 | −5.8e−4 | −5.74e−4 | −4.8e−4 | −4.54e−4 |
+| Cnδa, /deg (inboard aileron) | −1.24e−4 | −1.22e−4 | −1.32e−4 | −0.95e−4 | −0.98e−4 |
+| Cyδr, /deg | 0.0076 | 0.0076 | 0.0076 | 0.0064 | 0.0061 |
+| Clδr, /deg | 0.00067 | 0.00069 | 0.00084 | 0.0006 | 0.00052 |
+| Cnδr, /deg | −0.0036 | −0.0035 | −0.0034 | −0.00297 | −0.0028 |
+| Cyβ̇, /rad | −0.1784 | −0.1784 | −0.1784 | −0.1748 | −0.1741 |
+| Clβ̇, /rad | −0.0029 | −0.0021 | −0.0022 | −0.0036 | −0.0029 |
+| Cnβ̇, /rad | 0.0058 | 0.0037 | 0.0036 | 0.0029 | 0.00068 |
+
+(Rows CY/Cl/Cn for ṗ and ṙ, near zero, are on page 159 and not repeated.) The FLEXSTAB aileron is the **inboard aileron alone** (the thesis's Table 13 heading): about a tenth of the tunnel's outboard aileron (7.2), as its size and span station say it should be.
+
+### 8.5 Modes (Table 4, page 31)
+
+| | Cruise 1 F.T. | FLEX | Climb 3 F.T. | FLEX | Approach 4 F.T. | FLEX |
+|---|---|---|---|---|---|---|
+| Short period ωn, rad/s | 1.67 | 1.99 | 1.54 | 1.81 | 1.39 | 1.17 |
+| ζ_sp | 0.386 | 0.418 | 0.558 | 0.556 | 0.676 | 0.814 |
+| Phugoid period, s | 109.7 | 96.59 | 72.8 | 67.13 | 39.5 | 41.66 |
+| ζ_p | 0.0339 | 0.0240 | 0.028 | 0.011 | 0.055 | 0.080 |
+| Dutch roll ωn, rad/s | 1.43 | 1.57 | 1.31 | 1.39 | 0.95 | 0.92 |
+| Dutch roll period, s | 4.4 | 4.03 | 4.81 | 4.59 | 6.6 | 6.98 |
+| ζ_dr | **0.056** | 0.129 | **0.063** | 0.184 | **0.069** | 0.198 |
+| Spiral T½, s | 84.6 (stable) | unstable | 60.8 (stable) | unstable | 44.8 (stable) | unstable |
+| Roll T½, s | 0.700 | 0.558 | 0.510 | 0.434 | 0.520 | 0.545 |
+
+**These flight-test modes are the targets of test layer 2.** The bare airframe's dutch roll is lightly damped (ζ 0.06), period 4.4 s at cruise, which agrees with the Shell 77 board's measured period of about 5 s; the FLEXSTAB model over-damps it, so the model's damping derivatives (Cnr, Clp) are to be set nearer the flight-test values, not FLEXSTAB's.
+
+### 8.6 The elastic correction (Appendix E Table III, pages 166–169)
+
+Elastic over rigid, FLEXSTAB, no winglets, 268,500 lb at 0.23 c̄:
+
+| | Cruise 1 (30,000 ft, M 0.77) rigid → elastic | Cruise 3 (10,000 ft, M 0.422) rigid → elastic |
+|---|---|---|
+| CLα, /deg | 0.0984 → 0.0876 (−11 %) | 0.0831 → 0.0772 (−7 %) |
+| Cmα, /deg | −0.0220 → −0.0150 (−32 %) | −0.0184 → −0.0144 (−22 %) |
+| Cmq, /rad | −18.41 → −16.42 (−11 %) | −15.81 → −14.74 (−7 %) |
+| CLδs, /deg | 0.0109 → 0.0121 | 0.0096 → 0.0103 |
+| Cmδs, /deg | −0.0326 → −0.0300 (−8 %) | −0.0281 → −0.0267 (−5 %) |
+
+So the flexible aircraft loses about a third of its static margin at cruise dynamic pressure (the wing washes out and the fuselage bends); this is the size of the "elastic wing" correction the tunnel data (sections 2–4) have been waiting for, and it is applied in `docs/flight-model.md` (PR 7) as a function of q̄.
+
+### 8.7 Cross-checks against the tunnel
+
+| | Tunnel (sections 2–7, Mach 0.28, rigid) | FLEXSTAB rigid, approach 4 / climb 3 | Flight test |
+|---|---|---|---|
+| CLα, /deg | 0.081 (clean) | 0.0837 (climb, M 0.42) | 0.0715–0.0825 |
+| Stabiliser CLδs, /deg | 0.0107 | 0.0097–0.0110 | — |
+| Stabiliser Cmδs, /deg | 0.0284 (about 0.25 c̄) | 0.028–0.0325 | — |
+| Neutral point | 0.46 c̄ | 0.454–0.458 c̄ | — |
+| Cnβ, /deg | 0.0032 | 0.0029–0.0034 | 0.0023–0.0028 |
+| Clβ, /deg | −0.0032 | −0.0022 to −0.0026 | −0.0031 to −0.0040 |
+| Cyβ, /deg | −0.0108 | −0.0105 to −0.0116 | −0.0122 to −0.0134 |
+| Cnδr, /deg (magnitude) | 0.0015–0.0017 | 0.0028–0.0036 | (0.0002, rejected) |
+
+The stabiliser numbers and the neutral point agree across tunnel and FLEXSTAB to a few per cent: the pitch axis is well pinned. The rudder is not: the tunnel's (at flaps 50, gear down) is half FLEXSTAB's (clean). Until the KC-135's rudder area is settled (PR 6, from A3's geometry table and A1's model rudder of 0.126 ft² on a 0.413 ft² fin, 31 %), the model uses the tunnel's measured value and treats FLEXSTAB's as an upper bound, with the yaw damper and coordination tuned to either.
+
+### 8.8 The two quoted manual speeds (page 45)
+
+Under the revised data rule, from the 1974 C-135A/B manuals via the thesis, **KC-135A** figures:
+- **Stall speed 107 kt** at flaps 30°, 130,000 lb, sea level (Ref 9:6-2B). That is CLmax = 1.38 (q̄ = 38.8 psf): between the tunnel's trimmed 1.31 (A3) and untrimmed 1.39 (A1) at flaps 30. Full-scale and tunnel agree.
+- **Minimum control speed 116 kt**, rudder boost on, standard day, sea level (Ref 10:1A9-14). For the engine-out work, later.
