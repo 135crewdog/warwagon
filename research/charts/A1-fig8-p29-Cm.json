@@ -91,7 +91,7 @@
  "curves": {
   "auto": {
    "symbol": "auto",
-   "description": "symbol centroids found by scan.py --symbols (interiors of the plotted symbols)",
+   "description": "symbol centroids found by scan.py --symbols (interiors of the plotted symbols); above 13 deg the basic configuration's circles as traced by the owner",
    "points": [
     [
      -7.97,
@@ -243,110 +243,113 @@
     ],
     [
      13.04,
-     0.0449
+     0.027
     ],
     [
      13.48,
-     0.0427
+     0.0246
     ],
     [
      14.16,
-     0.0439
+     0.0231
     ],
     [
      14.19,
-     0.0209
+     0.0231
     ],
     [
      14.21,
-     0.0329
+     0.0231
     ],
     [
      14.8,
-     0.0195
+     0.0132
     ],
     [
      14.81,
-     0.0333
+     0.0132
     ],
     [
      15.17,
-     0.0059
+     0.006
     ],
     [
      15.67,
-     -0.0043
+     -0.0059
     ],
     [
      16.23,
-     -0.0221
+     -0.0213
     ],
     [
      16.25,
-     -0.013
+     -0.0225
     ],
     [
      16.31,
-     0.0099
+     -0.0249
     ],
     [
      16.59,
-     -0.0414
+     -0.0332
     ],
     [
      17.06,
-     -0.0587
+     -0.055
     ],
     [
      17.08,
-     -0.0829
+     -0.055
     ],
     [
      17.11,
-     -0.051
+     -0.057
     ],
     [
      17.11,
-     -0.025
+     -0.057
     ],
     [
      17.16,
-     -0.0425
+     -0.0594
     ],
     [
      17.5,
-     -0.0508
+     -0.0823
     ],
     [
      17.99,
-     -0.1235
+     -0.1109
     ],
     [
      18.06,
-     -0.1111
+     -0.114
     ],
     [
      18.06,
-     -0.0905
+     -0.114
     ],
     [
      18.97,
-     -0.1595
+     -0.1402
     ],
     [
      18.99,
-     -0.1255
+     -0.1402
     ],
     [
      19.42,
-     -0.1327
+     -0.1529
     ],
     [
      19.49,
-     -0.1469
+     -0.1548
     ]
    ]
   }
  },
- "curves_note": "four data sets: ZHG005 (circle) the basic configuration WBNH6V, read; ZHG008, ZHG009, ZHG012 the modified configurations, on the basic curve to about 14 deg"
+ "curves_note": "four data sets: ZHG005 (circle) the basic configuration WBNH6V, read; ZHG008, ZHG009, ZHG012 the modified configurations, on the basic curve to about 14 deg",
+ "owner_trace_2026_11_02": {
+  "result": "circles traced 13-20 deg; agrees with the --symbols reading within 0.01 to 16 deg, beyond that the symbol reading hops between sets by up to 0.035; the circles are now the owner's trace above 13 deg"
+ }
 }

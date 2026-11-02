@@ -182,6 +182,76 @@
     ],
     [
      -4.27,
+     0.0312
+    ],
+    [
+     -2.0,
+     0.0263
+    ],
+    [
+     0.37,
+     0.0266
+    ],
+    [
+     2.62,
+     0.0291
+    ],
+    [
+     4.87,
+     0.0397
+    ],
+    [
+     7.15,
+     0.0518
+    ],
+    [
+     9.38,
+     0.071
+    ],
+    [
+     11.52,
+     0.132
+    ],
+    [
+     13.67,
+     0.2
+    ],
+    [
+     15.71,
+     0.268
+    ],
+    [
+     16.66,
+     0.303
+    ],
+    [
+     17.7,
+     0.325
+    ],
+    [
+     18.73,
+     0.357
+    ],
+    [
+     19.64,
+     0.379
+    ],
+    [
+     20.4,
+     0.393
+    ]
+   ],
+   "superseded_points": [
+    [
+     -8.82,
+     0.074
+    ],
+    [
+     -6.58,
+     0.0457
+    ],
+    [
+     -4.27,
      0.0331
     ],
     [
@@ -243,5 +313,8 @@
    ]
   }
  },
- "reading": "symbol centres read by eye against a 1 deg / 0.02 grid drawn from the pixel fit, from crops 6 deg wide, 31 Oct 2026; alphas are the test points' from the CL panel of the same runs; accuracy about 0.003 in CD below 10 deg, 0.01 above, where four data sets' symbols overlap; the separation of the two curves is at the reading accuracy"
+ "reading": "symbol centres read by eye against a 1 deg / 0.02 grid drawn from the pixel fit, from crops 6 deg wide, 31 Oct 2026; alphas are the test points' from the CL panel of the same runs; accuracy about 0.003 in CD below 10 deg, 0.01 above, where four data sets' symbols overlap; the separation of the two curves is at the reading accuracy",
+ "owner_trace_2026_11_02": {
+  "result": "yellow (tail 0) agrees within 0.003 to 10 deg; blue (tail 6) runs 0.002-0.009 below my circles from 0 to 8 deg, onto the squares. The full-resolution symbol finder sees one merged blob per test point there, centred on the owner's line: the two curves coincide from -4 to 8 deg and my reading had separated them. The circles from -4.3 to 9.4 deg are now the owner's trace."
+ }
 }

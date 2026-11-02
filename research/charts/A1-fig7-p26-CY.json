@@ -1,0 +1,274 @@
+{
+ "source": "A1",
+ "document": "NASA TM 73,250 (Hedstrom & Whitcomb, 1977)",
+ "reference": {
+  "S_model_cm2": 2768.91,
+  "cbar_model_cm": 21.51,
+  "b_model_cm": 139.569,
+  "scale": 0.035,
+  "moment_centre": "M.S. 75.27 cm, W.L. 17.98 cm (0.25 MAC)",
+  "corrections": "wall interference and blockage applied by the report"
+ },
+ "image_note": "the panel cut from the PDF page rendered at 400 dpi; crop box in page pixels",
+ "figure": "Figure 7, data page 26 (PDF page 60): lateral-directional characteristics in yaw, gear down, top panel: CY against beta",
+ "image": "A1-fig7-p26-CY.png",
+ "conditions": {
+  "mach": 0.28,
+  "RN_per_m": 13040000.0,
+  "alpha_deg": 6,
+  "flaps_deg": 30,
+  "gear": "down",
+  "tail": "6 deg TEU"
+ },
+ "curves_note": "three data sets at flaps 30, gear down, alpha 6: ZHG068 (circle) the basic configuration; ZHG069, ZHG070 the modified configurations",
+ "x": {
+  "quantity": "beta",
+  "unit": "deg",
+  "gridlines": [
+   -18,
+   -16,
+   -14,
+   -12,
+   -10,
+   -8,
+   -6,
+   -4,
+   -2,
+   0,
+   2,
+   4,
+   6,
+   8
+  ],
+  "pixel_fit": [
+   115.6336996336996,
+   2371.02035002035
+  ]
+ },
+ "y": {
+  "quantity": "CY",
+  "unit": "",
+  "gridlines": [
+   0.4,
+   0.3,
+   0.2,
+   0.1,
+   0.0,
+   -0.1,
+   -0.2
+  ],
+  "pixel_fit": [
+   -1003.5714285714289,
+   432.9285714285714
+  ]
+ },
+ "zoom_step": [
+  1,
+  0.02
+ ],
+ "breakpoints": [
+  -18,
+  -16,
+  -14,
+  -12,
+  -10,
+  -8,
+  -6,
+  -4,
+  -2,
+  0,
+  2,
+  4,
+  6,
+  8
+ ],
+ "curves": {
+  "auto": {
+   "symbol": "auto",
+   "description": "symbol centroids found by scan.py --symbols (interiors of the plotted symbols)",
+   "points": [
+    [
+     -17.43,
+     0.2915
+    ],
+    [
+     -17.32,
+     0.3197
+    ],
+    [
+     -17.22,
+     0.2745
+    ],
+    [
+     -16.27,
+     0.2948
+    ],
+    [
+     -16.27,
+     0.3103
+    ],
+    [
+     -16.19,
+     0.2585
+    ],
+    [
+     -16.07,
+     0.2811
+    ],
+    [
+     -16.06,
+     0.3
+    ],
+    [
+     -15.26,
+     0.2816
+    ],
+    [
+     -15.19,
+     0.2441
+    ],
+    [
+     -14.25,
+     0.2651
+    ],
+    [
+     -14.18,
+     0.2308
+    ],
+    [
+     -14.05,
+     0.253
+    ],
+    [
+     -13.27,
+     0.2448
+    ],
+    [
+     -13.17,
+     0.2151
+    ],
+    [
+     -11.82,
+     0.2104
+    ],
+    [
+     -11.51,
+     0.209
+    ],
+    [
+     -11.26,
+     0.2178
+    ],
+    [
+     -11.15,
+     0.1887
+    ],
+    [
+     -10.72,
+     0.1986
+    ],
+    [
+     -10.58,
+     0.1968
+    ],
+    [
+     -10.44,
+     0.1951
+    ],
+    [
+     -10.14,
+     0.1978
+    ],
+    [
+     -9.35,
+     0.1797
+    ],
+    [
+     -9.21,
+     0.1722
+    ],
+    [
+     -9.13,
+     0.1557
+    ],
+    [
+     -8.44,
+     0.1547
+    ],
+    [
+     -7.32,
+     0.1255
+    ],
+    [
+     -7.3,
+     0.144
+    ],
+    [
+     -7.15,
+     0.1319
+    ],
+    [
+     -5.16,
+     0.093
+    ],
+    [
+     -3.16,
+     0.0608
+    ],
+    [
+     -1.15,
+     0.0306
+    ],
+    [
+     0.12,
+     0.0043
+    ],
+    [
+     0.72,
+     -0.0102
+    ],
+    [
+     0.83,
+     0.01
+    ],
+    [
+     0.87,
+     -0.006
+    ],
+    [
+     2.75,
+     -0.0184
+    ],
+    [
+     2.92,
+     -0.028
+    ],
+    [
+     2.95,
+     -0.0111
+    ],
+    [
+     4.89,
+     -0.0487
+    ],
+    [
+     6.86,
+     -0.0949
+    ],
+    [
+     6.86,
+     -0.0623
+    ],
+    [
+     6.93,
+     -0.0779
+    ],
+    [
+     6.99,
+     -0.0943
+    ]
+   ]
+  }
+ },
+ "calibration": "x from the 27 one-degree gridlines (max residual 2.5 px), y from the 7 labelled lines (max residual 0.9 px)"
+}

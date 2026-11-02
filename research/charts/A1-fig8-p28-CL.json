@@ -239,5 +239,8 @@
     ]
    ]
   }
+ },
+ "owner_trace_2026_11_02": {
+  "result": "both curves agree within 0.005 from -6.6 to 15.7 deg (0.010 at -8.8 deg, 0.013 at 19.6 deg on the plateau): confirmed"
  }
 }

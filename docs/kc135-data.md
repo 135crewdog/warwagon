@@ -172,14 +172,14 @@ The tail-0° curve is not quite straight: its −8.82° point sits 0.015 above t
 | α, deg | −8.82 | −6.58 | −4.27 | −2.00 | 0.37 | 2.62 | 4.87 | 7.15 | 9.38 | 11.52 | 13.67 | 15.71 | 16.66 | 17.70 | 18.73 | 19.64 | 20.40 |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | CD, tail 0° | 0.067 | 0.036 | 0.0215 | 0.0205 | 0.0212 | 0.0273 | 0.0356 | 0.052 | 0.083 | 0.143 | 0.213 | 0.279 | 0.310 | 0.339 | 0.367 | 0.393 | 0.400 |
-| CD, tail 6° TEU | 0.074 | 0.0457 | 0.0331 | 0.0288 | 0.0295 | 0.037 | 0.0446 | 0.0605 | 0.074 | 0.132 | 0.200 | 0.268 | 0.303 | 0.325 | 0.357 | 0.379 | 0.393 |
+| CD, tail 6° TEU | 0.074 | 0.0457 | 0.0312 | 0.0263 | 0.0266 | 0.0291 | 0.0397 | 0.0518 | 0.0710 | 0.132 | 0.200 | 0.268 | 0.303 | 0.325 | 0.357 | 0.379 | 0.393 |
 
 **At the breakpoints:**
 
 | α, deg | −8 | −6 | −4 | −2 | 0 | 2 | 4 | 6 | 8 | 10 | 12 | 14 | 16 | 18 | 20 |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | CD, tail 0° | 0.056 | 0.032 | 0.021 | 0.021 | 0.021 | 0.026 | 0.032 | 0.044 | 0.064 | 0.100 | 0.159 | 0.224 | 0.289 | 0.347 | 0.396 |
-| CD, tail 6° TEU | 0.064 | 0.043 | 0.033 | 0.029 | 0.029 | 0.035 | 0.042 | 0.053 | 0.066 | 0.091 | 0.147 | 0.211 | 0.279 | 0.334 | 0.386 |
+| CD, tail 6° TEU | 0.064 | 0.042 | 0.031 | 0.026 | 0.027 | 0.028 | 0.036 | 0.046 | 0.059 | 0.089 | 0.147 | 0.211 | 0.279 | 0.334 | 0.386 |
 
 **Second reading.** The scan finds the plotted lines from −8° to 8° and agrees within 0.004 (tolerance 0.0045, 1 % of the span); above 10° the curve is too steep for a column scan and the eye reading stands alone. The first calibration of this panel had picked the wrong run of vertical gridlines (the frame sits a grid step beyond α 20°, equally spaced), which shifted every α by 2.5°; the page overview showed it before any point was recorded, and the calibrator now takes the gridline choice explicitly and the overlay is the check.
 
@@ -189,15 +189,15 @@ The tail-0° curve is not quite straight: its −8.82° point sits 0.015 above t
 
 | | Tail 0° | Tail 6° TEU |
 |---|---|---|
-| CD = CD₀ + k·CL² | 0.0191 + 0.0481·CL² (max error 0.0026) | 0.0289 + 0.0563·CL² (max error 0.0021) |
-| With a linear term | 0.0198 − 0.0110·CL + 0.0623·CL² (max error 0.0020; minimum at CL 0.09) | 0.0290 − 0.0076·CL + 0.0676·CL² (max error 0.0013) |
+| CD = CD₀ + k·CL² | 0.0191 + 0.0481·CL² (max error 0.0026) | 0.0260 + 0.0456·CL² (max error 0.0035) |
+| With a linear term | 0.0198 − 0.0110·CL + 0.0623·CL² (max error 0.0020; minimum at CL 0.09) | (not refitted) |
 
-Checks: 1/(π·AR·e) with AR 7.035 gives k = 0.048 at e = 0.94, high for a complete aircraft (0.8 would give 0.057); the tunnel's k is at the low end of plausible, which suits a clean wing-body-tail at this Reynolds number. The tail at 6° adds about 0.009 everywhere at low CL (its own drag at incidence) and, at high CL, loses about 0.009 (less lift, less induced drag): the two curves cross near 8°. Below −6° and above 9° the drag rises faster than the parabola as the flow separates.
+Checks: 1/(π·AR·e) with AR 7.035 gives k = 0.048 at e = 0.94, high for a complete aircraft (0.8 would give 0.057); the tunnel's k is at the low end of plausible, which suits a clean wing-body-tail at this Reynolds number. Against α, the two curves coincide within the reading from −4° to 8° (the owner's traced reading of 2 November 2026 put the circles on the squares there; my first reading had separated them by up to 0.009, and is superseded). Against CL the tail at 6° costs about 0.006 in CD₀ (0.026 against 0.019), the tail's own drag at incidence less the induced drag saved by the lower lift. Below −6° and above 9° the drag rises faster than the parabola as the flow separates.
 
 **What the chart gives.**
 
 1. **The low-speed clean polar**, as a table in α (or in CL through 2.1). The model uses the table; the fit is for checks and for the Mach correction's shape.
-2. **The tail's drag**, 0.009 per 6° at low CL, is the start of a trim-drag model.
+2. **The tail's drag**, about 0.006 per 6° in CD₀ at the same CL, is the start of a trim-drag model.
 3. **A number to correct:** CD₀ = 0.019 on the 0.035-scale model at Re 4.2 × 10⁶ is high for the aircraft. Full-scale skin friction at Re 1 to 4 × 10⁷ is about two-thirds of the model's, so the aircraft's CD₀ at this Mach will be near 0.015 to 0.017 before the flight-test polars (A5, A6) settle it. Until then the model's value is used and labelled.
 
 **Corrections still to apply:** Reynolds number (4.2 sizes it: small on this model, because its transition was fixed), Mach (the drag rise from A8 and A3), the R's nacelles and the elastic wing (small), and no CG transfer.
@@ -286,16 +286,16 @@ Read now while the documents were open, as the owner asked; used when flaps, gea
 | CL flaps 30, gear down | −0.024 | 0.164 | 0.351 | 0.517 | 0.703 | 0.845 | 0.991 | 1.151 | 1.282 | 1.345 | 1.351 | 1.349 | *1.32* | *1.29* |
 | CL flaps 50, gear up | — | 0.459 | 0.617 | 0.768 | 0.966 | 1.103 | 1.260 | 1.397 | 1.484 | 1.500 | 1.486 | 1.416 | *1.38* | *1.32* |
 | CL flaps 50, gear down | — | 0.445 | 0.617 | 0.763 | 0.959 | 1.104 | 1.251 | 1.391 | 1.481 | 1.503 | 1.465 | 1.413 | *1.38* | *1.33* |
-| **Cm** flaps 30, gear up | 0.288 | 0.236 | 0.190 | 0.151 | 0.116 | 0.082 | 0.047 | 0.019 | 0.002 | 0.021 | 0.037 | 0.035 | *−0.01* | *−0.11* |
+| **Cm** flaps 30, gear up | 0.288 | 0.236 | 0.190 | 0.151 | 0.116 | 0.082 | 0.047 | 0.019 | 0.002 | 0.021 | 0.037 | 0.023 | −0.015 | −0.111 |
 | Cm flaps 30, gear down | 0.286 | 0.242 | 0.193 | 0.152 | 0.109 | 0.077 | 0.042 | 0.009 | −0.010 | 0.012 | 0.029 | 0.025 | *−0.02* | *−0.10* |
-| Cm flaps 50, gear up | — | 0.164 | 0.134 | 0.096 | 0.054 | 0.017 | −0.016 | −0.038 | −0.026 | 0.008 | 0.032 | 0.032 | *−0.04* | *−0.11* |
+| Cm flaps 50, gear up | — | 0.164 | 0.134 | 0.096 | 0.054 | 0.017 | −0.016 | −0.038 | −0.026 | 0.008 | 0.032 | 0.032 | −0.075 | −0.154 |
 | Cm flaps 50, gear down | — | 0.167 | 0.133 | 0.098 | 0.050 | 0.015 | −0.024 | −0.049 | −0.029 | −0.002 | 0.020 | −0.006 | *−0.05* | *−0.13* |
 | **CD** flaps 30, gear up | 0.077 | 0.072 | 0.071 | 0.074 | 0.082 | 0.092 | 0.105 | 0.123 | 0.151 | 0.201 | 0.252 | 0.325 | 0.391 | 0.436 |
 | CD flaps 30, gear down | 0.095 | 0.085 | 0.082 | 0.084 | 0.090 | 0.098 | 0.114 | 0.132 | 0.156 | 0.211 | 0.257 | 0.332 | 0.396 | 0.446 |
 | CD flaps 50, gear up | — | 0.145 | 0.144 | 0.147 | 0.152 | 0.158 | 0.180 | 0.201 | 0.244 | 0.296 | 0.348 | 0.416 | 0.466 | 0.515 |
 | CD flaps 50, gear down | — | 0.152 | 0.151 | 0.155 | 0.156 | 0.174 | 0.188 | 0.211 | 0.254 | 0.292 | 0.350 | 0.421 | 0.469 | 0.517 |
 
-Italics: past 14°, the diverging sets' mean, not the basic run. The flaps-50 runs start at α −7.5°, so −8° is not covered.
+Italics: past 14°, the diverging sets' mean, not the basic run. The gear-up Cm rows past 13° are the basic run's circles as traced by the owner on 2 November 2026 (the automatic reading had hopped between sets by up to 0.11 at flaps 50); the flaps-50 pitch-down past 15° is steeper than the italic mean showed. The flaps-50 runs start at α −7.5°, so −8° is not covered.
 
 ### 6.2 What the tables give
 
@@ -341,3 +341,97 @@ Trimmed lift curve near CLmax, basic KC-135A (α, CL_trim):
 **What it gives.** Trimmed CLmax 1.31 at flaps 30 (α 11–12°) and 1.40 at flaps 50 (α 11°). A1's untrimmed plateaus with the tail at 6° TEU were 1.39 and 1.50 (6.2): trimming to 0.25 MAC costs about 0.08 to 0.10, which is the tail's download (A1's 0.064 per 6° of tail, 2.1, at the 8° to 10° of tail these flap moments need). The two models agree once trim is allowed for. The trimmed polar at flaps 30 is the one for the sim's approach configuration, with the gear's 0.015 added (6.2).
 
 **The D6-5599 figures, usable under the revised rule.** A3's section VI quotes Boeing's flight-manual substantiation report for the full-scale operating points: **take-off CL 1.23 at flaps 30** and **approach CL 1.05 at flaps 50** (the register's "touchdown 1.05 at flaps 30" was the wrong flap setting; the text says 50). Against the trimmed CLmax above, 1.23 is 94 % of the flaps-30 CLmax (a V2 of about 1.03 Vs on the tunnel's numbers, where the rules want 1.2 Vs: so the full-scale CLmax must be higher than the tunnel's, by the Reynolds-number effect on a flapped wing, of the order of 0.15 to 0.2) and 1.05 is 75 % of the flaps-50 figure (1.15 Vs). The register's other D6-5599 values (buffet CL 1.37 at flaps 30, touchdown 1.21 and buffet 1.49 at flaps 50) were not found in section VI's text; they are searched for when the rest of A3 is read.
+
+---
+
+## 7. Lateral-directional at low speed
+
+Signs as the reports plot them, which are the usual ones: β positive with the wind from the right; CY positive to the right; Cl positive right wing down; Cn positive nose right. Cl and Cn are in **stability axes** ("(STAB)" on the plots). A1's data are about the moment centre at 0.25 c̄; the tail is at 6° TEU throughout.
+
+### 7.1 The clean β sweep: A1 figure 6, data page 19
+
+**Record.** A1, figure 6 (*Lateral-directional aerodynamic characteristics in yaw, gear up*), data page 19 (PDF page 53): CY, Cn and Cl against β from −18° to 8°, at **α 6°**, flaps 0, ailerons and rudder 0, Mach 0.28, RN/L 6.18 × 10⁶ /m (the lowest of the test). Three data sets: ZHG076 (○) the basic configuration, read; two modified configurations, which coincide with it except in Cn beyond −8° of sideslip. The panels are `research/charts/A1-fig6-p19-{CY,Cn,Cl}`, their axes fitted from the gridlines (the 2° gridlines are 115 px apart at 400 dpi); the points are the circles as traced by the owner (2 November 2026), read at the test sideslip angles and checked against the circles' centres at full resolution (within 0.0005 at ±6°). An earlier reading by `scan.py --symbols` had, between −6° and +6°, averaged the circles with a modified configuration's squares, which lie on a shallower line there; it understated Cnβ by 15 % and is superseded. The only clean β sweep in the report: figure 4's β runs at −6° and −12° are flaps 30 and 50 only.
+
+| β, deg | −18 | −16 | −14 | −12 | −10 | −8 | −6 | −4 | −2 | 0 | 2 | 4 | 6 | 8 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| CY | 0.22 | 0.196 | 0.173 | 0.147 | 0.123 | 0.094 | 0.067 | 0.043 | 0.021 | 0.000 | −0.020 | −0.043 | −0.063 | −0.087 |
+| Cn | −0.049 | −0.047 | −0.043 | −0.039 | −0.034 | −0.027 | −0.019 | −0.012 | −0.006 | 0.000 | 0.006 | 0.013 | 0.019 | 0.026 |
+| Cl | 0.048 | 0.045 | 0.040 | 0.035 | 0.030 | 0.024 | 0.017 | 0.011 | 0.005 | −0.002 | −0.007 | −0.015 | −0.021 | −0.026 |
+
+**Derivatives** (per degree; the slope over β ±6°, and over the full −18° to 8°):
+
+| | ±6° | −18° to 8° | Crenshaw, flight test, cruise (PR 4) |
+|---|---|---|---|
+| Cyβ | −0.0108 | −0.0119 | −0.0133 |
+| Cnβ | 0.0032 | 0.0031 | 0.0028 |
+| Clβ | −0.0032 | −0.0030 | −0.0035 |
+
+Cn is straight across the whole range: the fin isn't near stalling at 18° of sideslip. CY and Cl are straight to about ±8° and flatten beyond (the fin's and the wing's sideslip lift saturating). The rigid tunnel model's Cnβ is 14 % above the flight-test value (the flexible fin and fuselage give some of it away in flight), and its Cyβ and Clβ about 10–20 % below Crenshaw's cruise figures, which include the elastic wing and a different α. The static lateral-directional stability is well set: the ratio Clβ/Cnβ ≈ −1.0 is where a swept-wing transport's dutch roll comes from, and the model will show it.
+
+### 7.2 Aileron and rudder effects: A1 figure 13, data page 57
+
+**Record.** A1, figure 13 (*Rudder and aileron effects in yaw, basic configuration, gear down*), data page 57 (PDF page 91): CY, Cn, Cl against β at **α 0°, flaps 50°, gear down**, RN/L 16.4 × 10⁶ /m, five runs of the basic configuration WBNH6V with gear: ailerons 0 / rudder 0 (○, ZHG046), ailerons −10° (□, ZHG050), ailerons −20° (◇, ZHG049), rudder −10° (△, ZHG059), rudder −27° (▷, ZHG060). This is the report's only control-effects page for the basic configuration; figures 12 and 14 are the modified one. The panels are `research/charts/A1-fig13-p57-{CY,Cn,Cl}`; the five sets diverge everywhere, so `--symbols` finds the points but can't tell the sets apart, and each set was read by eye at the test points nearest β −12, −10, −8, −2, 0 and 2 from 5°-wide crops (accuracy 0.005 in CY, 0.002 in Cn, 0.003 in Cl); overlays checked.
+
+| β, deg | −12.2 | −10.1 | −8.1 | −2.0 | 0.0 | 2.0 |
+|---|---|---|---|---|---|---|
+| **CY** ail 0, rdr 0 | 0.19 | 0.165 | 0.13 | 0.03 | −0.015 | −0.04 |
+| CY ail −10 | 0.22 | 0.19 | 0.16 | 0.055 | −0.005 | −0.02 |
+| CY ail −20 | 0.225 | 0.19 | 0.16 | 0.055 | −0.005 | −0.02 |
+| CY rdr −10 | 0.225 | 0.19 | 0.165 | 0.06 | 0.02 | 0.0 |
+| CY rdr −27 | 0.25 | 0.23 | 0.21 | 0.10 | 0.085 | 0.055 |
+| **Cn** ail 0, rdr 0 | −0.034 | −0.030 | −0.023 | −0.006 | 0.000 | 0.005 |
+| Cn ail −10 | −0.037 | −0.034 | −0.030 | −0.013 | −0.007 | −0.002 |
+| Cn ail −20 | −0.038 | −0.038 | −0.034 | −0.016 | −0.010 | −0.008 |
+| Cn rdr −10 | −0.046 | −0.044 | −0.038 | −0.021 | −0.019 | −0.015 |
+| Cn rdr −27 | −0.061 | −0.062 | −0.063 | −0.048 | −0.043 | −0.037 |
+| **Cl** ail 0, rdr 0 | 0.065 | 0.055 | 0.042 | 0.010 | −0.005 | −0.010 |
+| Cl ail −10 | −0.007 | −0.012 | −0.022 | −0.050 | −0.060 | −0.070 |
+| Cl ail −20 | −0.040 | −0.045 | −0.052 | −0.080 | −0.090 | −0.095 |
+| Cl rdr −10 | 0.068 | 0.060 | 0.045 | 0.015 | 0.000 | −0.008 |
+| Cl rdr −27 | 0.070 | 0.065 | 0.050 | 0.020 | 0.000 | −0.005 |
+
+**Control effectiveness** (the offset of each deflected run from the undeflected one, averaged over the six β; in brackets the owner's traced reading of 2 November 2026, averaged over β −12° to 2°, which agrees within 0.002 everywhere except the ailerons-−10° rolling moment, 0.004 stronger; the sign is for the report's negative deflection, which rolls and yaws the model to the left):
+
+| | Ailerons −10° | Ailerons −20° | Per degree | Rudder −10° | Rudder −27° | Per degree |
+|---|---|---|---|---|---|---|
+| ΔCl | −0.060 (owner's trace −0.067) | −0.095 (−0.095) | 0.0060–0.0067 then 0.0028–0.0035 (the second 10° gives about half the first) | +0.005 (+0.004) | +0.010 (+0.009) | −0.0004 |
+| ΔCn | −0.007 (−0.007) | −0.010 (−0.011) | 0.0007 then 0.0004 | −0.016 (−0.017) | −0.040 (−0.038) | 0.0015–0.0017 |
+| ΔCY | +0.02 | +0.02 | small | +0.035 | +0.10 | −0.0036 |
+
+- **Ailerons** (the outboard ailerons alone on this model; the KC-135's inboard ailerons and spoilers aren't modelled): Clδa ≈ 0.006 /deg for the first 10°, falling off above it. The yaw that goes with it is in the same direction as the roll (proverse) on this model at flaps 50, about a tenth of the rolling moment. The full-scale aileron and spoiler system is a gap (register section 9) to be estimated from these and DATCOM.
+- **Rudder:** Cnδr ≈ 0.0015 /deg, linear to 27°; Cyδr ≈ −0.0036 /deg; Clδr ≈ −0.0004 /deg. Crenshaw's flight-test lateral derivatives (register section 5) give |Cyδr| 0.0046 and |Clδr| 0.0006, and FLEXSTAB |Cnδr| 0.0028 to 0.0036: the tunnel's rudder makes half the yawing moment FLEXSTAB gives it, with the side force and rolling moment in proportion. Flaps 50 and gear down change the fin's flow a little, not that much; PR 4 reads Crenshaw's tables from the scan and settles which to use.
+
+**Checks against TP-1119.** Its figures 20–25 plot Clβ, Cnβ and Cyβ against CL at flaps 30 and 50 (tail at −10°, ailerons deflected on most): Clβ from −0.003 at CL 0.2 to −0.005 at CL 1.0 (the dihedral effect growing with lift, as a swept wing's does), Cnβ 0.0035 falling to 0.0027, Cyβ −0.013 to −0.015. A1's clean α-6° values (Cl −0.0032, Cn 0.0032, CY −0.011 to −0.012) sit at the low-CL end of those, as they should at CL 0.65.
+
+**What the model needs from this section**, and what is still missing: Clβ, Cnβ and Cyβ as functions of α (one point here, at α 6°; the flaps runs at other α in A1 figure 4 and the TP-1119 curves give the trend with CL, and Crenshaw's three flight conditions the rest); the rudder and aileron derivatives above, to be reconciled with Crenshaw; the rate derivatives Clp, Cnr, Clr, Cnp, which no tunnel measured and PR 4 takes from Crenshaw.
+
+### 7.3 Flaps and gear down, and the fin's share (for the flaps milestone): A1 figure 7
+
+**Record.** A1, figure 7 (*Lateral-directional aerodynamic characteristics in yaw, gear down*), three of its eight pages: data page 22 (PDF 56, flaps 50, α 0, five configurations), page 24 (PDF 58, flaps 50, α 0, the basic configuration **with and without the vertical tail**, ZHG046 and ZHG045, plus three modified no-fin runs), and page 26 (PDF 60, flaps 30, α 6, three configurations). Panels `research/charts/A1-fig7-p22-*`, `-p24-*`, `-p26-*`, calibrated from their own one-degree gridlines (residuals under 4 px) and labelled lines (under 1.5 px), read by `--symbols`; on page 24 the symbols were split into the fin-on run (the extreme one at each β, on the side the fin pushes it) and the no-fin runs, which coincide; overlays checked. The pages not read (20, 21, 23, 25, 27) are the same conditions with other α or the modified configurations.
+
+| β, deg | −16 | −14 | −12 | −10 | −8 | −6 | −4 | −2 | 0 | 2 | 4 | 6 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| **Flaps 50, gear down, α 0** (p22) CY | 0.277 | 0.235 | 0.211 | 0.177 | 0.140 | 0.104 | 0.068 | 0.041 | 0.004 | −0.015 | −0.045 | −0.078 |
+| Cn | −0.038 | −0.035 | −0.035 | −0.031 | −0.025 | −0.019 | −0.014 | −0.007 | −0.001 | 0.002 | 0.007 | 0.013 |
+| Cl | 0.075 | 0.068 | 0.062 | 0.054 | 0.046 | 0.033 | 0.025 | 0.015 | 0.004 | −0.005 | −0.016 | −0.025 |
+| **Same, fin on** (p24) CY | 0.255 | 0.237 | 0.216 | 0.170 | 0.126 | 0.104 | 0.070 | 0.036 | 0.008 | −0.024 | −0.050 | −0.074 |
+| Cn | −0.046 | −0.041 | −0.037 | −0.033 | −0.027 | −0.020 | −0.015 | −0.008 | −0.002 | 0.000 | 0.009 | 0.015 |
+| Cl | 0.079 | 0.071 | 0.064 | 0.056 | 0.046 | 0.036 | 0.026 | 0.015 | 0.002 | −0.006 | −0.016 | −0.028 |
+| **Same, fin off** (p24) CY | 0.153 | 0.141 | 0.125 | 0.085 | 0.068 | 0.054 | 0.033 | 0.012 | 0.003 | −0.003 | −0.015 | −0.033 |
+| Cn | 0.000 | 0.007 | 0.009 | 0.007 | 0.006 | 0.004 | 0.004 | 0.002 | −0.001 | −0.001 | −0.003 | −0.004 |
+| Cl | 0.070 | 0.062 | 0.054 | 0.049 | 0.039 | 0.029 | 0.019 | 0.010 | 0.002 | −0.003 | −0.014 | −0.022 |
+| **Flaps 30, gear down, α 6** (p26) CY | 0.284 | 0.246 | 0.214 | 0.187 | 0.147 | 0.109 | 0.074 | 0.043 | 0.007 | −0.012 | −0.036 | −0.067 |
+| Cn | −0.047 | −0.045 | −0.042 | −0.038 | −0.026 | −0.025 | −0.019 | −0.012 | −0.005 | −0.001 | 0.002 | 0.008 |
+| Cl | 0.045 | 0.040 | 0.036 | 0.031 | 0.026 | 0.020 | 0.013 | 0.006 | 0.000 | −0.008 | −0.015 | −0.023 |
+
+**Derivatives** (per degree, the slope from −16° to 6°):
+
+| | Cyβ | Cnβ | Clβ |
+|---|---|---|---|
+| Clean, gear up, α 6 (7.1) | −0.011 | 0.0031 | −0.0030 |
+| Flaps 30, gear down, α 6 | −0.016 | 0.0025 | −0.0031 |
+| Flaps 50, gear down, α 0 | −0.016 | 0.0023 (p22), 0.0028 (p24) | −0.0045 (p22), −0.0049 (p24) |
+| Flaps 50, gear down, α 0, **no fin** | −0.0085 | −0.0002 | −0.0042 |
+| **The fin alone** (fin on minus off) | −0.0065 | +0.0030 | −0.0007 |
+
+**What it gives.** Without its fin the aircraft has no weathercock stability at all (Cnβ −0.0002 over the sweep, −0.0008 near zero): the whole of the 0.003 per degree is the vertical tail's. Near zero sideslip (±6°) the fin's share is larger, 0.0038 per degree (fin on 0.0030–0.0031, fin off −0.0008 to −0.0009; the owner's two traced readings agree with the split within 0.0002), because the fin-on curve flattens beyond −10° of sideslip as the fin begins to lose its grip; **the small-sideslip figure, 0.0038, is the one for the yaw damper.** The fin also makes about half the side force and a small part of the rolling moment (its lift acts above the roll axis). Those three numbers are the data for the yaw damper's and the rudder's model: the fin's side force per degree of sideslip, −0.0065, with the fin's arm from Cnβ/Cyβ = 0.46 of the span (60 ft, which is where the fin is), is what the rudder deflects a part of. Flaps 50 nearly doubles the dihedral effect (Clβ −0.0045 against −0.0029 clean) through the lift it adds; flaps 30 at α 6 leaves it alone. The two flaps-50 pages were run at the same conditions and differ by 0.0005 in Cnβ and 0.0004 in Clβ: the data's own repeatability, again larger than the reading.
