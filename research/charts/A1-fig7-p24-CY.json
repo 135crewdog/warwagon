@@ -200,5 +200,9 @@
   }
  },
  "calibration": "x from the 27 one-degree gridlines (max residual 2.2 px), y from the 6 labelled lines (max residual 0.6 px)",
- "reading": "scan.py --symbols centroids, split by hand into the tail-on run (the extreme symbol at each beta, on the side the fin pushes it) and the no-fin runs; near beta 0 the runs cross and the split is undefined there"
+ "reading": "scan.py --symbols centroids, split by hand into the tail-on run (the extreme symbol at each beta, on the side the fin pushes it) and the no-fin runs; near beta 0 the runs cross and the split is undefined there",
+ "owner_trace_2026_11_02": {
+  "source": "PowerPoint Draw Curve, Slide PNGs at 1280x720, registered to the chart by gridline profile",
+  "result": "owner traced all five runs: fin on -0.0141/deg over +-6, no-fin -0.0055; fin share -0.0087 over +-6 (mine -0.0075 over +-6, -0.0065 over the full sweep)"
+ }
 }

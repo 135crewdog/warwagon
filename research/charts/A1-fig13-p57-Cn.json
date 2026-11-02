@@ -249,5 +249,9 @@
    "rdr-10": -0.018
   },
   "compared_with_eye_reading": "offsets -0.007, -0.010, -0.019: agree within 0.002, the tolerance"
+ },
+ "owner_trace_2026_11_02": {
+  "source": "PowerPoint Draw Curve, Slide PNGs at 1280x720, registered to the chart by gridline profile",
+  "result": "owner traced all five runs (blue circle, yellow square, green diamond, red triangle, purple right triangle); offsets from the baseline averaged over beta -12 to 2: ail-10 -0.0069, ail-20 -0.0111, rdr-10 -0.0173, rdr-27 -0.0383; mine -0.0058, -0.0093, -0.0158, -0.0377: within 0.002"
  }
 }

@@ -232,5 +232,9 @@
    ]
   }
  },
- "reading": "the five data sets read by eye at the test points nearest beta -12, -10, -8, -2, 0 and 2, from 5-deg-wide zoom crops at 2x, 31 Oct 2026; accuracy about 0.005 in CY, 0.002 in Cn, 0.003 in Cl. scan.py --symbols finds every symbol but cannot tell the sets apart where they diverge, so it is not used here"
+ "reading": "the five data sets read by eye at the test points nearest beta -12, -10, -8, -2, 0 and 2, from 5-deg-wide zoom crops at 2x, 31 Oct 2026; accuracy about 0.005 in CY, 0.002 in Cn, 0.003 in Cl. scan.py --symbols finds every symbol but cannot tell the sets apart where they diverge, so it is not used here",
+ "owner_trace_2026_11_02": {
+  "source": "PowerPoint Draw Curve, Slide PNGs at 1280x720, registered to the chart by gridline profile",
+  "result": "owner traced all five runs; offsets: ail-10 -0.0670, ail-20 -0.0947, rdr-10 +0.0039, rdr-27 +0.0090; mine -0.0630, -0.0932, +0.0038, +0.0072: within 0.002 except ail-10, 0.004"
+ }
 }

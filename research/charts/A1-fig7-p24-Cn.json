@@ -228,5 +228,9 @@
    "Cn_beta_per_deg": -0.0008
   },
   "compared_with_the_split": "over beta +-6 the split gives 0.0029 and -0.0007: agreement within 0.0002"
+ },
+ "owner_trace_2026_11_02": {
+  "source": "PowerPoint Draw Curve, Slide PNGs at 1280x720, registered to the chart by gridline profile",
+  "result": "owner traced all five runs (PowerPoint, 2 Nov): fin on +0.0030/deg over +-6, the four no-fin runs -0.0009; fin share 0.0039 (mine 0.0038)"
  }
 }

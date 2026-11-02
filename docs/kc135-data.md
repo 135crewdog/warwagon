@@ -350,23 +350,23 @@ Signs as the reports plot them, which are the usual ones: β positive with the w
 
 ### 7.1 The clean β sweep: A1 figure 6, data page 19
 
-**Record.** A1, figure 6 (*Lateral-directional aerodynamic characteristics in yaw, gear up*), data page 19 (PDF page 53): CY, Cn and Cl against β from −18° to 8°, at **α 6°**, flaps 0, ailerons and rudder 0, Mach 0.28, RN/L 6.18 × 10⁶ /m (the lowest of the test). Three data sets: ZHG076 (○) the basic configuration, read; two modified configurations, which coincide with it except in Cn beyond −8° of sideslip. The panels are `research/charts/A1-fig6-p19-{CY,Cn,Cl}`, their axes fitted from the gridlines (the 2° gridlines are 115 px apart at 400 dpi); the points by `scan.py --symbols` where the sets coincide and by eye where they diverge; overlays checked. The only clean β sweep in the report: figure 4's β runs at −6° and −12° are flaps 30 and 50 only.
+**Record.** A1, figure 6 (*Lateral-directional aerodynamic characteristics in yaw, gear up*), data page 19 (PDF page 53): CY, Cn and Cl against β from −18° to 8°, at **α 6°**, flaps 0, ailerons and rudder 0, Mach 0.28, RN/L 6.18 × 10⁶ /m (the lowest of the test). Three data sets: ZHG076 (○) the basic configuration, read; two modified configurations, which coincide with it except in Cn beyond −8° of sideslip. The panels are `research/charts/A1-fig6-p19-{CY,Cn,Cl}`, their axes fitted from the gridlines (the 2° gridlines are 115 px apart at 400 dpi); the points are the circles as traced by the owner (2 November 2026), read at the test sideslip angles and checked against the circles' centres at full resolution (within 0.0005 at ±6°). An earlier reading by `scan.py --symbols` had, between −6° and +6°, averaged the circles with a modified configuration's squares, which lie on a shallower line there; it understated Cnβ by 15 % and is superseded. The only clean β sweep in the report: figure 4's β runs at −6° and −12° are flaps 30 and 50 only.
 
 | β, deg | −18 | −16 | −14 | −12 | −10 | −8 | −6 | −4 | −2 | 0 | 2 | 4 | 6 | 8 |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| CY | 0.22 | 0.203 | 0.184 | 0.158 | 0.131 | 0.104 | 0.073 | 0.044 | 0.020 | 0.001 | −0.027 | −0.048 | −0.074 | −0.10 |
-| Cn | −0.048 | −0.045 | −0.043 | −0.038 | −0.033 | −0.026 | −0.016 | −0.011 | −0.005 | 0.000 | 0.005 | 0.011 | 0.016 | 0.022 |
-| Cl | 0.049 | 0.042 | 0.039 | 0.033 | 0.029 | 0.022 | 0.015 | 0.010 | 0.003 | −0.003 | −0.008 | −0.015 | −0.020 | −0.027 |
+| CY | 0.22 | 0.196 | 0.173 | 0.147 | 0.123 | 0.094 | 0.067 | 0.043 | 0.021 | 0.000 | −0.020 | −0.043 | −0.063 | −0.087 |
+| Cn | −0.049 | −0.047 | −0.043 | −0.039 | −0.034 | −0.027 | −0.019 | −0.012 | −0.006 | 0.000 | 0.006 | 0.013 | 0.019 | 0.026 |
+| Cl | 0.048 | 0.045 | 0.040 | 0.035 | 0.030 | 0.024 | 0.017 | 0.011 | 0.005 | −0.002 | −0.007 | −0.015 | −0.021 | −0.026 |
 
 **Derivatives** (per degree; the slope over β ±6°, and over the full −18° to 8°):
 
 | | ±6° | −18° to 8° | Crenshaw, flight test, cruise (PR 4) |
 |---|---|---|---|
-| Cyβ | −0.0101 | −0.0123 | −0.0133 |
-| Cnβ | 0.0027 | 0.0027 | 0.0028 |
-| Clβ | −0.0029 | −0.0029 | −0.0035 |
+| Cyβ | −0.0108 | −0.0119 | −0.0133 |
+| Cnβ | 0.0032 | 0.0031 | 0.0028 |
+| Clβ | −0.0032 | −0.0030 | −0.0035 |
 
-Cn is straight across the whole range: the fin isn't near stalling at 18° of sideslip. CY and Cl are straight to about ±8° and flatten beyond (the fin's and the wing's sideslip lift saturating). Cnβ matches the flight-test value; the tunnel's Cyβ and Clβ at α 6° are about 20 % below Crenshaw's cruise figures, which include the elastic wing and a different α. The static lateral-directional stability is well set: the ratio Clβ/Cnβ ≈ −1.1 is where a swept-wing transport's dutch roll comes from, and the model will show it.
+Cn is straight across the whole range: the fin isn't near stalling at 18° of sideslip. CY and Cl are straight to about ±8° and flatten beyond (the fin's and the wing's sideslip lift saturating). The rigid tunnel model's Cnβ is 14 % above the flight-test value (the flexible fin and fuselage give some of it away in flight), and its Cyβ and Clβ about 10–20 % below Crenshaw's cruise figures, which include the elastic wing and a different α. The static lateral-directional stability is well set: the ratio Clβ/Cnβ ≈ −1.0 is where a swept-wing transport's dutch roll comes from, and the model will show it.
 
 ### 7.2 Aileron and rudder effects: A1 figure 13, data page 57
 
@@ -390,18 +390,18 @@ Cn is straight across the whole range: the fin isn't near stalling at 18° of si
 | Cl rdr −10 | 0.068 | 0.060 | 0.045 | 0.015 | 0.000 | −0.008 |
 | Cl rdr −27 | 0.070 | 0.065 | 0.050 | 0.020 | 0.000 | −0.005 |
 
-**Control effectiveness** (the offset of each deflected run from the undeflected one, averaged over the six β; the sign is for the report's negative deflection, which rolls and yaws the model to the left):
+**Control effectiveness** (the offset of each deflected run from the undeflected one, averaged over the six β; in brackets the owner's traced reading of 2 November 2026, averaged over β −12° to 2°, which agrees within 0.002 everywhere except the ailerons-−10° rolling moment, 0.004 stronger; the sign is for the report's negative deflection, which rolls and yaws the model to the left):
 
 | | Ailerons −10° | Ailerons −20° | Per degree | Rudder −10° | Rudder −27° | Per degree |
 |---|---|---|---|---|---|---|
-| ΔCl | −0.060 | −0.095 | 0.0060 then 0.0035 (the second 10° gives 60 % of the first) | +0.005 | +0.010 | −0.0004 |
-| ΔCn | −0.007 | −0.010 | 0.0007 then 0.0003 | −0.016 | −0.040 | 0.0015 |
+| ΔCl | −0.060 (owner's trace −0.067) | −0.095 (−0.095) | 0.0060–0.0067 then 0.0028–0.0035 (the second 10° gives about half the first) | +0.005 (+0.004) | +0.010 (+0.009) | −0.0004 |
+| ΔCn | −0.007 (−0.007) | −0.010 (−0.011) | 0.0007 then 0.0004 | −0.016 (−0.017) | −0.040 (−0.038) | 0.0015–0.0017 |
 | ΔCY | +0.02 | +0.02 | small | +0.035 | +0.10 | −0.0036 |
 
 - **Ailerons** (the outboard ailerons alone on this model; the KC-135's inboard ailerons and spoilers aren't modelled): Clδa ≈ 0.006 /deg for the first 10°, falling off above it. The yaw that goes with it is in the same direction as the roll (proverse) on this model at flaps 50, about a tenth of the rolling moment. The full-scale aileron and spoiler system is a gap (register section 9) to be estimated from these and DATCOM.
 - **Rudder:** Cnδr ≈ 0.0015 /deg, linear to 27°; Cyδr ≈ −0.0036 /deg; Clδr ≈ −0.0004 /deg. Crenshaw's flight-test lateral derivatives (register section 5) give |Cyδr| 0.0046 and |Clδr| 0.0006, and FLEXSTAB |Cnδr| 0.0028 to 0.0036: the tunnel's rudder makes half the yawing moment FLEXSTAB gives it, with the side force and rolling moment in proportion. Flaps 50 and gear down change the fin's flow a little, not that much; PR 4 reads Crenshaw's tables from the scan and settles which to use.
 
-**Checks against TP-1119.** Its figures 20–25 plot Clβ, Cnβ and Cyβ against CL at flaps 30 and 50 (tail at −10°, ailerons deflected on most): Clβ from −0.003 at CL 0.2 to −0.005 at CL 1.0 (the dihedral effect growing with lift, as a swept wing's does), Cnβ 0.0035 falling to 0.0027, Cyβ −0.013 to −0.015. A1's clean α-6° values (Cl −0.0029, Cn 0.0027, CY −0.010 to −0.012) sit at the low-CL end of those, as they should at CL 0.65.
+**Checks against TP-1119.** Its figures 20–25 plot Clβ, Cnβ and Cyβ against CL at flaps 30 and 50 (tail at −10°, ailerons deflected on most): Clβ from −0.003 at CL 0.2 to −0.005 at CL 1.0 (the dihedral effect growing with lift, as a swept wing's does), Cnβ 0.0035 falling to 0.0027, Cyβ −0.013 to −0.015. A1's clean α-6° values (Cl −0.0032, Cn 0.0032, CY −0.011 to −0.012) sit at the low-CL end of those, as they should at CL 0.65.
 
 **What the model needs from this section**, and what is still missing: Clβ, Cnβ and Cyβ as functions of α (one point here, at α 6°; the flaps runs at other α in A1 figure 4 and the TP-1119 curves give the trend with CL, and Crenshaw's three flight conditions the rest); the rudder and aileron derivatives above, to be reconciled with Crenshaw; the rate derivatives Clp, Cnr, Clr, Cnp, which no tunnel measured and PR 4 takes from Crenshaw.
 
@@ -428,10 +428,10 @@ Cn is straight across the whole range: the fin isn't near stalling at 18° of si
 
 | | Cyβ | Cnβ | Clβ |
 |---|---|---|---|
-| Clean, gear up, α 6 (7.1) | −0.011 | 0.0027 | −0.0029 |
+| Clean, gear up, α 6 (7.1) | −0.011 | 0.0031 | −0.0030 |
 | Flaps 30, gear down, α 6 | −0.016 | 0.0025 | −0.0031 |
 | Flaps 50, gear down, α 0 | −0.016 | 0.0023 (p22), 0.0028 (p24) | −0.0045 (p22), −0.0049 (p24) |
 | Flaps 50, gear down, α 0, **no fin** | −0.0085 | −0.0002 | −0.0042 |
 | **The fin alone** (fin on minus off) | −0.0065 | +0.0030 | −0.0007 |
 
-**What it gives.** Without its fin the aircraft has no weathercock stability at all (Cnβ −0.0002 over the sweep, −0.0008 near zero): the whole of the 0.003 per degree is the vertical tail's. Near zero sideslip (±6°) the fin's share is larger, 0.0038 per degree (fin on 0.0031, fin off −0.0008; the owner's own line through the circles, measured off the overlay, gives 0.0031 against the split's 0.0029), because the fin-on curve flattens beyond −10° of sideslip as the fin begins to lose its grip; **the small-sideslip figure, 0.0038, is the one for the yaw damper.** The fin also makes about half the side force and a small part of the rolling moment (its lift acts above the roll axis). Those three numbers are the data for the yaw damper's and the rudder's model: the fin's side force per degree of sideslip, −0.0065, with the fin's arm from Cnβ/Cyβ = 0.46 of the span (60 ft, which is where the fin is), is what the rudder deflects a part of. Flaps 50 nearly doubles the dihedral effect (Clβ −0.0045 against −0.0029 clean) through the lift it adds; flaps 30 at α 6 leaves it alone. The two flaps-50 pages were run at the same conditions and differ by 0.0005 in Cnβ and 0.0004 in Clβ: the data's own repeatability, again larger than the reading.
+**What it gives.** Without its fin the aircraft has no weathercock stability at all (Cnβ −0.0002 over the sweep, −0.0008 near zero): the whole of the 0.003 per degree is the vertical tail's. Near zero sideslip (±6°) the fin's share is larger, 0.0038 per degree (fin on 0.0030–0.0031, fin off −0.0008 to −0.0009; the owner's two traced readings agree with the split within 0.0002), because the fin-on curve flattens beyond −10° of sideslip as the fin begins to lose its grip; **the small-sideslip figure, 0.0038, is the one for the yaw damper.** The fin also makes about half the side force and a small part of the rolling moment (its lift acts above the roll axis). Those three numbers are the data for the yaw damper's and the rudder's model: the fin's side force per degree of sideslip, −0.0065, with the fin's arm from Cnβ/Cyβ = 0.46 of the span (60 ft, which is where the fin is), is what the rudder deflects a part of. Flaps 50 nearly doubles the dihedral effect (Clβ −0.0045 against −0.0029 clean) through the lift it adds; flaps 30 at α 6 leaves it alone. The two flaps-50 pages were run at the same conditions and differ by 0.0005 in Cnβ and 0.0004 in Clβ: the data's own repeatability, again larger than the reading.
