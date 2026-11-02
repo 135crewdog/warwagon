@@ -231,5 +231,8 @@
    ]
   }
  },
- "reading": "the five data sets read by eye at the test points nearest beta -12, -10, -8, -2, 0 and 2, from 5-deg-wide zoom crops at 2x, 31 Oct 2026; accuracy about 0.005 in CY, 0.002 in Cn, 0.003 in Cl. scan.py --symbols finds every symbol but cannot tell the sets apart where they diverge, so it is not used here"
+ "reading": "the five data sets read by eye at the test points nearest beta -12, -10, -8, -2, 0 and 2, from 5-deg-wide zoom crops at 2x, 31 Oct 2026; accuracy about 0.005 in CY, 0.002 in Cn, 0.003 in Cl. scan.py --symbols finds every symbol but cannot tell the sets apart where they diverge, so it is not used here",
+ "owner_trace_2026_11_02": {
+  "result": "rudder -27 agrees within 0.003 except 0.011 at beta 0; the baseline and aileron runs within about 0.01-0.016 (tolerance 0.005): the side-force increments are the least sure numbers in this chart set, of least weight in the model"
+ }
 }

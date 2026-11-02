@@ -172,14 +172,14 @@ The tail-0° curve is not quite straight: its −8.82° point sits 0.015 above t
 | α, deg | −8.82 | −6.58 | −4.27 | −2.00 | 0.37 | 2.62 | 4.87 | 7.15 | 9.38 | 11.52 | 13.67 | 15.71 | 16.66 | 17.70 | 18.73 | 19.64 | 20.40 |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | CD, tail 0° | 0.067 | 0.036 | 0.0215 | 0.0205 | 0.0212 | 0.0273 | 0.0356 | 0.052 | 0.083 | 0.143 | 0.213 | 0.279 | 0.310 | 0.339 | 0.367 | 0.393 | 0.400 |
-| CD, tail 6° TEU | 0.074 | 0.0457 | 0.0331 | 0.0288 | 0.0295 | 0.037 | 0.0446 | 0.0605 | 0.074 | 0.132 | 0.200 | 0.268 | 0.303 | 0.325 | 0.357 | 0.379 | 0.393 |
+| CD, tail 6° TEU | 0.074 | 0.0457 | 0.0312 | 0.0263 | 0.0266 | 0.0291 | 0.0397 | 0.0518 | 0.0710 | 0.132 | 0.200 | 0.268 | 0.303 | 0.325 | 0.357 | 0.379 | 0.393 |
 
 **At the breakpoints:**
 
 | α, deg | −8 | −6 | −4 | −2 | 0 | 2 | 4 | 6 | 8 | 10 | 12 | 14 | 16 | 18 | 20 |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | CD, tail 0° | 0.056 | 0.032 | 0.021 | 0.021 | 0.021 | 0.026 | 0.032 | 0.044 | 0.064 | 0.100 | 0.159 | 0.224 | 0.289 | 0.347 | 0.396 |
-| CD, tail 6° TEU | 0.064 | 0.043 | 0.033 | 0.029 | 0.029 | 0.035 | 0.042 | 0.053 | 0.066 | 0.091 | 0.147 | 0.211 | 0.279 | 0.334 | 0.386 |
+| CD, tail 6° TEU | 0.064 | 0.042 | 0.031 | 0.026 | 0.027 | 0.028 | 0.036 | 0.046 | 0.059 | 0.089 | 0.147 | 0.211 | 0.279 | 0.334 | 0.386 |
 
 **Second reading.** The scan finds the plotted lines from −8° to 8° and agrees within 0.004 (tolerance 0.0045, 1 % of the span); above 10° the curve is too steep for a column scan and the eye reading stands alone. The first calibration of this panel had picked the wrong run of vertical gridlines (the frame sits a grid step beyond α 20°, equally spaced), which shifted every α by 2.5°; the page overview showed it before any point was recorded, and the calibrator now takes the gridline choice explicitly and the overlay is the check.
 
@@ -189,15 +189,15 @@ The tail-0° curve is not quite straight: its −8.82° point sits 0.015 above t
 
 | | Tail 0° | Tail 6° TEU |
 |---|---|---|
-| CD = CD₀ + k·CL² | 0.0191 + 0.0481·CL² (max error 0.0026) | 0.0289 + 0.0563·CL² (max error 0.0021) |
-| With a linear term | 0.0198 − 0.0110·CL + 0.0623·CL² (max error 0.0020; minimum at CL 0.09) | 0.0290 − 0.0076·CL + 0.0676·CL² (max error 0.0013) |
+| CD = CD₀ + k·CL² | 0.0191 + 0.0481·CL² (max error 0.0026) | 0.0260 + 0.0456·CL² (max error 0.0035) |
+| With a linear term | 0.0198 − 0.0110·CL + 0.0623·CL² (max error 0.0020; minimum at CL 0.09) | (not refitted) |
 
-Checks: 1/(π·AR·e) with AR 7.035 gives k = 0.048 at e = 0.94, high for a complete aircraft (0.8 would give 0.057); the tunnel's k is at the low end of plausible, which suits a clean wing-body-tail at this Reynolds number. The tail at 6° adds about 0.009 everywhere at low CL (its own drag at incidence) and, at high CL, loses about 0.009 (less lift, less induced drag): the two curves cross near 8°. Below −6° and above 9° the drag rises faster than the parabola as the flow separates.
+Checks: 1/(π·AR·e) with AR 7.035 gives k = 0.048 at e = 0.94, high for a complete aircraft (0.8 would give 0.057); the tunnel's k is at the low end of plausible, which suits a clean wing-body-tail at this Reynolds number. Against α, the two curves coincide within the reading from −4° to 8° (the owner's traced reading of 2 November 2026 put the circles on the squares there; my first reading had separated them by up to 0.009, and is superseded). Against CL the tail at 6° costs about 0.006 in CD₀ (0.026 against 0.019), the tail's own drag at incidence less the induced drag saved by the lower lift. Below −6° and above 9° the drag rises faster than the parabola as the flow separates.
 
 **What the chart gives.**
 
 1. **The low-speed clean polar**, as a table in α (or in CL through 2.1). The model uses the table; the fit is for checks and for the Mach correction's shape.
-2. **The tail's drag**, 0.009 per 6° at low CL, is the start of a trim-drag model.
+2. **The tail's drag**, about 0.006 per 6° in CD₀ at the same CL, is the start of a trim-drag model.
 3. **A number to correct:** CD₀ = 0.019 on the 0.035-scale model at Re 4.2 × 10⁶ is high for the aircraft. Full-scale skin friction at Re 1 to 4 × 10⁷ is about two-thirds of the model's, so the aircraft's CD₀ at this Mach will be near 0.015 to 0.017 before the flight-test polars (A5, A6) settle it. Until then the model's value is used and labelled.
 
 **Corrections still to apply:** Reynolds number (4.2 sizes it: small on this model, because its transition was fixed), Mach (the drag rise from A8 and A3), the R's nacelles and the elastic wing (small), and no CG transfer.
@@ -286,16 +286,16 @@ Read now while the documents were open, as the owner asked; used when flaps, gea
 | CL flaps 30, gear down | −0.024 | 0.164 | 0.351 | 0.517 | 0.703 | 0.845 | 0.991 | 1.151 | 1.282 | 1.345 | 1.351 | 1.349 | *1.32* | *1.29* |
 | CL flaps 50, gear up | — | 0.459 | 0.617 | 0.768 | 0.966 | 1.103 | 1.260 | 1.397 | 1.484 | 1.500 | 1.486 | 1.416 | *1.38* | *1.32* |
 | CL flaps 50, gear down | — | 0.445 | 0.617 | 0.763 | 0.959 | 1.104 | 1.251 | 1.391 | 1.481 | 1.503 | 1.465 | 1.413 | *1.38* | *1.33* |
-| **Cm** flaps 30, gear up | 0.288 | 0.236 | 0.190 | 0.151 | 0.116 | 0.082 | 0.047 | 0.019 | 0.002 | 0.021 | 0.037 | 0.035 | *−0.01* | *−0.11* |
+| **Cm** flaps 30, gear up | 0.288 | 0.236 | 0.190 | 0.151 | 0.116 | 0.082 | 0.047 | 0.019 | 0.002 | 0.021 | 0.037 | 0.023 | −0.015 | −0.111 |
 | Cm flaps 30, gear down | 0.286 | 0.242 | 0.193 | 0.152 | 0.109 | 0.077 | 0.042 | 0.009 | −0.010 | 0.012 | 0.029 | 0.025 | *−0.02* | *−0.10* |
-| Cm flaps 50, gear up | — | 0.164 | 0.134 | 0.096 | 0.054 | 0.017 | −0.016 | −0.038 | −0.026 | 0.008 | 0.032 | 0.032 | *−0.04* | *−0.11* |
+| Cm flaps 50, gear up | — | 0.164 | 0.134 | 0.096 | 0.054 | 0.017 | −0.016 | −0.038 | −0.026 | 0.008 | 0.032 | 0.032 | −0.075 | −0.154 |
 | Cm flaps 50, gear down | — | 0.167 | 0.133 | 0.098 | 0.050 | 0.015 | −0.024 | −0.049 | −0.029 | −0.002 | 0.020 | −0.006 | *−0.05* | *−0.13* |
 | **CD** flaps 30, gear up | 0.077 | 0.072 | 0.071 | 0.074 | 0.082 | 0.092 | 0.105 | 0.123 | 0.151 | 0.201 | 0.252 | 0.325 | 0.391 | 0.436 |
 | CD flaps 30, gear down | 0.095 | 0.085 | 0.082 | 0.084 | 0.090 | 0.098 | 0.114 | 0.132 | 0.156 | 0.211 | 0.257 | 0.332 | 0.396 | 0.446 |
 | CD flaps 50, gear up | — | 0.145 | 0.144 | 0.147 | 0.152 | 0.158 | 0.180 | 0.201 | 0.244 | 0.296 | 0.348 | 0.416 | 0.466 | 0.515 |
 | CD flaps 50, gear down | — | 0.152 | 0.151 | 0.155 | 0.156 | 0.174 | 0.188 | 0.211 | 0.254 | 0.292 | 0.350 | 0.421 | 0.469 | 0.517 |
 
-Italics: past 14°, the diverging sets' mean, not the basic run. The flaps-50 runs start at α −7.5°, so −8° is not covered.
+Italics: past 14°, the diverging sets' mean, not the basic run. The gear-up Cm rows past 13° are the basic run's circles as traced by the owner on 2 November 2026 (the automatic reading had hopped between sets by up to 0.11 at flaps 50); the flaps-50 pitch-down past 15° is steeper than the italic mean showed. The flaps-50 runs start at α −7.5°, so −8° is not covered.
 
 ### 6.2 What the tables give
 
