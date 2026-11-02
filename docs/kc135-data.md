@@ -634,6 +634,19 @@ CL against α changes little to Mach 0.90: the lift-curve slope stays about 0.09
 
 The buffet boundary is the cue for the high-altitude, high-weight corner (Rage's buffet shake, driven by CL against this line). Drag divergence agrees with 9.1.
 
+### 9.4 Full scale, in flight: CP-2211, Lux, figure 6 (PDF pages 117–118)
+
+Lux, *In-flight lift and drag measurements on a first generation jet transport equipped with winglets*, NASA CP-2211, 1982: the NASA KC-135A flown at 34,000–39,000 ft, lift from accelerometers and drag from engine thrust measured in flight; the **baseline** (no winglet) faired lines read, by eye from the pages at 300 dpi (accuracy about 0.003 in CL, 0.0004 in CD).
+
+| Mach | CL-α slope, /deg | CL at α 2° | CD at CL 0.40 | CD at CL 0.45 | CD at CL 0.50 |
+|---|---|---|---|---|---|
+| 0.70 | 0.092 | — (α 2.4° to 4.4°) | 0.0230 | 0.0255 | 0.0272 |
+| 0.75 | 0.094 | 0.385 | 0.0233 | 0.0254 | 0.0279 |
+| 0.78 | 0.094 | 0.40 | 0.0234 | 0.0258 | 0.0284 |
+| 0.80 | 0.097 | 0.41 | 0.0235 | 0.0264 | — |
+
+**The check of the whole drag build-up.** At cruise, Mach 0.78 and CL 0.42, the flight-measured drag of the complete aircraft is **0.024**, the same as Crenshaw's flight-test point (Mach 0.77, CL 0.426, CD 0.024; section 8.3). The flight polar rises only 0.0005 from Mach 0.70 to 0.80 at CL 0.40, against the tail-off tunnel's 0.0022 (9.1): the full-scale drag rise starts later than the tunnel's, as the flight data's higher Reynolds number and the elastic wing's washout would have it. **For the model:** cruise drag is pinned to these flight polars at Mach 0.70–0.80, and the tunnel's ΔCD(M) of 9.1 is used only above Mach 0.80, joined to the flight data at 0.80. The flight lift slope, 0.094 per degree, is the elastic aircraft's at cruise, against FLEXSTAB's elastic 0.0876 and rigid 0.0984 (8.6): flight sits between them.
+
 ### Still to read for the Mach model
 - A8 (TN D-8473, the semispan model, Mach 0.30–0.80) and A7 (TP-1163, lateral derivatives against Mach), as cross-checks.
-- A5/A6, the full-scale flight-test polars at Mach 0.70–0.82: the check of the whole cruise drag build-up.
+- Montoya's flight results (A5) as a second full-scale reading; not needed now that Lux's polars and Crenshaw's flight-test point agree.
