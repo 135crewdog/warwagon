@@ -1,0 +1,47 @@
+{
+ "source": "A3",
+ "document": "AFFDL-TR-77-23 (Ishimitsu & Zanton, Boeing D6-45090, 1977)",
+ "figure": "Figure 43, High-Speed Drag Polars of Basic KC-135A (PDF page 80, rotated): CL against CD at Mach 0.50, 0.70, 0.75, 0.78, 0.80, 0.82, 0.85, 0.90, 0.95",
+ "image": "A3-fig43-CD.png",
+ "crop": [
+  780,
+  1000,
+  4420,
+  2830
+ ],
+ "image_note": "the page rendered at 400 dpi, rotated upright; crop box in rotated-page pixels",
+ "conditions": {
+  "mach": "0.50-0.95",
+  "RN_per_ft": "3.8-5.2e6",
+  "tail": "off (no horizontal or vertical tail on this model)",
+  "configuration": "0.035-scale KC-135A wing with nacelles and struts on a NASA body (circular, slightly larger)",
+  "tunnel": "Langley 8-ft transonic pressure tunnel"
+ },
+ "reference": "stability axes, moment centre on the body centreline at 0.25 MAC; wing reference area of the model",
+ "x": {
+  "quantity": "CD",
+  "unit": "",
+  "gridlines": [],
+  "pixel_fit": [
+   45373.0,
+   -607.46
+  ],
+  "note": "no gridlines; calibrated from the tick marks (0.02 at 1080 px, 0.01 per 453.7 px)"
+ },
+ "y": {
+  "quantity": "CL",
+  "unit": "",
+  "gridlines": [],
+  "pixel_fit": [
+   -1703.0,
+   1765
+  ],
+  "note": "from the tick marks (0 at 2765 px, 0.1 per 170.3 px)"
+ },
+ "zoom_step": [
+  0.001,
+  0.02
+ ],
+ "breakpoints": [],
+ "curves": {}
+}
