@@ -29,15 +29,27 @@ export const CL_DE = 0.0055;        // per deg of elevator trailing edge down (e
 export const CM_DE = -0.015;
 export const CL_Q = 11;             // per rad, q·c̄/2V
 export const CM_QSTAR = -21;        // per rad: Cmq −14.65 plus Cmα̇ −6.57, flight test
-export const STAB_DATUM = 1.6;      // deg: tunnel tail angle = i_s + STAB_DATUM (flight model 5.3)
+export const STAB_DATUM = 2.4;      // deg: tunnel tail angle = i_s + STAB_DATUM (flight model 5.3), re-derived with the calibrated tuck
 
 // The rise of the lift and moment slopes with Mach (flight model 5.2).
 export const FM_MACH = [0.30, 0.50];
 export const FM = [1.00, 1.16];
 
-// Mach tuck at constant lift, relative to Mach 0.50 (flight model 5.6; data 9.2).
+// Mach tuck at constant lift, relative to Mach 0.50 (flight model 5.6).
+// TUCK_TUNNEL is the tail-off tunnel's curve (data 9.2). The aircraft's,
+// TUCK, is a tenth of it to the drag-divergence Mach, calibrated to the
+// flight-test phugoid at Mach 0.77 (data 8.5: 110 s; the tunnel's curve in
+// full gives 331 s there and no phugoid at all at 0.78), and the tunnel's
+// increments in full above it, where the shocks the drag rise proves are the
+// tuck's cause.
 export const TUCK_MACH = [0.50, 0.70, 0.75, 0.78, 0.80, 0.82, 0.85, 0.90];
-export const TUCK = [0, -0.011, -0.017, -0.021, -0.028, -0.036, -0.044, -0.044];
+export const TUCK_TUNNEL = [0, -0.011, -0.017, -0.021, -0.028, -0.036, -0.044, -0.044];
+export const TUCK_TAIL_FACTOR = 0.1;
+export const TUCK_ONSET_MACH = 0.82;
+const onset = TUCK_MACH.indexOf(TUCK_ONSET_MACH);
+export const TUCK = TUCK_TUNNEL.map((v, i) => (TUCK_MACH[i] <= TUCK_ONSET_MACH
+  ? TUCK_TAIL_FACTOR * v
+  : TUCK_TAIL_FACTOR * TUCK_TUNNEL[onset] + (v - TUCK_TUNNEL[onset])));
 
 // The drag rise ΔCD(M, CL) (flight model 5.4). To Mach 0.80 the flight data
 // (data 9.4): Lux's increments over his Mach 0.70 polar at CL 0.40 and 0.50,

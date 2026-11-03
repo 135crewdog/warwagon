@@ -11,22 +11,24 @@ import { trimLevel } from './trim.js';
 import { airdata, trueAirspeedFromKcas } from './airdata.js';
 import { n1 } from './engine.js';
 import { createMemory, controlsStep } from './controls.js';
-import { SURFACES } from './data/aircraft.js';
+import { SURFACES, MASS } from './data/aircraft.js';
 
 export const VSI_TAU = 4;   // s, the VSI's lag (flight model 9)
 
 export class Simulation {
   // An air start: wings level, trimmed for 1 g at h (ft) and kcas, heading
   // psi (rad, 0 north) at north and east (ft) from the origin.
-  constructor({ h = 10000, kcas = 280, psi = 0, north = 0, east = 0 } = {}) {
+  // mass (slug) is for the tests that fly the flight-test weights; the game's is fixed.
+  constructor({ h = 10000, kcas = 280, psi = 0, north = 0, east = 0, mass = MASS } = {}) {
     // The automatic systems, each switchable for the bare-airframe tests (flight model 12.2).
     this.automatics = { trim: true, damper: true, coordination: true };
+    this.mass = mass;
     this.airStart(h, kcas, psi, north, east);
   }
 
   airStart(h, kcas, psi = 0, north = 0, east = 0) {
     const vt = trueAirspeedFromKcas(kcas, h);
-    const t = trimLevel(vt, h);
+    const t = trimLevel(vt, h, { mass: this.mass });
     if (!t.ok) throw new Error(`air start trim did not converge at ${kcas} KCAS, ${h} ft`);
     if (t.is < SURFACES.is.min || t.is > SURFACES.is.max || t.controls.throttle <= 0 || t.controls.throttle >= 1) {
       throw new Error(`no level 1 g flight at ${kcas} KCAS, ${h} ft: trim needs stabiliser ${t.is.toFixed(2)}°, throttle ${t.controls.throttle.toFixed(2)}`);
@@ -63,11 +65,11 @@ export class Simulation {
   stepSurfaces(commands, dt = DT) {
     if (this.crashed) return;
     this.controls = { throttle: this.controls.throttle, de: 0, da: 0, dr: 0, isRate: 0, ...commands };
-    const r = dynamicsStep(this.state, this.controls, dt);
+    const r = dynamicsStep(this.state, this.controls, dt, this.mass);
     this.state = r.state;
     this.time += dt;
     const xdot = new Float64Array(N);
-    this.aux = derivative(this.state, this.controls, xdot);
+    this.aux = derivative(this.state, this.controls, xdot, this.mass);
     this.vsi += (xdot[IX.H] * 60 - this.vsi) * dt / VSI_TAU;
     if (crashed(this.state)) this.crashed = true;
   }
@@ -75,7 +77,7 @@ export class Simulation {
   // The auxiliary quantities (n_z, α, q̄ ...) for a state and controls.
   auxFor(state, controls) {
     const xdot = new Float64Array(N);
-    return derivative(state, controls, xdot);
+    return derivative(state, controls, xdot, this.mass);
   }
 
   get airdata() {

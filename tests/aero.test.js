@@ -132,6 +132,12 @@ test('the elastic correction takes the share of Cmα and of the static margin th
   assert.ok(Math.abs(e.cla / r.cla - 0.888) < 0.01);
 });
 
+test('the Mach tuck is a tenth of the tunnel\'s curve to Mach 0.82 and the tunnel\'s increments above', () => {
+  // the tunnel's curve is data 9.2 at CL 0.4, relative to Mach 0.50
+  assert.deepEqual(D.TUCK_TUNNEL, [0, -0.011, -0.017, -0.021, -0.028, -0.036, -0.044, -0.044]);
+  assert.deepEqual(D.TUCK.map((v) => Number(v.toFixed(5))), [0, -0.0011, -0.0017, -0.0021, -0.0028, -0.0036, -0.0116, -0.0116]);
+});
+
 test('signs of the build-up follow docs/flight-model.md 2.3', () => {
   const base = { alphaDeg: 2, betaDeg: 0, de: 0, da: 0, dr: 0, is: -1, p: 0, q: 0, r: 0, vt: 500, qbar: 200, mach: 0.5 };
   const c0 = coefficients(base);

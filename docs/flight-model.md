@@ -43,7 +43,7 @@ As Rage: NED earth frame, flat and non-rotating, h = 0 at the ground, gravity 32
 |---|---|---|
 | α | nose above the velocity vector | |
 | β | air arriving from the right | |
-| Stabiliser i_s | leading edge **up** (trailing edge down) → **nose-down** moment | In the aircraft's datum, travel +0.5° to −14° (data 10.1). The tunnel's tail datum sits 1.6° from it (5.3): the tunnel's "6° trailing edge up" is i_s = −7.6°. Cm_δs = −0.0284 /deg |
+| Stabiliser i_s | leading edge **up** (trailing edge down) → **nose-down** moment | In the aircraft's datum, travel +0.5° to −14° (data 10.1). The tunnel's tail datum sits 2.4° from it (5.3): the tunnel's "6° trailing edge up" is i_s = −8.4°. Cm_δs = −0.0284 /deg |
 | Elevator δe | trailing edge down → nose-down moment | A pull is a **negative** elevator. Cm_δe = −0.015 /deg |
 | Roll control δa | moment that rolls **left** (Cl < 0) | So a right roll needs negative δa. Rage's convention, kept so Rage's code reads |
 | Rudder δr | moment that yaws the nose **left** (Cn < 0), side force +y | |
@@ -110,9 +110,9 @@ Rigid body, six degrees of freedom, constant mass, flat non-rotating earth, as R
 Each step, in stability axes. The rate derivatives are stability-axis derivatives (data 8), so the body rates are rotated first: p_s = p·cosα + r·sinα, r_s = r·cosα − p·sinα, and q̂ = q·c̄/(2V), p̂ = p_s·b/(2V), r̂ = r_s·b/(2V) (rates in rad/s); δ in degrees:
 
 ```
-CL = f_M(M)·k_e(q̄)·CL_tab(α) + CL_δs·(i_s + 1.6°) + CL_δe·δe + CL_q·q̂
+CL = f_M(M)·k_e(q̄)·CL_tab(α) + CL_δs·(i_s + 2.4°) + CL_δe·δe + CL_q·q̂
 CD = CD_pol(CL) + ΔCD_stall(α) + ΔCD_M(M, CL)
-Cm = f_M(M)·k_e(q̄)·Cm_tab(α) + s_e(q̄)·CL + ΔCm_M(M) + k_s(q̄)·Cm_δs·(i_s + 1.6°) + Cm_δe·δe + k_q(q̄)·Cm_q*·q̂ + ΔCm_T
+Cm = f_M(M)·k_e(q̄)·Cm_tab(α) + s_e(q̄)·CL + ΔCm_M(M) + k_s(q̄)·Cm_δs·(i_s + 2.4°) + Cm_δe·δe + k_q(q̄)·Cm_q*·q̂ + ΔCm_T
 CY = CY_tab(β) + CY_δr·δr + CY_p·p̂ + CY_r·r̂
 Cl = Cl_tab(β) + Cl_δa·δa + Cl_δr·δr + Cl_p·p̂ + Cl_r·r̂
 Cn = Cn_tab(β) + Cn_δa·δa + Cn_δr·δr + Cn_p·p̂ + Cn_r·r̂
@@ -139,9 +139,9 @@ Check: the model's lift slope at cruise comes out 0.081 × 1.16 × 0.89 = 0.084 
 - **Cm_q\* = −21 /rad**: the flight-test cruise Cmq −14.65 plus Cmα̇ −6.57 (data 8.3), folded together as the short-period approximation does (q ≈ α̇ there), so no α̇ is computed. k_q(q̄): 5.7.
 - **ΔCm_T**: the thrust line (section 4).
 
-**The stabiliser datum.** The tunnel's "tail at 0°" is a geometric angle on a model; the aircraft's trim scale, whose stops are +0.5° and −14° and in which FLEXSTAB's trims are given (data 8.1), has its own zero. They are not the same angle, and the model can only be trimmed against the aircraft's stops in the aircraft's datum. The offset comes from FLEXSTAB's trimmed cruises: with **tunnel angle = i_s + 1.6°**, the build-up trims cruise 1 (284,000 lb) at −1.9° against FLEXSTAB's −2.28°, cruise 2A (130,000 lb) at −0.5° against −0.83°, and cruise 2 (130,000 lb, 45,600 ft) at −2.2° against −1.87°, with the thrusts within 1 % of Crenshaw's (a longitudinal three-degree-of-freedom check of this build-up, made while writing this file). The 1.6° is a derived constant, not a reading, and 12.1 holds it to the ±1.5° band.
+**The stabiliser datum.** The tunnel's "tail at 0°" is a geometric angle on a model; the aircraft's trim scale, whose stops are +0.5° and −14° and in which FLEXSTAB's trims are given (data 8.1), has its own zero. They are not the same angle, and the model can only be trimmed against the aircraft's stops in the aircraft's datum. The offset comes from FLEXSTAB's trimmed cruises: with **tunnel angle = i_s + 2.4°**, the build-up trims cruise 1 (284,000 lb) at −1.9° against FLEXSTAB's −2.28°, cruise 2A (130,000 lb) at −0.6° against −0.83°, and cruise 2 (130,000 lb, 45,600 ft) at −2.4° against −1.87°, with the thrusts within 1 % of Crenshaw's (`tests/trim.test.js`). The 2.4° is a derived constant, not a reading, and 12.1 holds it to the ±1.5° band. (It was first found as 1.6° with the tunnel's full Mach tuck in the build-up; the tuck's calibration in 1b (5.6) took 0.02 of nose-down out of the cruise trims, and the offset was re-derived: the mean of the three FLEXSTAB differences is now zero.)
 
-Check: at cruise (240,000 lb, FL300, Mach 0.78, CL 0.37) the terms sum to i_s = −1.6°: the table's −0.006, the elastic shift +0.019, Mach tuck −0.021 and the thrust line +0.008 against the stabiliser's 0.026 per degree. At the air start, −0.8°.
+Check: at cruise (240,000 lb, FL300, Mach 0.78, CL 0.37) the terms sum to i_s = −1.7°: the table's −0.006, the elastic shift +0.019, Mach tuck −0.002 and the thrust line +0.008 against the stabiliser's 0.026 per degree. At the air start, also −1.7°.
 
 ### 5.4 Drag
 
@@ -171,7 +171,7 @@ Check: at Mach 0.70 the polar gives 0.0230, 0.0250 and 0.0272 at CL 0.40, 0.45 a
 ### 5.6 Mach
 
 - **ΔCD_M**: 5.4.
-- **ΔCm_M(M)**, Mach tuck, at constant lift, from the tail-off tunnel at CL 0.4 relative to Mach 0.50 (data 9.2; the CL 0.5 row is within 0.004 of it, so one curve serves): 0 to Mach 0.50; −0.011 at 0.70; −0.017 at 0.75; −0.021 at 0.78; −0.028 at 0.80; −0.036 at 0.82; −0.044 at 0.85 and 0.90. Linear between, held above 0.90. Applied to the whole aircraft although measured tail off: the first approximation, stated. At cruise it is worth about a degree of stabiliser, which the automatic trim supplies; above 0.82 the nose wants to go down faster than the trim runs, and the pilot holds it. With the stabiliser frozen, an idle descent from cruise steepens on its own as the Mach rises and the nose tucks (the three-degree-of-freedom check saw it reach −16° of pitch and Mach 0.93 in 80 s): the tuck-under of every swept-wing jet of the era, which the automatic trim covers here as a pilot's thumb would.
+- **ΔCm_M(M)**, Mach tuck, at constant lift. The tail-off tunnel's curve at CL 0.4 relative to Mach 0.50 (data 9.2; the CL 0.5 row is within 0.004 of it, so one curve serves) is 0 to Mach 0.50; −0.011 at 0.70; −0.017 at 0.75; −0.021 at 0.78; −0.028 at 0.80; −0.036 at 0.82; −0.044 at 0.85 and 0.90. **The aircraft's curve is a tenth of that to Mach 0.82, and the tunnel's increments in full above it**: 0, −0.0011, −0.0017, −0.0021, −0.0028, −0.0036, −0.0116, −0.0116 at the same Mach numbers, linear between, held above 0.90. The tenth is calibrated to the flight test (owner decision, 1b): Crenshaw's flight-measured phugoid at Mach 0.77 has a period of 110 s (data 8.5), which means the real aircraft is speed-stable there; the tunnel's curve in full gave the model a 331 s phugoid at that condition and, at Mach 0.78, no phugoid at all but a tuck-under doubling in 18 s (8.7), and a tenth gives 113 s. The missing tail is the likely reason: its lift and the downwash on it change with Mach and offset most of the wing-body's shift. Above 0.82, past the drag-divergence Mach of 0.81 (data 9.3), the shocks the drag rise proves are the tuck's cause, and the tunnel's increments are taken as read: the tuck-under returns there (doubling in 58 s at 0.82) for the trim to hold, as a Mach trim compensator did on the 707. In level flight at FL300 the trimmed stabiliser moves only 0.2° between Mach 0.78 and 0.86 (−1.67° to −1.43°, nose-down): the tuck's 0.4° of nose-up above 0.82 is offset by the elastic nose-up shift as q̄ rises (5.7) and the thrust line's as the thrust rises, so the tuck shows in the bare airframe's roots above 0.82, not in the trim. Same pattern as the drag (5.4): flight sets the level to the divergence Mach, the tunnel the shape beyond.
 - **f_M(M)** on the lift and moment slopes: 5.2.
 - Nothing else changes with Mach: the lateral derivatives, the control powers and the dampings are their low-speed or cruise values throughout.
 
@@ -288,13 +288,13 @@ Tune in 1b at the air start (10,000 ft, 280 KIAS), at cruise (FL300, Mach 0.78) 
 | | Air start | Cruise | FL350, Mach 0.80 | Flight test (data 8.5) |
 |---|---|---|---|---|
 | Short period | 1.84 rad/s, ζ 0.50 | 1.75, ζ 0.38 | 1.46, ζ 0.39 | 1.39–1.67, ζ 0.39–0.68 |
-| Phugoid | 93 s, ζ 0.036 | tuck-under, T₂ 18 s | tuck-under, T₂ 11 s | 40–110 s, ζ 0.03–0.06 |
+| Phugoid | 84 s, ζ 0.033 | 120 s, ζ 0.042 | 128 s, ζ 0.094 | 40–110 s, ζ 0.03–0.06 |
 | Dutch roll | 4.37 s, ζ 0.089 | 4.34 s, ζ 0.059 | 4.71 s, ζ 0.054 | 4.4–4.8 s, ζ 0.056–0.063 |
 | Dutch roll, damper on | 4.97 s, ζ 0.38 | 4.88 s, ζ 0.36 | 5.24 s, ζ 0.32 | |
 | Roll mode τ | 0.73 s | 1.01 s | 1.20 s | 0.74–1.0 s |
 | Spiral | T₂ 183 s | T₂ 260 s | T₂ 268 s | stable, T½ 45–85 s |
 
-Nothing in the longitudinal and lateral tables was tuned: these are what the data give. The dutch roll at cruise, 4.34 s at ζ 0.059 against the flight test's 4.4 s at 0.056, is the clearest sign the lateral data are right. The spiral is weakly unstable where the flight test found it weakly stable (FLEXSTAB also had it unstable); at four minutes to double it is inside the handling band and the pilot will not notice it. **The tuck-under:** at cruise and above, the bare airframe has no phugoid. Its two slow roots are real and one is unstable, doubling in 18 s at Mach 0.78 and 11 s at 0.80, because the tunnel's tail-off Mach tuck (5.6) is in the model unmitigated, and with the tuck zeroed the pair returns (111 s, ζ 0.04). FLEXSTAB's Cm_u at cruise (data 8.4, −0.006) says the real aircraft's speed stability changes far less there; the tail's own change with Mach, which the tail-off data cannot carry, is the likely difference. With the automatic trim on, the jet sits hands-off at cruise for a minute without moving, so the player never meets it; a pilot of the 1960s met it as the reason for Mach trim. Whether to soften the tuck toward FLEXSTAB is the owner's call; the data are kept as read until then.
+Nothing in the lift, moment, drag or sideslip tables was tuned: these are what the data give, with one calibration. The dutch roll at cruise, 4.34 s at ζ 0.059 against the flight test's 4.4 s at 0.056, is the clearest sign the lateral data are right. The spiral is weakly unstable where the flight test found it weakly stable (FLEXSTAB also had it unstable); at four minutes to double it is inside the handling band and the pilot will not notice it. **The calibration: Mach tuck.** With the tail-off tunnel's tuck applied in full, the bare airframe at cruise and above had no phugoid: its two slow roots were real and one unstable, doubling in 18 s at Mach 0.78 and 11 s at 0.80, and with the tuck zeroed the pair returned (111 s). The flight test measured a 110 s phugoid at Mach 0.77 (data 8.5), so the real aircraft is speed-stable there and the tail-off curve overstates the tail-on aircraft's tuck below the drag-divergence Mach by about ten times; FLEXSTAB's Cm_u (data 8.4) says the same. The owner chose to calibrate to the flight test (5.6): a tenth of the tunnel's curve to Mach 0.82, the tunnel's increments in full above. The phugoids in the table are the result; at Crenshaw's cruise 1 the model gives 113 s. Above 0.82 the tuck-under is still there, doubling in 58 s at 0.82, which the automatic trim holds as a Mach trim compensator would and the pilot meets only with the yoke held at high Mach.
 
 ## 9. Air data for the HUD
 
@@ -363,7 +363,7 @@ The modes are measured with the trim frozen and the yaw damper off unless stated
 | # | What | Pass when |
 |---|---|---|
 | 1 | Short period, bare, three conditions | ωn 1.2–2.2 rad/s, ζ 0.3–0.7 (flight test: 1.39–1.67 rad/s, 0.39–0.68; 8785C: ζ 0.3–2.0) |
-| 2 | Phugoid, bare, at the air start | period 50–130 s; ζ ≥ 0 (flight test 40–110 s, ζ 0.03–0.06; 8785C Level 1 wants ζ ≥ 0.04, which the real jet barely meets, so Level 2's ζ ≥ 0 is the band). At cruise and FL350 the bare airframe tucks under instead (8.7): the roots are reported, and the check there is 60 s hands-off with the trim on, n_z 1 ± 0.05 with the Mach and altitude unchanged |
+| 2 | Phugoid, bare, three conditions, plus Crenshaw's cruise 1 | period 50–130 s; ζ ≥ 0 (flight test 40–110 s, ζ 0.03–0.06; 8785C Level 1 wants ζ ≥ 0.04, which the real jet barely meets, so Level 2's ζ ≥ 0 is the band); at cruise 1 (284,000 lb, 28,500 ft, Mach 0.77) within 25 % of the flight test's 110 s, the tuck calibration's anchor (5.6). Reported, not a band: at Mach 0.82 the bare airframe tucks under, and 60 s hands-off at cruise with the trim on holds n_z 1 ± 0.05 with the Mach and altitude unchanged |
 | 3 | Dutch roll, bare | period 3.8–5.5 s (flight test 4.4–4.8 s at cruise and climb; the Shell 77 board about 5 s), ζ 0.03–0.15 |
 | 4 | Dutch roll, yaw damper on | ζ 0.3–0.5, and the rudder within δr_max throughout a 5° sideslip release |
 | 5 | Roll mode, bare | τ 0.6–1.4 s (flight test T½ 0.51–0.70 s → τ 0.74–1.0 s; 8785C ≤ 1.4 s) |
@@ -374,7 +374,7 @@ The modes are measured with the trim frozen and the yaw damper off unless stated
 | 10 | Full pull at cruise, 5 s | n_z reaches 2.2–2.8 within 4 s (K_e sets it); no divergence |
 | 11 | Yoke released in a 30° bank at cruise, 20 s | bank holds within 10°; altitude falls (no compensation) |
 | 12 | Idle, level, a scripted pilot holds altitude until α reaches 15°, then releases the yoke, air start | the buffet cue starts before α reaches the plateau; with the yoke released the nose drops within 3 s and α is back under 12° within 10 s; no NaN. (A pilot who keeps pulling can hold the nose up past 20° with 9° of elevator: the pitch-down is the airframe's, not a pusher's) |
-| 13 | Full throttle from cruise at FL300, yoke released, trim on, 3 min | the Mach settles below 0.90 (ΔCD_M: it tops out near 0.86, where the drag rise meets the thrust) and the stabiliser moves nose-up as the Mach rises (ΔCm_M). (Mach 0.86 cannot be held level at FL300 for a trim-frozen start, and with the trim frozen the jet tucks under rather than settling, 8.7) |
+| 13 | Full throttle from cruise at FL300, yoke released, trim on, 3 min | the Mach settles between 0.82 and 0.88 (ΔCD_M: it tops out near 0.84, where the drag rise meets the thrust; the 1 g trim lets it climb 1,500 ft on the way). ΔCm_M shows in the bare airframe's tuck-under above 0.82 (test 2's report), not in the level trim (5.6) |
 | 14 | VSI | a step in ḣ reads 63 % at 4 s |
 | 15 | Thrust cap | T_max at sea level static = 22,000; at FL200 and FL350 at Mach 0.6 and 0.8 equal to the table of spot values; N1 shown at full throttle falls from 102 % at sea level to 85–98 % at FL350 |
 | 16 | Random inputs, sixteen 60 s flights from 160 to 350 KIAS and 5,000 to 40,000 ft | no NaN; nothing outside the envelope flag that the inputs did not ask for |

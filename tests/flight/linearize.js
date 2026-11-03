@@ -33,7 +33,7 @@ function unpack(sim, subset, z) {
 
 // One closed-loop step from a perturbed state, returning the packed result.
 function stepFrom(trim, subset, z) {
-  const sim = new Simulation({ h: trim.h, kcas: trim.kcas });
+  const sim = new Simulation({ h: trim.h, kcas: trim.kcas, mass: trim.mass });
   sim.automatics = trim.automatics;
   sim.state = Float64Array.from(trim.state);
   Object.assign(sim.memory, trim.memory);
@@ -45,10 +45,10 @@ function stepFrom(trim, subset, z) {
 
 // Discrete-time Jacobian of the one-step map by central differences; the
 // eigenvalues are mapped to continuous time with s = ln(λ)/dt.
-export function linearize(h, kcas, subset, automatics = BARE) {
-  const sim = new Simulation({ h, kcas });
+export function linearize(h, kcas, subset, automatics = BARE, mass) {
+  const sim = new Simulation({ h, kcas, mass });
   sim.automatics = automatics;
-  const trim = { h, kcas, automatics, state: Float64Array.from(sim.state), memory: { ...sim.memory }, throttle: sim.trimThrottle };
+  const trim = { h, kcas, mass: sim.mass, automatics, state: Float64Array.from(sim.state), memory: { ...sim.memory }, throttle: sim.trimThrottle };
   const z0 = pack(sim, subset);
   const n = z0.length;
   const names = [...Object.keys(subset.dyn), ...subset.mem];
@@ -73,9 +73,9 @@ export function linearize(h, kcas, subset, automatics = BARE) {
 // roll mode and the next largest in magnitude the spiral (the quaternion's
 // norm direction sits at zero; the rudder actuator and the washout, when in
 // the loop, are fast and slow real roots that are named by participation).
-export function modes(h, kcas, automatics = BARE) {
-  const lon = linearize(h, kcas, LONGITUDINAL, automatics);
-  const lat = linearize(h, kcas, LATERAL, automatics);
+export function modes(h, kcas, automatics = BARE, mass) {
+  const lon = linearize(h, kcas, LONGITUDINAL, automatics, mass);
+  const lat = linearize(h, kcas, LATERAL, automatics, mass);
   // physical pairs only: the renormalised quaternion and the lag-free stabiliser leave numerical roots far out
   const pairs = (lin) => lin.eig.filter((e) => e.im > 1e-6 && Math.hypot(e.re, e.im) < 100).map(describe).sort((a, b) => b.wn - a.wn);
   const lp = pairs(lon);

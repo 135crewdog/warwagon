@@ -632,7 +632,7 @@ CL against α changes little to Mach 0.90: the lift-curve slope stays about 0.09
 
 The owner's trace of 3 November 2026 (in the table); the first reading by eye agreed within 0.002 at CL 0.4 except at Mach 0.90 (−0.127): the 0.85 and 0.90 curves cross near CL 0.4, and the trace follows each curve's own symbols through the crossing. The lines wander by about ±0.002 through the scatter of the symbols.
 
-**Mach tuck:** 0.010 nose-down from Mach 0.70 to 0.78 and 0.03 by 0.85, at constant lift. With the stabiliser worth 0.028–0.032 per degree (sections 3, 8), the jet needs about one more degree of nose-up stabiliser at 0.85 than at 0.75: the automatic trim will chase it, and above Mach 0.82 the nose will want to drop. Mach 0.95 reverses the trend (shock-induced flow changes); the model stops at 0.90.
+**Mach tuck:** 0.010 nose-down from Mach 0.70 to 0.78 and 0.03 by 0.85, at constant lift, tail off. With the stabiliser worth 0.028–0.032 per degree (sections 3, 8), that would be about one more degree of nose-up stabiliser at 0.85 than at 0.75. Mach 0.95 reverses the trend (shock-induced flow changes); the model stops at 0.90. **In the model** (`docs/flight-model.md` 5.6, an owner decision in milestone 1b): a tenth of this curve to Mach 0.82 and its increments in full above, because the flight-test phugoid at Mach 0.77 (8.5, 110 s) shows the tail-on aircraft speed-stable where the tail-off curve in full made the model tuck under; the missing tail is the likely reason.
 
 ### 9.3 Buffet onset and drag divergence: figure 67 (PDF page 104), basic KC-135A
 

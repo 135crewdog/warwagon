@@ -72,10 +72,9 @@ export function check13() {
   const { rows, summary } = flyManoeuvre('tuck');
   const last = rows[rows.length - 1];
   const settled = Math.abs(last.mach - rows.find((r) => r.t >= last.t - 30).mach) < 0.01;
-  const stabNoseUp = last.is < rows[0].is - 0.3;
-  const pass = summary.machMax < 0.90 && settled && stabNoseUp;
-  return { name: '13 full throttle from cruise, yoke released: the drag rise and the tuck', pass,
-    text: `Mach ${f(rows[0].mach, 3)} → ${f(last.mach, 3)} (max ${f(summary.machMax, 3)}), settled: ${settled}; stabiliser ${f(rows[0].is)} → ${f(last.is)}° (nose-up as the Mach rises); altitude ${f(rows[0].alt, 0)} → ${f(last.alt, 0)} ft` };
+  const pass = summary.machMax < 0.90 && settled && last.mach > 0.82;
+  return { name: '13 full throttle from cruise, yoke released: the drag rise', pass,
+    text: `Mach ${f(rows[0].mach, 3)} → ${f(last.mach, 3)} (max ${f(summary.machMax, 3)}), settled: ${settled}; stabiliser ${f(rows[0].is)} → ${f(last.is)}°; altitude ${f(rows[0].alt, 0)} → ${f(last.alt, 0)} ft` };
 }
 
 export function check4Rudder() {
