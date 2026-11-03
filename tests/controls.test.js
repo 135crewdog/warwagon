@@ -13,7 +13,7 @@ test('the yoke is a force: the elevator is force over q̄, clamped to the travel
   assert.ok(Math.abs(elevatorFor(1, 536)) < Math.abs(elevatorFor(1, 268)), 'the same force moves it less at higher q̄');
   assert.equal(elevatorFor(1, 50), -20, 'at low q̄ the force reaches the stop');
   assert.equal(elevatorFor(-1, 50), 20);
-  assert.equal(elevatorFor(0, 268), 0);
+  assert.ok(elevatorFor(0, 268) === 0);
 });
 
 test('the wheel is a position', () => {
@@ -39,13 +39,13 @@ test('the yaw damper opposes yaw rate, washes out, and the coordination centres 
   const meas = { qbar: 268, nz: 1, ny: 0, p: 0, q: 0, r: 0.02, alpha: 0.03, keas: 277 };
   const mem = createMemory();
   const c = controlsStep(mem, { pitch: 0, roll: 0 }, meas, 1 / 120);
-  assert.ok(c.dr < 0, 'nose yawing right: rudder yaws it left');
-  assert.ok(Math.abs(c.dr - (-YAW.kyd * (0.02 * Math.cos(0.03)) * 180 / Math.PI)) < 0.01);
+  assert.ok(c.dr > 0, 'nose yawing right: positive rudder, which yaws it left (2.3)');
+  assert.ok(Math.abs(c.dr - YAW.kyd * (0.02 * Math.cos(0.03)) * 180 / Math.PI) < 0.01);
   // held long enough the washout takes it away
   for (let i = 0; i < 120 * 40; i++) controlsStep(mem, { pitch: 0, roll: 0 }, meas, 1 / 120);
   assert.ok(Math.abs(controlsStep(mem, { pitch: 0, roll: 0 }, meas, 1 / 120).dr) < 0.01, 'a steady turn is not fought');
   const ball = controlsStep(createMemory(), { pitch: 0, roll: 0 }, { ...meas, r: 0, ny: 0.05 }, 1 / 120);
-  assert.ok(Math.abs(ball.dr - YAW.kny * 0.05) < 1e-9, 'ball out to the right: rudder right');
+  assert.ok(Math.abs(ball.dr - YAW.kny * 0.05) < 1e-9, 'pushed right (wind from the left): rudder yaws the nose left, into the wind');
   const big = controlsStep(createMemory(), { pitch: 0, roll: 0 }, { ...meas, r: 0, ny: 1 }, 1 / 120);
   assert.ok(Math.abs(big.dr - rudderLimit(277)) < 1e-9, 'clamped to the authority at this speed');
   const off = controlsStep(createMemory(), { pitch: 0, roll: 0 }, { ...meas, ny: 0.05 }, 1 / 120, { trim: true, damper: false, coordination: false });
