@@ -1,6 +1,6 @@
 # KC-135 data
 
-The numbers War Wagon's flight model runs on. `docs/flight-model.md` will say how to use them; this file only holds data, and says where each number came from and how well it is known. `docs/kc135-sources.md` is the source register (the IDs below are its), and `docs/research-plan.md` section 3 is the procedure every chart goes through.
+The numbers War Wagon's flight model runs on. `docs/flight-model.md` says how to use them; this file only holds data, and says where each number came from and how well it is known. `docs/kc135-sources.md` is the source register (the IDs below are its), and `docs/research-plan.md` section 3 is the procedure every chart goes through.
 
 **How a chart entry reads.** Each chart has a record (document, figure, page, axes, conditions, reference quantities), the points as read, a table at fixed breakpoints, the comparison of two independent readings, the fit if one is used, and the corrections still to apply. The machine-readable twin of each record is `research/charts/<chart>.json`, with the chart image beside it; `research/overlay.py` draws the points over the image into `research/check/`, and `research/scan.py` makes the second reading from the pixels.
 
@@ -147,7 +147,7 @@ The tail-0° curve is not quite straight: its −8.82° point sits 0.015 above t
 2. **Stabiliser effectiveness in moment.** The two curves differ by 0.170 in Cm (0.160 to 0.178 over the first nine points) for 6° of tail incidence: ΔCm/Δi_t = 0.0284 per degree trailing edge up. With the lift effectiveness of 2.1 (0.064), ΔCm/ΔCL = 2.66 c̄: the tail's moment arm about 0.25 c̄, 53.6 ft full scale, which is where a KC-135's tail is. These two numbers, with the elevator's share from Crenshaw or DATCOM, are the trim model.
 3. **The pitch-up** between 9° and 14° is real swept-wing behaviour the sim will show: the nose wants to keep rising as the limit is approached.
 
-**Corrections still to apply:** as 2.1 (Mach, the elastic wing, the R's nacelles), plus the **CG transfer**: the data are about 0.25 c̄; the sim's CG, chosen in PR 6, moves Cm by (x_cg − 0.25)·CL. Reynolds number: none, by 3.2.
+**Corrections still to apply:** as 2.1 (Mach, the elastic wing, the R's nacelles), plus the **CG transfer**: the data are about 0.25 c̄; the sim's CG, 0.25 c̄ (10.2), moves Cm by (x_cg − 0.25)·CL. Reynolds number: none, by 3.2.
 
 ### 3.2 Cm against Reynolds number: A1 figure 15, data page 64
 
@@ -474,7 +474,7 @@ Read from the scan at 150–220 dpi, every value by eye; the thesis's text layer
 | Izz | 7.48 | 7.7 | 4.36 | **7.35** | 7.256 | 9.746 |
 | Ixz | 0 | 0 | 0 | — | 0.252 | 0.245 |
 
-The first three columns are principal axes as the thesis entered them; Ixz in body axes is given only for the structural model (0.252 × 10⁶). These are the only public KC-135 inertias; PR 6 scales them to War Wagon's weight.
+The first three columns are principal axes as the thesis entered them; Ixz in body axes is given only for the structural model (0.252 × 10⁶). These are the only public KC-135 inertias; 10.3 scales them to War Wagon's weight.
 
 ### 8.3 Flight test against FLEXSTAB rigid (Table 3, page 29)
 
@@ -576,7 +576,7 @@ Elastic over rigid, FLEXSTAB, no winglets, 268,500 lb at 0.23 c̄:
 | CLδs, /deg | 0.0109 → 0.0121 | 0.0096 → 0.0103 |
 | Cmδs, /deg | −0.0326 → −0.0300 (−8 %) | −0.0281 → −0.0267 (−5 %) |
 
-So at cruise dynamic pressure the flexible aircraft loses a third of its Cmα, and since CLα falls too, about **a quarter of its static margin** (−Cmα/CLα: 0.224 c̄ rigid to 0.171 c̄ elastic, −23 %; at the 10,000 ft condition 0.221 to 0.187, −16 %) (the wing washes out and the fuselage bends); this is the size of the "elastic wing" correction the tunnel data (sections 2–4) have been waiting for, and it is applied in `docs/flight-model.md` (PR 7) as a function of q̄.
+So at cruise dynamic pressure the flexible aircraft loses a third of its Cmα, and since CLα falls too, about **a quarter of its static margin** (−Cmα/CLα: 0.224 c̄ rigid to 0.171 c̄ elastic, −23 %; at the 10,000 ft condition 0.221 to 0.187, −16 %) (the wing washes out and the fuselage bends); this is the size of the "elastic wing" correction the tunnel data (sections 2–4) have been waiting for, and it is applied in `docs/flight-model.md` 5.7 as a function of q̄.
 
 ### 8.7 Cross-checks against the tunnel
 
@@ -591,7 +591,7 @@ So at cruise dynamic pressure the flexible aircraft loses a third of its Cmα, a
 | Cyβ, /deg | −0.0108 | −0.0105 to −0.0116 | −0.0122 to −0.0134 |
 | Cnδr, /deg (magnitude) | 0.0015–0.0017 | 0.0028–0.0036 | (0.0002, rejected) |
 
-The stabiliser numbers and the neutral point agree across tunnel and FLEXSTAB to a few per cent: the pitch axis is well pinned. The rudder is not: the tunnel's (at flaps 50, gear down) is half FLEXSTAB's (clean). Until the KC-135's rudder area is settled (PR 6, from A3's geometry table and A1's model rudder of 0.126 ft² on a 0.413 ft² fin, 31 %), the model uses the tunnel's measured value and treats FLEXSTAB's as an upper bound, with the yaw damper and coordination tuned to either.
+The stabiliser numbers and the neutral point agree across tunnel and FLEXSTAB to a few per cent: the pitch axis is well pinned. The rudder is not: the tunnel's (at flaps 50, gear down) is half FLEXSTAB's (clean). Until the KC-135's rudder area is settled (from A3's geometry table and A1's model rudder of 0.126 ft² on a 0.413 ft² fin, 31 %), the model uses the tunnel's measured value and treats FLEXSTAB's as an upper bound, with the yaw damper and coordination tuned to either.
 
 ### 8.8 The two quoted manual speeds (page 45)
 

@@ -96,6 +96,6 @@ Decisions 4 to 6 are about the boom and refuelling, which is parked.
 
 ## 6. Other decisions during milestone 0
 
-- The gross weight and fuel load, and the CG they give, from public figures only. G5's 240,000 lb flight-test point is a candidate.
-- The air-start speed at 10,000 ft.
+- The gross weight and fuel load, and the CG they give, from public figures only. **Decided:** 240,000 lb at 0.25 c̄, G5's flight-test point (`docs/kc135-data.md` 10.2).
+- The air-start speed at 10,000 ft. **Decided:** 280 KIAS (Mach 0.51, CL 0.38): a 707-class climb speed, mid-polar, just inside the Mach data's 0.50 (`docs/flight-model.md` 8.7).
 - Which gaps DATCOM fills, and which come from re-referencing the 707-320B (R1) or the Dash 80 (R2).
