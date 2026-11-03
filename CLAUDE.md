@@ -31,7 +31,7 @@ The owner's design philosophy applies to everything a person sees or touches: ht
 | 1c | **The app.** A flat world, the placeholder jet, chase camera, HUD, UI, tilt, throttle, menus, PWA, Pages. Ends with the owner flying it on the iPhone. | Built; waiting for the owner's flights |
 | 2 | **The UK.** A coarse base tile with six fine patches, imagery, water, earth curvature in the view, a place to choose on the start screen. | Not started |
 
-Later milestones get specified when milestone 2 is done: the aircraft's features (landing gear with ground contact and wheel brakes, flaps, speed brakes, takeoff and landing at Mildenhall), then sound and a better 3D model.
+Later milestones get specified when milestone 2 is done: the aircraft's features (landing gear with ground contact and wheel brakes, flaps, speed brakes, takeoff and landing at Mildenhall), then sound and a better 3D model. The KC-135 has inboard and outboard ailerons (the outboard pair locked out with the flaps up, which is why the model's roll power is the inboard aileron plus spoilers), inboard and outboard spoilers, and inboard and outboard flaps: the flaps milestone models them that way, and the jet's parts are named to match.
 
 ## Files
 
