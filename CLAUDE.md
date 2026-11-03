@@ -6,7 +6,7 @@ The owner is a pilot and builds these apps to learn. War Wagon follows Rage (`ht
 
 ## The project rules
 
-1. **REAL.** The jet flies by physics and its flight controls, from public KC-135 data, never by shortcuts that point it where the player wants. `docs/flight-model.md` will be the authority on everything in the simulation; `docs/kc135-data.md` will hold its numbers. If something feels wrong, the fix goes in the model, the flight controls or the input mapping.
+1. **REAL.** The jet flies by physics and its flight controls, from public KC-135 data, never by shortcuts that point it where the player wants. `docs/flight-model.md` is the authority on everything in the simulation; `docs/kc135-data.md` holds its numbers. If something feels wrong, the fix goes in the model, the flight controls or the input mapping.
 2. **SIMPLE.** Plain HTML, CSS and JavaScript (ES modules). No framework, no build step, no runtime dependency except three.js, copied into the repo. When in doubt, choose fewer files, features, settings and words.
 3. **FUTURE-PROOF.** It works offline, depends on as little as possible, and keeps working for years without maintenance.
 
@@ -25,7 +25,7 @@ The owner's design philosophy applies to everything a person sees or touches: ht
 
 | # | Scope | Status |
 |---|---|---|
-| 0 | **The data.** Read the sources in `docs/kc135-sources.md`, digitize their charts by the procedure in `docs/research-plan.md`, and write `docs/flight-model.md` and `docs/kc135-data.md`. No app code. | In progress: sources archived and logged; the charts read and checked against the owner's traces (two batches); `docs/kc135-data.md` written; `docs/flight-model.md` next |
+| 0 | **The data.** Read the sources in `docs/kc135-sources.md`, digitize their charts by the procedure in `docs/research-plan.md`, and write `docs/flight-model.md` and `docs/kc135-data.md`. No app code. | Done: sources archived and logged; the charts read and checked against the owner's traces (two batches); `docs/kc135-data.md` and `docs/flight-model.md` written |
 | 1a | **Simulation core.** Atmosphere (1976 standard, tropopause included), aero with Mach effects, four F108 engines, actuators, equations of motion, trim solver, air data. Rage's `src/sim/` reused where it fits. Test layers 1 and 3 passing. No visuals. | Not started |
 | 1b | **Flight controls, tuned.** Yoke to surfaces, spoiler roll assist, automatic trim, yaw damper with automatic coordination. Test layer 2 passing, and a headless flight script that prints time histories. | Not started |
 | 1c | **The app.** A flat world, the placeholder jet, chase camera, HUD, UI, tilt, throttle, menus, PWA, Pages. Ends with the owner flying it on the iPhone. | Not started |
@@ -45,7 +45,7 @@ Later milestones get specified when milestone 2 is done: the aircraft's features
 ## The aircraft and the world
 
 - **The jet** is, for now, a low-poly placeholder built in code (`src/render/kc135.js`) from the fact sheet's dimensions: a lathed fuselage, wings swept 35° with dihedral, four engine pods on pylons, the fin, the stabilizer and the boom. Its elevators, ailerons, spoilers, rudder and stabilizer are separate named parts that move every frame to the simulation's actuator positions. A glTF model with the same part names can replace it later without touching anything else.
-- **Air start** (milestone 1): 10,000 ft over a flat world, wings level, trimmed for 1 g, at a speed chosen in milestone 0. The throttle starts at the trim setting.
+- **Air start** (milestone 1): 10,000 ft over a flat world, wings level, trimmed for 1 g, at 280 KIAS (Mach 0.51; `docs/flight-model.md` 8.7). The throttle starts at the trim setting.
 - **The world** (milestone 2): the UK, in the British National Grid projection, through Rage's terrain pipeline (`make-heightmap.py`, `make-imagery.py`, the geometry clipmap, the CPU heightmap). A coarse base of about 200 m posts covering roughly 51.2° to 54.9° N and 4.3° W to 1.0° E, and six fine patches:
   - RAF Mildenhall, with Lakenheath
   - the Mach Loop (LFA 7)
@@ -102,7 +102,7 @@ One version string, `APP_VERSION` in `src/version.js`, the same value as `VERSIO
 
 ## Deliberately not in the game
 
-Missions, scores, a story, weapons, multiple aircraft, a cockpit view, fuel burn, and everything `docs/flight-model.md` will list as out of scope.
+Missions, scores, a story, weapons, multiple aircraft, a cockpit view, fuel burn, and everything `docs/flight-model.md` section 13 lists as out of scope.
 
 ## Parked
 
