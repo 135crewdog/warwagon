@@ -26,8 +26,8 @@ The owner's design philosophy applies to everything a person sees or touches: ht
 | # | Scope | Status |
 |---|---|---|
 | 0 | **The data.** Read the sources in `docs/kc135-sources.md`, digitize their charts by the procedure in `docs/research-plan.md`, and write `docs/flight-model.md` and `docs/kc135-data.md`. No app code. | Done: sources archived and logged; the charts read and checked against the owner's traces (two batches); `docs/kc135-data.md` and `docs/flight-model.md` written |
-| 1a | **Simulation core.** Atmosphere (1976 standard, tropopause included), aero with Mach effects, four F108 engines, actuators, equations of motion, trim solver, air data. Rage's `src/sim/` reused where it fits. Test layers 1 and 3 passing. No visuals. | Built: layers 1 and 3 pass; waiting for the owner's review |
-| 1b | **Flight controls, tuned.** Yoke to surfaces, spoiler roll assist, automatic trim, yaw damper with automatic coordination. Test layer 2 passing, and a headless flight script that prints time histories. | Not started |
+| 1a | **Simulation core.** Atmosphere (1976 standard, tropopause included), aero with Mach effects, four F108 engines, actuators, equations of motion, trim solver, air data. Rage's `src/sim/` reused where it fits. Test layers 1 and 3 passing. No visuals. | Done |
+| 1b | **Flight controls, tuned.** Yoke to surfaces, spoiler roll assist, automatic trim, yaw damper with automatic coordination. Test layer 2 passing, and a headless flight script that prints time histories. | Built: layer 2 passes; the Mach tuck calibrated to the flight-test phugoid (owner decision, `docs/flight-model.md` 5.6); waiting for the owner's review |
 | 1c | **The app.** A flat world, the placeholder jet, chase camera, HUD, UI, tilt, throttle, menus, PWA, Pages. Ends with the owner flying it on the iPhone. | Not started |
 | 2 | **The UK.** A coarse base tile with six fine patches, imagery, water, earth curvature in the view, a place to choose on the start screen. | Not started |
 
@@ -43,9 +43,9 @@ docs/kc135-data.md        the KC-135 numbers, each with its source and accuracy
 docs/kc135-sources.md     the source register; docs/research-plan.md how charts become data
 research/                 the chart records (charts/), their overlays (check/), the dev-only scripts; the documents live on the research-archive branch
 src/sim/                  the simulation: pure JS, no DOM, no three.js, no browser APIs
-src/sim/data/             the tables and constants, re-keyed from docs/kc135-data.md
+src/sim/data/             the tables and constants, re-keyed from docs/kc135-data.md; controls.js holds the tuned gains
 tests/*.test.js           node --test: test layer 1 (the model is the data) and the units
-tests/flight/             test layers 2 and 3: handling and performance
+tests/flight/             test layers 2 and 3: handling and performance; fly.js flies a manoeuvre headless and prints the time history
 .github/workflows/        test.yml runs every test
 ```
 

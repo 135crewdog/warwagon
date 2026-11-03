@@ -67,7 +67,7 @@ test('the zero-g parabola: from 350 KIAS, a 1.8 g pull-up to 45° then 20 s or m
     return Math.max(-20, Math.min(20, -k * (e + 0.3 * integral) + 0.6 * qDeg));
   };
   let t = 0;
-  while (sim.airdata.pitch < 45 && t < 30) { sim.step({ throttle: sim.trimThrottle, de: pilot(1.8) }); t += dt; }
+  while (sim.airdata.pitch < 45 && t < 30) { sim.stepSurfaces({ throttle: sim.trimThrottle, de: pilot(1.8) }); t += dt; }
   const pullEnd = t, pullSpeed = sim.airdata.kcas;
   assert.ok(sim.airdata.pitch >= 45, `pitch ${sim.airdata.pitch} after ${t} s of pull`);
   integral = 0;
@@ -75,7 +75,7 @@ test('the zero-g parabola: from 350 KIAS, a 1.8 g pull-up to 45° then 20 s or m
   let run = 0, held = 0, minSpeed = 1e9, maxDe = 0, apex = 0;
   while (t < pullEnd + 45) {
     const de = pilot(0);
-    sim.step({ throttle: sim.trimThrottle, de });
+    sim.stepSurfaces({ throttle: sim.trimThrottle, de });
     t += dt;
     const a = sim.airdata;
     maxDe = Math.max(maxDe, Math.abs(sim.surfaces.de));

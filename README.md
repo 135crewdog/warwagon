@@ -16,12 +16,27 @@ This runs every test under `tests/`. The tests print what they measured, not jus
 - `tests/trim.test.js` prints the trim solver's answers next to Crenshaw's flight conditions, the 1998 trim point and Lux's flight-measured drag polar.
 - `tests/engine.test.js` prints the thrust cap's spot values, the spool time and the N1 shown.
 - `tests/flight/performance.test.js` prints the cruise margin, the service ceilings and the zero-g parabola next to the public figures.
+- `tests/flight/modes.test.js` linearises the bare airframe at the three tuning conditions and prints the short period, phugoid, dutch roll (bare and damped), roll and spiral modes next to the flight-test values.
+- `tests/flight/manoeuvres.test.js` flies the closed-loop checks of `docs/flight-model.md` 12.2 (rolls, hands-off throttle changes, the pull, the stall, the drag rise, random inputs) and prints what each measured.
 
 To run one file:
 
 ```
 node --test tests/trim.test.js
 ```
+
+## Flying headless
+
+To watch the controls work, fly a manoeuvre from the command line and read the time history:
+
+```
+node tests/flight/fly.js idle --every=5
+node tests/flight/fly.js roll --h=10000 --kcas=280 --every=0.5
+node tests/flight/fly.js pull --nodamper
+node tests/flight/fly.js modes
+```
+
+Run it with no arguments for the list of manoeuvres. Options are `--h` (ft), `--kcas`, `--t` (seconds), `--every` (print interval), `--throttle`, `--seed`, and `--notrim`, `--nodamper`, `--nocoord` to switch an automatic off. `modes` prints the linearised modes. The gains live in `src/sim/data/controls.js`; change one, fly again, and the difference is in the table.
 
 The same command runs in GitHub Actions on every push and pull request (`.github/workflows/test.yml`).
 
