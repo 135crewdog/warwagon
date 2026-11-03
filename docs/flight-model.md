@@ -43,7 +43,7 @@ As Rage: NED earth frame, flat and non-rotating, h = 0 at the ground, gravity 32
 |---|---|---|
 | α | nose above the velocity vector | |
 | β | air arriving from the right | |
-| Stabiliser i_s | leading edge **up** (trailing edge down) → **nose-down** moment | Travel +0.5° to −14° (data 10.1). The tunnel's "6° trailing edge up" is i_s = −6°. Cm_δs = −0.0284 /deg |
+| Stabiliser i_s | leading edge **up** (trailing edge down) → **nose-down** moment | In the aircraft's datum, travel +0.5° to −14° (data 10.1). The tunnel's tail datum sits 1.6° from it (5.3): the tunnel's "6° trailing edge up" is i_s = −7.6°. Cm_δs = −0.0284 /deg |
 | Elevator δe | trailing edge down → nose-down moment | A pull is a **negative** elevator. Cm_δe = −0.015 /deg |
 | Roll control δa | moment that rolls **left** (Cl < 0) | So a right roll needs negative δa. Rage's convention, kept so Rage's code reads |
 | Rudder δr | moment that yaws the nose **left** (Cn < 0), side force +y | |
@@ -110,9 +110,9 @@ Rigid body, six degrees of freedom, constant mass, flat non-rotating earth, as R
 Each step, in stability axes. The rate derivatives are stability-axis derivatives (data 8), so the body rates are rotated first: p_s = p·cosα + r·sinα, r_s = r·cosα − p·sinα, and q̂ = q·c̄/(2V), p̂ = p_s·b/(2V), r̂ = r_s·b/(2V) (rates in rad/s); δ in degrees:
 
 ```
-CL = f_M(M)·k_e(q̄)·CL_tab(α) + CL_δs·i_s + CL_δe·δe + CL_q·q̂
+CL = f_M(M)·k_e(q̄)·CL_tab(α) + CL_δs·(i_s + 1.6°) + CL_δe·δe + CL_q·q̂
 CD = CD_pol(CL) + ΔCD_stall(α) + ΔCD_M(M, CL)
-Cm = f_M(M)·k_e(q̄)·Cm_tab(α) + s_e(q̄)·CL + ΔCm_M(M) + k_s(q̄)·Cm_δs·i_s + Cm_δe·δe + k_q(q̄)·Cm_q*·q̂ + ΔCm_T
+Cm = f_M(M)·k_e(q̄)·Cm_tab(α) + s_e(q̄)·CL + ΔCm_M(M) + k_s(q̄)·Cm_δs·(i_s + 1.6°) + Cm_δe·δe + k_q(q̄)·Cm_q*·q̂ + ΔCm_T
 CY = CY_tab(β) + CY_δr·δr + CY_p·p̂ + CY_r·r̂
 Cl = Cl_tab(β) + Cl_δa·δa + Cl_δr·δr + Cl_p·p̂ + Cl_r·r̂
 Cn = Cn_tab(β) + Cn_δa·δa + Cn_δr·δr + Cn_p·p̂ + Cn_r·r̂
@@ -139,7 +139,9 @@ Check: the model's lift slope at cruise comes out 0.081 × 1.16 × 0.89 = 0.084 
 - **Cm_q\* = −21 /rad**: the flight-test cruise Cmq −14.65 plus Cmα̇ −6.57 (data 8.3), folded together as the short-period approximation does (q ≈ α̇ there), so no α̇ is computed. k_q(q̄): 5.7.
 - **ΔCm_T**: the thrust line (section 4).
 
-Check: at cruise (240,000 lb, FL300, Mach 0.78, CL 0.37) the terms sum to a stabiliser near −1° leading edge down; FLEXSTAB trimmed its heavier cruise at −2.28° (data 8.1). The test band is ±1.5° (12.1).
+**The stabiliser datum.** The tunnel's "tail at 0°" is a geometric angle on a model; the aircraft's trim scale, whose stops are +0.5° and −14° and in which FLEXSTAB's trims are given (data 8.1), has its own zero. They are not the same angle, and the model can only be trimmed against the aircraft's stops in the aircraft's datum. The offset comes from FLEXSTAB's trimmed cruises: with **tunnel angle = i_s + 1.6°**, the build-up trims cruise 1 (284,000 lb) at −1.9° against FLEXSTAB's −2.28°, cruise 2A (130,000 lb) at −0.5° against −0.83°, and cruise 2 (130,000 lb, 45,600 ft) at −2.2° against −1.87°, with the thrusts within 1 % of Crenshaw's (a longitudinal three-degree-of-freedom check of this build-up, made while writing this file). The 1.6° is a derived constant, not a reading, and 12.1 holds it to the ±1.5° band.
+
+Check: at cruise (240,000 lb, FL300, Mach 0.78, CL 0.37) the terms sum to i_s = −1.6°: the table's −0.006, the elastic shift +0.019, Mach tuck −0.021 and the thrust line +0.008 against the stabiliser's 0.026 per degree. At the air start, −0.8°.
 
 ### 5.4 Drag
 
@@ -171,7 +173,7 @@ Check: at Mach 0.70 the polar gives 0.0230, 0.0250 and 0.0272 at CL 0.40, 0.45 a
 ### 5.6 Mach
 
 - **ΔCD_M**: 5.4.
-- **ΔCm_M(M)**, Mach tuck, at constant lift, from the tail-off tunnel at CL 0.4 relative to Mach 0.50 (data 9.2; the CL 0.5 row is within 0.004 of it, so one curve serves): 0 to Mach 0.50; −0.011 at 0.70; −0.017 at 0.75; −0.021 at 0.78; −0.028 at 0.80; −0.036 at 0.82; −0.044 at 0.85 and 0.90. Linear between, held above 0.90. Applied to the whole aircraft although measured tail off: the first approximation, stated. At cruise it is worth about a degree of stabiliser, which the automatic trim supplies; above 0.82 the nose wants to go down faster than the trim runs, and the pilot holds it.
+- **ΔCm_M(M)**, Mach tuck, at constant lift, from the tail-off tunnel at CL 0.4 relative to Mach 0.50 (data 9.2; the CL 0.5 row is within 0.004 of it, so one curve serves): 0 to Mach 0.50; −0.011 at 0.70; −0.017 at 0.75; −0.021 at 0.78; −0.028 at 0.80; −0.036 at 0.82; −0.044 at 0.85 and 0.90. Linear between, held above 0.90. Applied to the whole aircraft although measured tail off: the first approximation, stated. At cruise it is worth about a degree of stabiliser, which the automatic trim supplies; above 0.82 the nose wants to go down faster than the trim runs, and the pilot holds it. With the stabiliser frozen, an idle descent from cruise steepens on its own as the Mach rises and the nose tucks (the three-degree-of-freedom check saw it reach −16° of pitch and Mach 0.93 in 80 s): the tuck-under of every swept-wing jet of the era, which the automatic trim covers here as a pilot's thumb would.
 - **f_M(M)** on the lift and moment slopes: 5.2.
 - Nothing else changes with Mach: the lateral derivatives, the control powers and the dampings are their low-speed or cruise values throughout.
 
@@ -238,14 +240,16 @@ There is no g limiter, no AoA limiter and no stall protection: the jet's own sta
 The real pilot holds the trim switch until the yoke force is gone, at whatever speed they have settled on. War Wagon's rule: **with the yoke released, the stabiliser runs toward 1 g.**
 
 ```
+e        = (1 − n_z) − K_q · q_deg                // the g error, less the g the present pitch rate is about to deliver
 released = |x_pitch| < 0.05
-if released and |1 − n_z| > 0.03:  i_s_rate = −0.5 · sign(1 − n_z)   // deg/s: n_z < 1 → leading edge down (nose up)
-else:                                i_s_rate = 0
-i_s = clamp(i_s + i_s_rate · dt, −14, 0.5)
+i_s_rate = released and |e| > 0.02 ? −clamp(K_t · e, −0.5, +0.5) : 0     // deg/s; e > 0 → leading edge down (nose up)
+i_s      = clamp(i_s + i_s_rate · dt, −14, +0.5)
 ```
 
+with q_deg the pitch rate in deg/s, **K_q = 0.15 g per deg/s** and **K_t = 2 deg/s per g**, so the stabiliser runs at its full 0.5°/s whenever the error is over a quarter of a g and slows as it closes. The pitch-rate term is the thumb's judgement: a nose already rising toward 1 g needs no more nose-up trim. Without it the loop limit-cycles (a three-degree-of-freedom check of a throttle-to-idle step at cruise: n_z 0.84 to 1.17 g with a 15 s period, for as long as it ran, because the stabiliser keeps running while the jet's slow response is still developing and then reverses after the overshoot); with it the same step settles to n_z 0.95–1.00 within 20 s and 1 ± 0.01 after, at cruise and at the air start. K_q and K_t are tuning values; the 0.5°/s is the datum.
+
 - **While the yoke is held the trim is frozen.** A brief pull-up is not trimmed into; a long turn is flown with a held pull, as in the jet when the pilot leaves the trim alone. (The real pilot would trim a sustained turn; the automatic trim doesn't guess.)
-- **The rate limit is the realism.** After a throttle change the jet is out of trim: the released yoke gives δe = 0, the nose moves, and the stabiliser takes seconds to catch up, during which the pilot holds the nose with the yoke. The 0.03 g deadband and the slow rate mean the phugoid is only partly damped by the trim; the trim-frozen tests measure the bare airframe.
+- **The rate limit is the realism.** After a throttle change the jet is out of trim: the released yoke gives δe = 0, the nose moves, and the stabiliser takes seconds to catch up, during which the pilot holds the nose with the yoke. The slow rate means the phugoid is only partly damped by the trim; the trim-frozen tests measure the bare airframe.
 - **What it implies, stated plainly:** the jet holds 1 g at whatever speed it has, so with the throttle at idle and the yoke released it flies level, slows, and trims its way toward the stall; the buffet is the warning. The trim stops at its travel (−14°). In a bank it still trims to 1 g, so the nose drops: holding altitude in a turn needs a pull, as in the jet (no bank compensation).
 - **Starting state.** At an air start the trim solver sets i_s so that δe = 0 at 1 g; the trim has nothing to do until the pilot changes something.
 
