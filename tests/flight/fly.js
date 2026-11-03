@@ -24,7 +24,15 @@ if (name === 'modes') {
     for (const [auto, autoLabel] of [[BARE, 'bare'], [DAMPED, 'damper on']]) {
       const m = modes(c.h, c.kcas, auto);
       const sp = m.shortPeriod, ph = m.phugoid, dr = m.dutchRoll;
-      console.log(`${label.padEnd(12)} ${autoLabel.padEnd(10)} short period ${sp.wn.toFixed(2)} rad/s ζ ${sp.zeta.toFixed(2)} | phugoid ${ph.period.toFixed(0)} s ζ ${ph.zeta.toFixed(3)} | dutch roll ${dr.period.toFixed(2)} s ζ ${dr.zeta.toFixed(3)} | roll τ ${m.rollTau.toFixed(2)} s | spiral ${m.spiral.re > 0 ? 'T2 ' + m.spiral.doubling.toFixed(0) : 'T½ ' + m.spiral.halving.toFixed(0)} s`);
+      // at cruise and above the bare airframe has no phugoid pair: its slow roots are real, one unstable (flight model 8.7)
+      let phugoid;
+      if (ph) phugoid = `phugoid ${ph.period.toFixed(0)} s ζ ${ph.zeta.toFixed(3)}`;
+      else {
+        const slow = m.lon.eig.filter((e) => Math.abs(e.im) < 1e-6 && Math.abs(e.re) < 1 && Math.abs(e.re) > 1e-4).map((e) => e.re);
+        const div = Math.max(...slow);
+        phugoid = `no phugoid: slow roots ${slow.map((r) => r.toFixed(4)).join(', ')} /s` + (div > 0 ? ` (tuck-under, T2 ${(Math.LN2 / div).toFixed(0)} s)` : '');
+      }
+      console.log(`${label.padEnd(12)} ${autoLabel.padEnd(10)} short period ${sp.wn.toFixed(2)} rad/s ζ ${sp.zeta.toFixed(2)} | ${phugoid} | dutch roll ${dr.period.toFixed(2)} s ζ ${dr.zeta.toFixed(3)} | roll τ ${m.rollTau.toFixed(2)} s | spiral ${m.spiral.re > 0 ? 'T2 ' + m.spiral.doubling.toFixed(0) : 'T½ ' + m.spiral.halving.toFixed(0)} s`);
     }
   }
   process.exit(0);
