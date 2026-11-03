@@ -1,14 +1,16 @@
-// The simulation as the app drives it: an air start, then fixed steps with
-// the commands of the moment. In milestone 1a the commands are the surfaces
-// and the throttle directly ({ throttle, de, da, dr, isRate }); milestone 1b
-// adds controls.js, which makes them from the yoke (the elevator and roll
-// control), the automatic trim (isRate) and the yaw damper (dr).
+// The closed loop: yoke and throttle in, a flying KC-135R out. This is what
+// the app drives. Input reaches the simulation only here, as the yoke
+// (pitch, roll in −1..+1) and the throttle (0..1) passed into step(); the
+// controls of controls.js turn them into surface commands, the automatic
+// trim and the rudder. stepSurfaces() drives the surfaces directly for the
+// tests of layers 1 and 3.
 
-import { DT, IX, N, step as dynamicsStep, derivative, crashed, D2R } from './dynamics.js';
+import { DT, IX, N, step as dynamicsStep, derivative, crashed, keasOf, D2R } from './dynamics.js';
 import { fromEuler } from './quaternion.js';
 import { trimLevel } from './trim.js';
 import { airdata, trueAirspeedFromKcas } from './airdata.js';
 import { n1 } from './engine.js';
+import { createMemory, controlsStep } from './controls.js';
 import { SURFACES } from './data/aircraft.js';
 
 export const VSI_TAU = 4;   // s, the VSI's lag (flight model 9)
@@ -17,6 +19,8 @@ export class Simulation {
   // An air start: wings level, trimmed for 1 g at h (ft) and kcas, heading
   // psi (rad, 0 north) at north and east (ft) from the origin.
   constructor({ h = 10000, kcas = 280, psi = 0, north = 0, east = 0 } = {}) {
+    // The automatic systems, each switchable for the bare-airframe tests (flight model 12.2).
+    this.automatics = { trim: true, damper: true, coordination: true };
     this.airStart(h, kcas, psi, north, east);
   }
 
@@ -36,12 +40,27 @@ export class Simulation {
     this.time = 0;
     this.aux = t.aux;
     this.vsi = 0;
+    this.memory = createMemory();
     this.crashed = false;
     return this;
   }
 
-  // One fixed physics step with the commands { throttle, de, da, dr, isRate }.
-  step(commands, dt = DT) {
+  // What the controls measure, from the present state.
+  measurements() {
+    const x = this.state, a = this.aux;
+    return { qbar: a.qbar, nz: a.nz, ny: a.ny, p: x[IX.P], q: x[IX.Q], r: x[IX.R], alpha: a.alpha, keas: keasOf(a.qbar) };
+  }
+
+  // One fixed physics step from the yoke { pitch, roll } and the throttle (0..1).
+  step(yoke, throttle, dt = DT) {
+    if (this.crashed) return;
+    const cmd = controlsStep(this.memory, yoke, this.measurements(), dt, this.automatics);
+    this.stepSurfaces({ throttle, ...cmd }, dt);
+  }
+
+  // One fixed physics step with the surfaces commanded directly:
+  // { throttle, de, da, dr, isRate }. For the tests; the app uses step().
+  stepSurfaces(commands, dt = DT) {
     if (this.crashed) return;
     this.controls = { throttle: this.controls.throttle, de: 0, da: 0, dr: 0, isRate: 0, ...commands };
     const r = dynamicsStep(this.state, this.controls, dt);

@@ -165,7 +165,7 @@ Check: at Mach 0.70 the polar gives 0.0230, 0.0250 and 0.0272 at CL 0.40, 0.45 a
 
 - **CY_tab, Cn_tab, Cl_tab(β)**: the clean β sweep at α 6° (data 7.1), −18° to +8° every 2°. The aircraft is symmetric, so the lookup is by |β| with sign(β), using the negative-β half, which reaches 18°; the positive half agrees with it to 8°, where it ends. The tables carry what a single slope would not: Cn flattens beyond −10° as the fin loses its grip, CY and Cl beyond −8°. The derivatives near zero: Cnβ 0.0032, Clβ −0.0032, Cyβ −0.0108 /deg. **Their dependence on α and Mach is not modelled**: one point in α, from a Mach 0.28 tunnel; Crenshaw's three flight conditions bracket it within 20 % (data 7.1, 8.7).
 - **Rudder**: Cn_δr = −0.0016, CY_δr = +0.0030, Cl_δr = +0.0004 /deg (the tunnel, data 7.2, magnitudes; signs per 2.3). FLEXSTAB's rudder is twice as powerful (data 8.7); the tunnel's is used because it was measured, and the yaw damper is tuned to it. If the damper cannot reach its target within the rudder's authority (8.5), the rudder's power is raised toward FLEXSTAB's and the change recorded.
-- **Roll control**: Cl_δa = **−0.0010 /deg** over ±20° of δa, a tuning value with a stated range: the inboard aileron alone is −0.0006 /deg (FLEXSTAB, data 8.4; the outboard ailerons are locked out with the flaps up on this family of aircraft, and the tunnel's 0.006 is the outboard pair at flaps 50, data 7.2), and the spoilers, which do the rest of the flaps-up rolling on the real jet, are in no public data. The value is set in 1b so the roll test (12.2) passes with a 707-class rate, and recorded. Cn_δa = −0.0002 /deg (adverse, a tenth of the roll, the sign and size of FLEXSTAB's inboard aileron). CY_δa = 0.
+- **Roll control**: Cl_δa = **−0.00095 /deg** over ±20° of δa, a tuning value with a stated range: the inboard aileron alone is −0.0006 /deg (FLEXSTAB, data 8.4; the outboard ailerons are locked out with the flaps up on this family of aircraft, and the tunnel's 0.006 is the outboard pair at flaps 50, data 7.2), and the spoilers, which do the rest of the flaps-up rolling on the real jet, are in no public data. The value was set in 1b against the roll test (12.2): −0.00095 gives 43°/s at cruise and 31°/s at the air start, and 30° of bank in 1.8 and 2.0 s; −0.0008 missed the air start's 2 s by 0.15 s and −0.0010 took cruise to 46°/s. Cn_δa = −0.0002 /deg (adverse, a tenth of the roll, the sign and size of FLEXSTAB's inboard aileron). CY_δa = 0.
 - **Rate derivatives**, per radian, constants: Cl_p = −0.345 and Cn_r = −0.194 from **flight test** (data 8.3, cruise 1: FLEXSTAB over-damps the dutch roll by a factor of two, data 8.5, so the flight-test values are the ones); Cl_r = +0.25, Cn_p = +0.019, CY_p = −0.185, CY_r = +0.71 from FLEXSTAB (data 8.4, cruise 1), which has no flight-test counterpart. The β̇ terms are left out.
 
 ### 5.6 Mach
@@ -183,6 +183,7 @@ FLEXSTAB's rigid-to-elastic pairs at two dynamic pressures (data 8.6) are linear
 - **Lift slope**: k_e(q̄) = 1 − 0.0004·q̄ (0.93 at 181, 0.89 at 280).
 - **Stabiliser**: k_s(q̄) = 1 − 0.0003·q̄ (the tail bends too; −8 % at cruise).
 - **Pitch damping**: k_q(q̄) = 1 − 0.0004·q̄.
+- **Held above 500 psf** (about 390 KEAS): FLEXSTAB's points stop at 280 psf and the aircraft's clearance not far beyond; extrapolated to 1,100 psf the line put the neutral point on the CG, and a random-input flight that dived to 574 KIAS pulled 4.8 g on a degree of elevator.
 
 Check: with k_e on the moment table as on the lift (5.3), the correction takes the same share that FLEXSTAB's does: applied to FLEXSTAB's own rigid slopes, 0.888 × (−0.0220) + 0.053 × 0.0876 = −0.0149 /deg against its elastic −0.0150 (data 8.6). The model's own rigid slopes at Mach 0.77 are the tunnel's scaled by f_M, 12 % below FLEXSTAB's (Cmα −0.0194 against −0.0220, CLα 0.094 against 0.0986), so its elastic Cmα comes out at −0.0126 /deg against FLEXSTAB's −0.0150 and the flight test's −0.015, and its static margin 0.196 → 0.143 c̄ against FLEXSTAB's 0.224 → 0.171: the same forward shift of 0.053 c̄ on a slightly smaller margin (measured by `tests/aero.test.js`, which checks the ratio and the shift).
 
@@ -229,7 +230,7 @@ The tilt is a force on the yoke, and the elevator moves as far as that force can
 δe = −clamp(x_pitch · K_e / q̄, −20, 20)      // deg; K_e in deg·psf; then the actuator
 ```
 
-This is the physics of a reversible control, not a gain schedule: a surface's hinge moment grows with q̄ as its pitching power does, so a given force gives about the same g at every speed above the stall, the stick-force-per-g a transport pilot feels, and at low speed the same force reaches the stops. **K_e ≈ 2,100 deg·psf** to start: full tilt at cruise (q̄ 268 psf) gives 8° of elevator, which a hand calculation puts at +1.5 g above level, the limit-load pull of a transport. The push side is symmetric (−1.5 g, to −0.5 g), which overstates a real yoke's forward travel a little and is accepted. Tuned in 1b against test 3 of 12.2 and on the phone; recorded.
+This is the physics of a reversible control, not a gain schedule: a surface's hinge moment grows with q̄ as its pitching power does, so a given force gives about the same g at every speed above the stall, the stick-force-per-g a transport pilot feels, and at low speed the same force reaches the stops. **K_e = 1,500 deg·psf**: full tilt at cruise (q̄ 268 psf) gives 5.6° of elevator and a peak of 2.7 g (the short period overshoots a steady 2.1 g pull), a transport's limit-load pull. The 2,100 first estimated gave 8° and took the jet to 3.1 g and 18° of α, through the lift plateau: an accelerated stall from a full tilt. The push side is symmetric, which overstates a real yoke's forward travel a little and is accepted. Tuned in 1b against test 10 of 12.2; to be felt on the phone.
 
 There is no g limiter, no AoA limiter and no stall protection: the jet's own stability and the buffet are the protection, as in the aircraft.
 
@@ -238,13 +239,13 @@ There is no g limiter, no AoA limiter and no stall protection: the jet's own sta
 The real pilot holds the trim switch until the yoke force is gone, at whatever speed they have settled on. War Wagon's rule: **with the yoke released, the stabiliser runs toward 1 g.**
 
 ```
-e        = (1 − n_z) − K_q · q_deg                // the g error, less the g the present pitch rate is about to deliver
+e        = (1 − n_z) − K_q · washout(q_deg, 5 s)   // the g error, less the g the changing pitch rate is about to deliver
 released = |x_pitch| < 0.05
-i_s_rate = released and |e| > 0.02 ? −clamp(K_t · e, −0.5, +0.5) : 0     // deg/s; e > 0 → leading edge down (nose up)
+i_s_rate = released and |e| > 0.005 ? −clamp(K_t · e, −0.5, +0.5) : 0    // deg/s; e > 0 → leading edge down (nose up)
 i_s      = clamp(i_s + i_s_rate · dt, −14, +0.5)
 ```
 
-with q_deg the pitch rate in deg/s, **K_q = 0.15 g per deg/s** and **K_t = 2 deg/s per g**, so the stabiliser runs at its full 0.5°/s whenever the error is over a quarter of a g and slows as it closes. The pitch-rate term is the thumb's judgement: a nose already rising toward 1 g needs no more nose-up trim. Without it the loop limit-cycles (a three-degree-of-freedom check of a throttle-to-idle step at cruise: n_z 0.84 to 1.17 g with a 15 s period, for as long as it ran, because the stabiliser keeps running while the jet's slow response is still developing and then reverses after the overshoot); with it the same step settles to n_z 0.95–1.00 within 20 s and 1 ± 0.01 after, at cruise and at the air start. K_q and K_t are tuning values; the 0.5°/s is the datum.
+with q_deg the pitch rate in deg/s, **K_q = 0.15 g per deg/s** and **K_t = 2 deg/s per g**, so the stabiliser runs at its full 0.5°/s whenever the error is over a quarter of a g and slows as it closes. The pitch-rate term is the thumb's judgement: a nose already rising toward 1 g needs no more nose-up trim. It is washed out (a 5 s high-pass) so that a steady turn's steady pitch rate does not count as a change coming: without the washout the jet settled at 0.95 g in a released 30° bank. The deadband is small (0.005 g) because any error inside it is a slow flight-path drift the trim will not correct: at 0.02 g the jet lost 1,700 ft in two minutes of hands-off acceleration, at 0.005 g 600 ft. The trim holds 1 g, not altitude; that is the design (8.6). Without it the loop limit-cycles (a three-degree-of-freedom check of a throttle-to-idle step at cruise: n_z 0.84 to 1.17 g with a 15 s period, for as long as it ran, because the stabiliser keeps running while the jet's slow response is still developing and then reverses after the overshoot); with it the same step settles to n_z 0.95–1.00 within 20 s and 1 ± 0.01 after, at cruise and at the air start. K_q and K_t are tuning values; the 0.5°/s is the datum.
 
 - **While the yoke is held the trim is frozen.** A brief pull-up is not trimmed into; a long turn is flown with a held pull, as in the jet when the pilot leaves the trim alone. (The real pilot would trim a sustained turn; the automatic trim doesn't guess.)
 - **The rate limit is the realism.** After a throttle change the jet is out of trim: the released yoke gives δe = 0, the nose moves, and the stabiliser takes seconds to catch up, during which the pilot holds the nose with the yoke. The slow rate means the phugoid is only partly damped by the trim; the trim-frozen tests measure the bare airframe.
@@ -257,7 +258,7 @@ with q_deg the pitch rate in deg/s, **K_q = 0.15 g per deg/s** and **K_t = 2 deg
 δa = −x_roll · 20      // deg; then the actuator
 ```
 
-The wheel's angle sets the surfaces' angle through a fixed linkage, as the spoiler mixer does, so the roll rate per wheel angle rises with speed: a heavy jet is slow to roll at approach speed and brisker at cruise. Released, the surfaces centre and the jet holds its bank (less the spiral mode's slow drift). Target: 30° of bank from wings level within 2 s of full wheel at cruise and at the air start, the MIL-F-8785C Class III Category B Level 1 figure, met by tuning Cl_δa within its range (5.5), never by adding a rate command.
+The wheel's angle sets the surfaces' angle through a fixed linkage, as the spoiler mixer does, so the roll rate per wheel angle rises with speed: a heavy jet is slow to roll at approach speed and brisker at cruise. Released, the surfaces centre and the jet holds its bank (less the spiral mode's slow drift). Target: 30° of bank from wings level within 2 s of full wheel at cruise and at the air start, the MIL-F-8785C Class III Category B Level 1 figure, met by tuning Cl_δa within its range (5.5), never by adding a rate command. As tuned: 1.8 s and 43°/s at cruise, 2.0 s and 32°/s at the air start.
 
 ### 8.5 Yaw: the yaw damper, and coordination on top of it
 
@@ -269,7 +270,7 @@ rdr = K_yd · washout(r_s, τ_w) · 57.3      // yaw damper: opposes yaw rate, w
 rdr = clamp(rdr, −δr_max, δr_max)
 ```
 
-with r_s = r·cosα − p·sinα the stability-axis yaw rate. The damper is real (the KC-135R's series yaw damper, data 11.2) and its structure is the classic one; the gains are ours. Starting values: K_yd ≈ 1.0 deg per deg/s, τ_w = 4 s, K_ny ≈ 10 deg/g. The damper's target is a dutch roll damping ratio of 0.3–0.5 at cruise and at the air start, from the bare airframe's 0.06 (data 8.5), within the rudder's authority (7); the coordination's target is sideslip within ±2° through a full-wheel roll. If the two pull against each other, the damper wins and the sideslip band is reported, not widened. The n_y loop is small and the rudder's authority already shrinks with speed, so no gain schedule is expected; if the loop misbehaves at high q̄ the Rage fix (a 1/q̄ schedule on K_ny) is the first thing to try.
+with r_s = r·cosα − p·sinα the stability-axis yaw rate. The damper is real (the KC-135R's series yaw damper, data 11.2) and its structure is the classic one; the gains are ours. As tuned in 1b: **K_yd = 0.7 deg per deg/s, τ_w = 4 s, K_ny = 70 deg/g.** The damper's target was a dutch roll damping ratio of 0.3–0.5 at the three tuning conditions, from the bare airframe's 0.05–0.09 (data 8.5), within the rudder's authority (7): K_yd 1.0 gave 0.48–0.54, 0.5 gave 0.24–0.29, 0.7 gives 0.32–0.38 with the period 4.9–5.2 s. The coordination's target was sideslip within ±2° through a full-wheel roll to 60° and back: the rudder was nowhere near its authority (under 3° of 8°), so the gain was simply raised, from 10 (2.9° of sideslip) through 50 (1.9°) to 70 (1.5° at cruise, 1.9° at the air start). The two did not pull against each other. A 5° sideslip released at cruise takes the rudder to its authority for a moment and is gone in 20 s. No gain schedule was needed; if the n_y loop misbehaves at high q̄ on the phone, the Rage fix (a 1/q̄ schedule on K_ny) is the first thing to try.
 
 ### 8.6 What not to add
 
@@ -281,6 +282,19 @@ with r_s = r·cosα − p·sinα the stability-axis yaw rate. The damper is real
 ### 8.7 Tuning targets
 
 Tune in 1b at the air start (10,000 ft, 280 KIAS), at cruise (FL300, Mach 0.78) and at FL350, Mach 0.80, all at 240,000 lb, with the trim solver plus finite-difference linearisation for the open-loop modes and the full simulation for the closed-loop checks. The numbers in 12.2 are the pass bands; the flight-test modes of data 8.5 are the centre of them. Explain every tuning decision in plain words in the pull request.
+
+**Measured in 1b** (`tests/flight/modes.test.js`, bare airframe unless stated; `node tests/flight/fly.js modes` prints them):
+
+| | Air start | Cruise | FL350, Mach 0.80 | Flight test (data 8.5) |
+|---|---|---|---|---|
+| Short period | 1.84 rad/s, ζ 0.50 | 1.75, ζ 0.38 | 1.46, ζ 0.39 | 1.39–1.67, ζ 0.39–0.68 |
+| Phugoid | 93 s, ζ 0.036 | tuck-under, T₂ 18 s | tuck-under, T₂ 11 s | 40–110 s, ζ 0.03–0.06 |
+| Dutch roll | 4.37 s, ζ 0.089 | 4.34 s, ζ 0.059 | 4.71 s, ζ 0.054 | 4.4–4.8 s, ζ 0.056–0.063 |
+| Dutch roll, damper on | 4.97 s, ζ 0.38 | 4.88 s, ζ 0.36 | 5.24 s, ζ 0.32 | |
+| Roll mode τ | 0.73 s | 1.01 s | 1.20 s | 0.74–1.0 s |
+| Spiral | T₂ 183 s | T₂ 260 s | T₂ 268 s | stable, T½ 45–85 s |
+
+Nothing in the longitudinal and lateral tables was tuned: these are what the data give. The dutch roll at cruise, 4.34 s at ζ 0.059 against the flight test's 4.4 s at 0.056, is the clearest sign the lateral data are right. The spiral is weakly unstable where the flight test found it weakly stable (FLEXSTAB also had it unstable); at four minutes to double it is inside the handling band and the pilot will not notice it. **The tuck-under:** at cruise and above, the bare airframe has no phugoid. Its two slow roots are real and one is unstable, doubling in 18 s at Mach 0.78 and 11 s at 0.80, because the tunnel's tail-off Mach tuck (5.6) is in the model unmitigated, and with the tuck zeroed the pair returns (111 s, ζ 0.04). FLEXSTAB's Cm_u at cruise (data 8.4, −0.006) says the real aircraft's speed stability changes far less there; the tail's own change with Mach, which the tail-off data cannot carry, is the likely difference. With the automatic trim on, the jet sits hands-off at cruise for a minute without moving, so the player never meets it; a pilot of the 1960s met it as the reason for Mach trim. Whether to soften the tuck toward FLEXSTAB is the owner's call; the data are kept as read until then.
 
 ## 9. Air data for the HUD
 
@@ -349,7 +363,7 @@ The modes are measured with the trim frozen and the yaw damper off unless stated
 | # | What | Pass when |
 |---|---|---|
 | 1 | Short period, bare, three conditions | ωn 1.2–2.2 rad/s, ζ 0.3–0.7 (flight test: 1.39–1.67 rad/s, 0.39–0.68; 8785C: ζ 0.3–2.0) |
-| 2 | Phugoid, bare | period 50–130 s; ζ ≥ 0 (flight test 40–110 s, ζ 0.03–0.06; 8785C Level 1 wants ζ ≥ 0.04, which the real jet barely meets, so Level 2's ζ ≥ 0 is the band) |
+| 2 | Phugoid, bare, at the air start | period 50–130 s; ζ ≥ 0 (flight test 40–110 s, ζ 0.03–0.06; 8785C Level 1 wants ζ ≥ 0.04, which the real jet barely meets, so Level 2's ζ ≥ 0 is the band). At cruise and FL350 the bare airframe tucks under instead (8.7): the roots are reported, and the check there is 60 s hands-off with the trim on, n_z 1 ± 0.05 with the Mach and altitude unchanged |
 | 3 | Dutch roll, bare | period 3.8–5.5 s (flight test 4.4–4.8 s at cruise and climb; the Shell 77 board about 5 s), ζ 0.03–0.15 |
 | 4 | Dutch roll, yaw damper on | ζ 0.3–0.5, and the rudder within δr_max throughout a 5° sideslip release |
 | 5 | Roll mode, bare | τ 0.6–1.4 s (flight test T½ 0.51–0.70 s → τ 0.74–1.0 s; 8785C ≤ 1.4 s) |
@@ -359,8 +373,8 @@ The modes are measured with the trim frozen and the yaw damper off unless stated
 | 9 | Throttle to full from the air start, yoke released, 60 s | as 8, climbing |
 | 10 | Full pull at cruise, 5 s | n_z reaches 2.2–2.8 within 4 s (K_e sets it); no divergence |
 | 11 | Yoke released in a 30° bank at cruise, 20 s | bank holds within 10°; altitude falls (no compensation) |
-| 12 | Idle, level, a scripted pilot holds altitude to the stall, air start | the buffet cue starts before α reaches the plateau; α passes 14° and the nose drops without a pull; no NaN; the flag of section 4 sets at 24° |
-| 13 | Mach 0.86 at FL300, full throttle, trim frozen | the nose pitches down (ΔCm_M) and the speed stops rising below Mach 0.90 (ΔCD_M) |
+| 12 | Idle, level, a scripted pilot holds altitude until α reaches 15°, then releases the yoke, air start | the buffet cue starts before α reaches the plateau; with the yoke released the nose drops within 3 s and α is back under 12° within 10 s; no NaN. (A pilot who keeps pulling can hold the nose up past 20° with 9° of elevator: the pitch-down is the airframe's, not a pusher's) |
+| 13 | Full throttle from cruise at FL300, yoke released, trim on, 3 min | the Mach settles below 0.90 (ΔCD_M: it tops out near 0.86, where the drag rise meets the thrust) and the stabiliser moves nose-up as the Mach rises (ΔCm_M). (Mach 0.86 cannot be held level at FL300 for a trim-frozen start, and with the trim frozen the jet tucks under rather than settling, 8.7) |
 | 14 | VSI | a step in ḣ reads 63 % at 4 s |
 | 15 | Thrust cap | T_max at sea level static = 22,000; at FL200 and FL350 at Mach 0.6 and 0.8 equal to the table of spot values; N1 shown at full throttle falls from 102 % at sea level to 85–98 % at FL350 |
 | 16 | Random inputs, sixteen 60 s flights from 160 to 350 KIAS and 5,000 to 40,000 ft | no NaN; nothing outside the envelope flag that the inputs did not ask for |

@@ -62,6 +62,7 @@ export const SE_PER_QBAR = 1.9e-4;  // neutral-point shift forward, c̄ per psf,
 export const KE_PER_QBAR = 0.0004;  // lift and moment slope factor 1 − KE·q̄
 export const KS_PER_QBAR = 0.0003;  // stabiliser factor 1 − KS·q̄
 export const KQ_PER_QBAR = 0.0004;  // pitch damping factor 1 − KQ·q̄
+export const QBAR_ELASTIC_MAX = 500; // psf: the lines are held beyond this (about 390 KEAS), past FLEXSTAB's points
 
 // Lateral-directional tables against |β| in degrees (data 7.1, record
 // A1-fig6-p19-{CY,Cn,Cl}): the negative-β half of the sweep mirrored, the
@@ -81,7 +82,7 @@ export const CLROLL_TAB = [0, -0.007, -0.013, -0.019, -0.026, -0.032, -0.037, -0
 export const CN_DR = -0.0016;
 export const CY_DR = 0.0030;
 export const CLROLL_DR = 0.0004;
-export const CLROLL_DA = -0.0010;   // a tuning value, range −0.0006 to −0.0015
+export const CLROLL_DA = -0.00095;  // a tuning value, range −0.0006 to −0.0015: 43°/s at full wheel at cruise, 31°/s at the air start
 export const CN_DA = -0.0002;
 
 // Rate derivatives, per radian, stability axes (flight model 5.5; data 8.3, 8.4).

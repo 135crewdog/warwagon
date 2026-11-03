@@ -26,10 +26,11 @@ export function coefficients({ alphaDeg, betaDeg, de, da, dr, is, p, q, r, vt, q
 
   // Mach and elastic factors (5.2, 5.6, 5.7)
   const fm = interp1(D.FM_MACH, D.FM, m);
-  const ke = 1 - D.KE_PER_QBAR * qbar;
-  const ks = 1 - D.KS_PER_QBAR * qbar;
-  const kq = 1 - D.KQ_PER_QBAR * qbar;
-  const se = D.SE_PER_QBAR * qbar;
+  const qe = qbar < D.QBAR_ELASTIC_MAX ? qbar : D.QBAR_ELASTIC_MAX;
+  const ke = 1 - D.KE_PER_QBAR * qe;
+  const ks = 1 - D.KS_PER_QBAR * qe;
+  const kq = 1 - D.KQ_PER_QBAR * qe;
+  const se = D.SE_PER_QBAR * qe;
 
   const it = is + D.STAB_DATUM;      // the tunnel's tail angle (5.3)
 

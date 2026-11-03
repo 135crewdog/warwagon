@@ -31,12 +31,12 @@ test('the VSI lags the vertical speed with a 4 s time constant', () => {
   const a0 = sim.airdata;
   assert.ok(Math.abs(a0.vsi) < 1);
   // step the climb: hold a pull and read the VSI against the true rate
-  for (let i = 0; i < 360; i++) sim.step({ throttle: 1, de: -3 });
+  for (let i = 0; i < 360; i++) sim.stepSurfaces({ throttle: 1, de: -3 });
   const held = sim.airdata.verticalSpeed;
   assert.ok(held > 300, `climbing at ${held} ft/min`);
   // the lag's law: over one step the VSI moves (true − vsi)·dt/τ toward the true rate
   const before = sim.airdata;
-  sim.step({ throttle: 1, de: -3 });
+  sim.stepSurfaces({ throttle: 1, de: -3 });
   const after = sim.airdata;
   const expected = (after.verticalSpeed - before.vsi) * (1 / 120) / VSI_TAU;
   console.log(`  VSI ${after.vsi.toFixed(0)} against ${after.verticalSpeed.toFixed(0)} ft/min; moved ${(after.vsi - before.vsi).toFixed(2)} in one step, the law says ${expected.toFixed(2)} (τ ${VSI_TAU} s)`);
