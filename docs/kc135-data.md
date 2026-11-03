@@ -603,19 +603,23 @@ Under the revised data rule, from the 1974 C-135A/B manuals via the thesis, **KC
 
 ## 9. Mach effects (A3, high-speed tunnel, tail off)
 
-From A3 (AFFDL-TR-77-23) section IV: a 0.035-scale KC-135A wing with nacelles and struts on a NASA body, **no horizontal or vertical tail**, Langley 8-ft transonic tunnel, Mach 0.50 to 0.95, 3.8–5.2 × 10⁶ per foot; coefficients in stability axes about 0.25 MAC. Tail off, so these give the **changes with Mach** to apply to the tail-on low-speed data of sections 2–4, not absolute values. Read by eye from the pages rendered at 400 dpi with a fine grid drawn from the axis ticks (`research/charts/A3-fig43-CD.*`); the nine curves crowd together below Mach 0.80, so the symbol identities there are the least sure reading in this file and the chart is a candidate for the owner's traced check.
+From A3 (AFFDL-TR-77-23) section IV: a 0.035-scale KC-135A wing with nacelles and struts on a NASA body, **no horizontal or vertical tail**, Langley 8-ft transonic tunnel, Mach 0.50 to 0.95, 3.8–5.2 × 10⁶ per foot; coefficients in stability axes about 0.25 MAC. Tail off, so these give the **changes with Mach** to apply to the tail-on low-speed data of sections 2–4, not absolute values. Read first by eye from the pages rendered at 400 dpi with a fine grid drawn from the axis ticks, then **traced by the owner on 3 November 2026** (a line through every symbol of each curve, one colour per curve, in PowerPoint), and the traces measured from their colours against the same axis calibration. The tables below are the owner's reading; where it differs from the first, the difference is given.
 
 ### 9.1 Drag rise: figure 43 (PDF page 80)
 
-CD at fixed CL (accuracy about 0.001):
+CD at fixed CL, the owner's trace (accuracy about 0.0003; the full set, CL 0.10 to 0.70 in steps of 0.05, is in `research/charts/A3-fig43-CD.json`):
 
 | Mach | 0.50 | 0.70 | 0.75 | 0.78 | 0.80 | 0.82 | 0.85 | 0.90 | 0.95 |
 |---|---|---|---|---|---|---|---|---|---|
-| CD at CL 0.4 | 0.023 | 0.023 | 0.0236 | 0.0242 | 0.0252 | 0.0275 | 0.0355 | 0.055 | 0.080 |
-| CD at CL 0.5 | 0.027 | 0.028 | 0.0285 | 0.0292 | 0.031 | 0.034 | 0.048 | 0.066 | — |
-| ΔCD over Mach 0.5–0.7, at CL 0.4 | 0 | 0 | +0.0006 | +0.0012 | +0.0022 | +0.0045 | +0.0125 | +0.032 | +0.057 |
+| CD at CL 0.3 | 0.0192 | 0.0194 | 0.0196 | 0.0200 | 0.0204 | 0.0214 | 0.0264 | 0.0443 | 0.0701 |
+| CD at CL 0.4 | 0.0224 | 0.0228 | 0.0233 | 0.0239 | 0.0247 | 0.0266 | 0.0351 | 0.0553 | 0.0807 |
+| CD at CL 0.5 | 0.0270 | 0.0274 | 0.0282 | 0.0293 | 0.0312 | 0.0358 | 0.0475 | 0.0703 | — |
+| CD at CL 0.6 | 0.0328 | 0.0336 | 0.0354 | 0.0374 | 0.0421 | 0.0503 | 0.0643 | — | — |
+| ΔCD from Mach 0.50, at CL 0.4 | 0 | +0.0004 | +0.0009 | +0.0015 | +0.0023 | +0.0042 | +0.0127 | +0.033 | +0.058 |
 
-The polar is flat to Mach 0.75, rises 10 counts by 0.80 and 45 by 0.82 at cruise lift, then climbs steeply: a drag-divergence Mach (ΔCD = 0.002) near **0.80 at CL 0.4**. That is why the KC-135 cruises at 0.77–0.79. In the model ΔCD(M, CL) is added to the low-speed polar of section 4.
+Against the first reading by eye: at CL 0.4 within 0.0009 at every Mach (the eye read 0.0003–0.0009 high below Mach 0.82, and the same rise with Mach within 0.0004); at CL 0.5 the eye was 0.0018 low at Mach 0.82 and 0.004 low at 0.90, where the trace runs through the symbols the eye had passed between.
+
+The polar is nearly flat to Mach 0.75, rises 10 counts by 0.78–0.80 and 40 by 0.82 at cruise lift, then climbs steeply: a drag-divergence Mach (ΔCD = 0.002) near **0.80 at CL 0.4**. That is why the KC-135 cruises at 0.77–0.79. In the model ΔCD(M, CL) is added to the low-speed polar of section 4.
 
 ### 9.2 Lift and Mach tuck: figure 44 (PDF page 81)
 
@@ -623,7 +627,10 @@ CL against α changes little to Mach 0.90: the lift-curve slope stays about 0.09
 
 | Mach | 0.50 | 0.70 | 0.75 | 0.78 | 0.80 | 0.82 | 0.85 | 0.90 |
 |---|---|---|---|---|---|---|---|---|
-| Cm (0.25 c̄) at CL 0.4, tail off | −0.078 | −0.088 | −0.093 | −0.098 | −0.107 | −0.115 | −0.122 | −0.127 |
+| Cm (0.25 c̄) at CL 0.4, tail off | −0.077 | −0.088 | −0.094 | −0.098 | −0.105 | −0.113 | −0.121 | −0.121 |
+| Cm at CL 0.5 | −0.078 | −0.092 | −0.100 | −0.104 | −0.114 | −0.122 | −0.127 | −0.128 |
+
+The owner's trace of 3 November 2026 (in the table); the first reading by eye agreed within 0.002 at CL 0.4 except at Mach 0.90 (−0.127): the 0.85 and 0.90 curves cross near CL 0.4, and the trace follows each curve's own symbols through the crossing. The lines wander by about ±0.002 through the scatter of the symbols.
 
 **Mach tuck:** 0.010 nose-down from Mach 0.70 to 0.78 and 0.03 by 0.85, at constant lift. With the stabiliser worth 0.028–0.032 per degree (sections 3, 8), the jet needs about one more degree of nose-up stabiliser at 0.85 than at 0.75: the automatic trim will chase it, and above Mach 0.82 the nose will want to drop. Mach 0.95 reverses the trend (shock-induced flow changes); the model stops at 0.90.
 
@@ -631,14 +638,14 @@ CL against α changes little to Mach 0.90: the lift-curve slope stays about 0.09
 
 | Mach | 0.50 | 0.60 | 0.70 | 0.75 | 0.78 | 0.80 | 0.82 | 0.84 |
 |---|---|---|---|---|---|---|---|---|
-| Initial buffet CL | 0.71 | 0.74 | 0.76 | 0.72 | 0.64 | 0.58 | 0.49 | — |
-| Drag divergence CL | — | — | — | 0.67 | 0.55 | 0.43 | 0.32 | 0.20 |
+| Initial buffet CL | 0.71 | 0.75 | 0.76 | 0.70 | 0.63 | 0.58 | 0.50 | — |
+| Drag divergence CL | — | — | — | 0.68 | 0.57 | 0.46 | 0.33 | 0.20 (at 0.836) |
 
-The buffet boundary is the cue for the high-altitude, high-weight corner (Rage's buffet shake, driven by CL against this line). Drag divergence agrees with 9.1.
+The owner's trace of the dashed lines, 3 November 2026; the first reading by eye agreed within 0.02 in buffet CL and 0.03 in drag-divergence CL (the eye had placed the divergence line about 0.005 in Mach too low). The buffet boundary is the cue for the high-altitude, high-weight corner (Rage's buffet shake, driven by CL against this line). Drag divergence at CL 0.4 is Mach 0.81, agreeing with 9.1.
 
 ### 9.4 Full scale, in flight: CP-2211, Lux, figure 6 (PDF pages 117–118)
 
-Lux, *In-flight lift and drag measurements on a first generation jet transport equipped with winglets*, NASA CP-2211, 1982: the NASA KC-135A flown at 34,000–39,000 ft, lift from accelerometers and drag from engine thrust measured in flight; the **baseline** (no winglet) faired lines read, by eye from the pages at 300 dpi (accuracy about 0.003 in CL, 0.0004 in CD).
+Lux, *In-flight lift and drag measurements on a first generation jet transport equipped with winglets*, NASA CP-2211, 1982: the NASA KC-135A flown at 34,000–39,000 ft, lift from accelerometers and drag from engine thrust measured in flight; the **baseline** (no winglet) faired lines read by eye from the pages at 300 dpi (accuracy about 0.003 in CL, 0.0004 in CD), then checked against the owner's trace of the circles and faired lines on 3 November 2026, calibrated from each panel's tick marks: the trace agrees everywhere within 0.0004 in CD, 0.005 in CL at α 2° and 0.002 per degree in slope, so the first reading stands. The trace's values, for the record: CD at CL 0.40 of 0.0231, 0.0232 and 0.0236 at Mach 0.75, 0.78 and 0.80; at CL 0.45, 0.0252, 0.0255, 0.0254 and 0.0262 at Mach 0.70 to 0.80; slopes 0.094, 0.093, 0.095 and 0.096 per degree.
 
 | Mach | CL-α slope, /deg | CL at α 2° | CD at CL 0.40 | CD at CL 0.45 | CD at CL 0.50 |
 |---|---|---|---|---|---|
@@ -647,7 +654,7 @@ Lux, *In-flight lift and drag measurements on a first generation jet transport e
 | 0.78 | 0.094 | 0.40 | 0.0234 | 0.0258 | 0.0284 |
 | 0.80 | 0.097 | 0.41 | 0.0235 | 0.0264 | — |
 
-**The check of the whole drag build-up.** At cruise, Mach 0.78 and CL 0.42, the flight-measured drag of the complete aircraft is **0.024**, the same as Crenshaw's flight-test point (Mach 0.77, CL 0.426, CD 0.024; section 8.3). The flight polar rises only 0.0005 from Mach 0.70 to 0.80 at CL 0.40, against the tail-off tunnel's 0.0022 (9.1): the full-scale drag rise starts later than the tunnel's, as the flight data's higher Reynolds number and the elastic wing's washout would have it. **For the model:** cruise drag is pinned to these flight polars at Mach 0.70–0.80, and the tunnel's ΔCD(M) of 9.1 is used only above Mach 0.80, joined to the flight data at 0.80. The flight lift slope, 0.094 per degree, is the elastic aircraft's at cruise, against FLEXSTAB's elastic 0.0876 and rigid 0.0984 (8.6): flight sits between them.
+**The check of the whole drag build-up.** At cruise, Mach 0.78 and CL 0.42, the flight-measured drag of the complete aircraft is **0.024**, the same as Crenshaw's flight-test point (Mach 0.77, CL 0.426, CD 0.024; section 8.3). The flight polar rises only 0.0005 from Mach 0.70 to 0.80 at CL 0.40, against the tail-off tunnel's 0.0019 (9.1): the full-scale drag rise starts later than the tunnel's, as the flight data's higher Reynolds number and the elastic wing's washout would have it. **For the model:** cruise drag is pinned to these flight polars at Mach 0.70–0.80, and the tunnel's ΔCD(M) of 9.1 is used only above Mach 0.80, joined to the flight data at 0.80. The flight lift slope, 0.094 per degree, is the elastic aircraft's at cruise, against FLEXSTAB's elastic 0.0876 and rigid 0.0984 (8.6): flight sits between them.
 
 ### Still to read for the Mach model
 - A8 (TN D-8473, the semispan model, Mach 0.30–0.80) and A7 (TP-1163, lateral derivatives against Mach), as cross-checks.
