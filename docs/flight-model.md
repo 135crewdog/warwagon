@@ -149,17 +149,15 @@ Drag is indexed by lift, not by angle of attack: induced drag goes with CL², an
 
 - **CD_pol(CL) = 0.0155 + 0.047·CL²**, the clean polar below the drag rise, a formula because the physics gives the shape (`docs/research-plan.md` 3, step 5). Its curvature k is Lux's flight-measured 0.047 (CD 0.0230 to 0.0272 from CL 0.40 to 0.50 at Mach 0.70, data 9.4), which is also the tunnel's 0.048 (data 4.1): tunnel and flight agree on the shape. Its level is flight's: 0.0155 at zero lift, against the tunnel's 0.0191, the full-scale correction being the skin friction at a twelfth of the Reynolds number (data 4.2's −0.002 was too small, and data 4.1's first guess of 0.015–0.017 right). Lux's polars are of the trimmed aircraft, so the cruise trim drag is inside this level and no separate trim-drag term is carried; the few counts by which trim drag varies with stabiliser angle are left out. The polar is evaluated at the total CL of 5.2.
 - **ΔCD_stall(α) = max(0, CD_tab(α) − (0.0191 + 0.0481·CL_tab(α)²))**: the tunnel's separation drag beyond its own parabola, zero on the straight part of the lift curve by construction and climbing from about 8° (0.005 at 8°, 0.05 at 12°, 0.16 at 16°). At Mach 0.28 the two terms together reproduce the tunnel's CD(α) table less a near-constant 0.0036–0.0045, so the tunnel still sets the shape of the stall.
-- **ΔCD_M(M, CL)**: the drag rise. To Mach 0.80 the flight data (data 9.4, CL 0.40): 0 to Mach 0.70, +0.0003 at 0.75, +0.0004 at 0.78, +0.0005 at 0.80, independent of CL. Above 0.80 the tunnel's increments relative to its own 0.80 curve, by CL (the owner's trace, data 9.1 and `research/charts/A3-fig43-CD.json`), added to the 0.0005:
+- **ΔCD_M(M, CL)**: the drag rise. To Mach 0.80 the flight data (data 9.4), as Lux's increments over his Mach 0.70 polar: at CL 0.40, +0.0003 at 0.75, +0.0004 at 0.78, +0.0005 at 0.80; at CL 0.50 three times that, +0.0007 at 0.75 and +0.0012 at 0.78 (his 0.80 point there is unread; +0.0017 extrapolated): the full-scale rise grows with lift, as the tunnel's does. The CL 0.40 column is held below it and the CL 0.60 column is twice the 0.50, the tunnel's shape. Above 0.80 the tunnel's increments relative to its own 0.80 curve, by CL (the owner's trace, data 9.1 and `research/charts/A3-fig43-CD.json`), added to the 0.80 row:
 
-  | CL | 0.82 | 0.85 | 0.90 |
-  |---|---|---|---|
-  | 0.2 | +0.0011 | +0.0041 | +0.0188 |
-  | 0.3 | +0.0015 | +0.0065 | +0.0244 |
-  | 0.4 | +0.0024 | +0.0109 | +0.0311 |
-  | 0.5 | +0.0051 | +0.0168 | +0.0396 |
-  | 0.6 | +0.0087 | +0.0227 | +0.048 (the trace ends at CL 0.58; extrapolated) |
+  | CL | 0.75 | 0.78 | 0.80 | 0.82 | 0.85 | 0.90 |
+  |---|---|---|---|---|---|---|
+  | 0.2, 0.3, 0.4 | +0.0003 | +0.0004 | +0.0005 | +0.0011, +0.0015, +0.0024 | +0.0041, +0.0065, +0.0109 | +0.0188, +0.0244, +0.0311 |
+  | 0.5 | +0.0007 | +0.0012 | +0.0017 | +0.0063 | +0.0180 | +0.0408 |
+  | 0.6 | +0.0014 | +0.0024 | +0.0034 | +0.0116 | +0.0256 | +0.051 (the trace ends at CL 0.58; extrapolated) |
 
-  Below CL 0.2 and above 0.6 the end rows are held; above Mach 0.90 the 0.90 column is held and the flag of section 4 is set. The joint at 0.80 is the decision of data 9.4: the flight polars say the full-scale rise starts later than the tunnel's, and the tunnel alone says how steeply it then climbs.
+  Zero at and below Mach 0.70. Below CL 0.2 and above 0.6 the end rows are held; above Mach 0.90 the 0.90 column is held and the flag of section 4 is set. The joint at 0.80 is the decision of data 9.4: the flight polars say the full-scale rise starts later than the tunnel's, and the tunnel alone says how steeply it then climbs.
 
 Check: at Mach 0.70 the polar gives 0.0230, 0.0250 and 0.0272 at CL 0.40, 0.45 and 0.50 (Lux: 0.0230, 0.0255, 0.0272); at Mach 0.78 and CL 0.42 the build-up gives 0.0242, and the flight-measured drag of the complete aircraft is 0.024 (Lux, and Crenshaw's flight-test point: data 9.4, 8.3).
 
@@ -186,7 +184,7 @@ FLEXSTAB's rigid-to-elastic pairs at two dynamic pressures (data 8.6) are linear
 - **Stabiliser**: k_s(q̄) = 1 − 0.0003·q̄ (the tail bends too; −8 % at cruise).
 - **Pitch damping**: k_q(q̄) = 1 − 0.0004·q̄.
 
-Check: with k_e on the moment table as on the lift (5.3), the model's elastic Cmα at 280 psf is 0.888 × (−0.0220) + 0.053 × 0.0876 = −0.0149 /deg against FLEXSTAB's rigid −0.0220 and elastic −0.0150 (data 8.6), and the static margin 0.21 − 0.053 = 0.16 c̄.
+Check: with k_e on the moment table as on the lift (5.3), the correction takes the same share that FLEXSTAB's does: applied to FLEXSTAB's own rigid slopes, 0.888 × (−0.0220) + 0.053 × 0.0876 = −0.0149 /deg against its elastic −0.0150 (data 8.6). The model's own rigid slopes at Mach 0.77 are the tunnel's scaled by f_M, 12 % below FLEXSTAB's (Cmα −0.0194 against −0.0220, CLα 0.094 against 0.0986), so its elastic Cmα comes out at −0.0126 /deg against FLEXSTAB's −0.0150 and the flight test's −0.015, and its static margin 0.196 → 0.143 c̄ against FLEXSTAB's 0.224 → 0.171: the same forward shift of 0.053 c̄ on a slightly smaller margin (measured by `tests/aero.test.js`, which checks the ratio and the shift).
 
 The lateral derivatives get no elastic correction: the flight-test values used for the dampings already include it, and the static ones are inside Crenshaw's bracket (5.5). These corrections are what makes the jet handle like a flexible 707-class transport rather than a stiff tunnel model; they are labelled as FLEXSTAB's, not measured.
 
@@ -198,11 +196,11 @@ There is no limiter: the pilot can stall the jet. What the tables do past 14°: 
 
 Four F108-CF-100 (CFM56-2B-1), one command (data 12).
 
-- **The maximum available**, per engine, at the present altitude and Mach: the take-off rating, T₀ = 22,000 lbf sea-level static, lapsed with Mach and altitude by the Bartel and Young equations as printed in OpenAP (E3, data 12), with λ = 6.0 and the reference cruise thrust 4,600 lbf at Mach 0.78 and 35,000 ft; above 40,000 ft, where those equations stop, thrust falls with pressure from its 40,000 ft value at the same Mach. T_max(h, M) is a function in `engine`, with a table of spot values in its test. This cap is the stand-in for the PMC: it is the certified rating lapsed, not a schedule from a manual.
+- **The maximum available**, per engine, at the present altitude and Mach: the take-off rating, T₀ = 22,000 lbf sea-level static, lapsed with Mach and altitude by the Bartel and Young equations as printed in OpenAP (E3, data 12), with λ = 6.0 and the reference cruise thrust 4,600 lbf at Mach 0.78 and 35,000 ft. OpenAP's take-off equation (its 17–21, pressure ratio and Mach) is used to 10,000 ft and its en-route equation (22–23, pressure and Mach) from 30,000 ft up, blended linearly in pressure between; its two climb segments (24–28) take a trajectory tool's vertical speed and calibrated-airspeed ratio and are not used. The en-route equation is kept above 40,000 ft, where it tracks the pressure within 1 %. T_max(h, M) is a function in `engine`, with a table of spot values in its test (22,000 static; 5,309 at FL300, Mach 0.78; 3,045 at Crenshaw's cruise 2). This cap is the stand-in for the PMC: it is the certified rating lapsed, not a schedule from a manual.
 - **MCT** is 0.981 of take-off (21,579 lbf static, data 12), lapsed the same way. **Flight idle** is 0.07·T₀ lapsed the same way, an assumption (the ICAO idle point, data 12).
 - **The throttle** s (0..1) asks for a fraction of what is available now: T_cmd = T_idle + (T_MCT − T_idle)·s/0.85 up to the detent at s = 0.85; above it, T_MCT + (T_TO − T_MCT)·(s − 0.85)/0.15. Above the detent there is only 2 % more thrust, as in the jet; the detent is there so the thumb knows it is asking for take-off power.
 - **Spool lag**: each engine's thrust follows T_cmd through a first-order lag whose time constant depends on where the engine is: τ = 1.0 s at or above 20 % of T₀, rising linearly to 3.0 s at idle. A test checks flight idle to 95 % thrust in under 5 s at sea level, the certification ceiling (14 CFR 33.73), and about 4 s is the target. All four engines get the same command and have the same lag, so they stay matched; the state holds four values so an engine-out can be added later without changing the equations.
-- **N1 shown**, per cent, a cue and not data (data 12): the fan speed that a corrected-flow engine would turn for the present thrust, N1 = 102 · √θ · √(T / (δ · T₀ · f_M(M))), where θ and δ are the temperature and pressure ratios of the standard atmosphere, f_M(M) is the sea-level Mach lapse of the same thrust model (so T/(δ·f_M) is the equivalent sea-level static thrust) and the square law stands in for the fan's thrust against speed. It gives 102 % at take-off power at sea level, about 96 % at full throttle at FL300 and 90–95 % at FL350 and above: the maximum N1 that falls with altitude, which is what the owner sees in the jet, from the thrust cap alone. Flight idle shows about 27 %.
+- **N1 shown**, per cent, a cue and not data (data 12). The PMC caps the fan's *corrected* speed, so the physical speed at the cap falls with the square root of the temperature ratio: N1_max(h) = 102 · √θ, which is 102 % at sea level, 98 % at 10,000 ft, 91 % at FL300 and 88 % above the tropopause. The N1 shown for a thrust is N1_max · √(T / T_max(h, M)), the square law standing in for the fan's thrust against speed. So the maximum N1 falls with altitude, which is what the owner sees in the jet, from the cap's physics alone; the figures are tuned to the owner's memory of the real numbers on the phone, not to data. Flight idle shows about 27 % at sea level. (A corrected-flow law using OpenAP's sea-level Mach lapse was tried first and gave 108 % at FL300: OpenAP's two thrust equations disagree on the Mach effect by 40 %, so that algebra does not close.)
 
 ## 7. Actuators
 
@@ -328,16 +326,16 @@ Three layers, all headless in Node with nothing installed, and each flight test 
 
 ### 12.1 The model is the data
 
-- **Every table is its chart.** For each table in `src/sim/data/`, the test reads the chart's JSON record in `research/charts/` and checks every breakpoint value is equal to the data file's row (exact, since both are typed from the same record), and that the derived constants (Cm_δs from the two tail runs, the polar's 0.0155 and 0.047 from Lux's points, the drag-rise table from the trace) are what sections 5.2–5.6 say; and that at Mach 0.28 the model's CD(α) from −4° to 8° is the tunnel's table less a constant, within ±0.001.
+- **Every table is its chart.** For each table in `src/sim/data/`, the test reads the chart's JSON record in `research/charts/` and checks every breakpoint value is equal to the data file's row (exact, since both are typed from the same record), and that the derived constants (Cm_δs from the two tail runs, the polar's 0.0155 and 0.047 from Lux's points, the drag-rise table from the trace) are what sections 5.2–5.6 say; and that at Mach 0.28 the model's CD(α) from −4° to 8° is the tunnel's table less a near-constant, within ±0.0025 (the tunnel's own CD reading accuracy, data 4.1: the tunnel's points scatter that much about their parabola).
 - **The trim solver reproduces the flight points** (δe = 0, wings level):
 
   | Point | Condition | Pass when |
   |---|---|---|
   | Crenshaw cruise 1 (data 8.1, 8.3) | 284,000 lb, 28,500 ft, Mach 0.77 | θ 2.4 ± 1.0°; thrust 16,352 ± 15 %; i_s −2.3 ± 1.5° |
   | Crenshaw cruise 2 | 130,000 lb, 45,600 ft, Mach 0.77 | θ 1.6 ± 1.0°; thrust 7,510 ± 15 %, and within the maximum available |
-  | Crenshaw climb 3 | 297,000 lb, sea level, Mach 0.422, γ 4.01° | θ 7.0 ± 1.0°; thrust 38,800 ± 20 % (flight test; FLEXSTAB had 45,910) |
+  | Crenshaw climb 3 | 297,000 lb, sea level, Mach 0.422, γ 4.01° | θ 7.0 ± 1.0°; thrust 38,800 ± 20 % (flight test; FLEXSTAB had 45,910). Its stabiliser is not checked: FLEXSTAB's climb model has CD 0.039 against the flight test's 0.025 and its thrust 18 % high, so its −3.84° is not a reference |
   | G5's 1998 trim point (data 13) | 240,000 lb, 21,000 ft, 622 ft/s | θ 2.5 ± 1.0° |
-  | Lux's polar (data 9.4) | 240,000 lb at the altitude giving CL 0.40, 0.45, 0.50 at Mach 0.70, 0.75, 0.78, 0.80 (where read) | CD within 0.0005 of the table's (the polar reproduces two of the Mach 0.70 points by construction; the others are the check) |
+  | Lux's polar (data 9.4) | 240,000 lb at the altitude giving CL 0.40, 0.45, 0.50 at Mach 0.70, 0.75, 0.78, 0.80 (where read) | CD within 0.0006 of the table's: his reading accuracy (0.0004) plus the 0.0005 by which his CL 0.45 points sit off a parabola (the polar reproduces two of the Mach 0.70 points by construction; the others are the check) |
 
   The solver takes the weight as an argument for these; the game's weight is fixed.
 - **Atmosphere**: p, ρ, T and a at 0, 10,000, 20,000, 30,000, 36,089, 40,000 and 50,000 ft within 0.2 % of the 1976 standard tables.
@@ -364,7 +362,7 @@ The modes are measured with the trim frozen and the yaw damper off unless stated
 | 12 | Idle, level, a scripted pilot holds altitude to the stall, air start | the buffet cue starts before α reaches the plateau; α passes 14° and the nose drops without a pull; no NaN; the flag of section 4 sets at 24° |
 | 13 | Mach 0.86 at FL300, full throttle, trim frozen | the nose pitches down (ΔCm_M) and the speed stops rising below Mach 0.90 (ΔCD_M) |
 | 14 | VSI | a step in ḣ reads 63 % at 4 s |
-| 15 | Thrust cap | T_max at sea level static = 22,000; at FL200 and FL350 at Mach 0.6 and 0.8 equal to the table of spot values; N1 shown at full throttle falls from 102 % at sea level to 90–98 % at FL350 |
+| 15 | Thrust cap | T_max at sea level static = 22,000; at FL200 and FL350 at Mach 0.6 and 0.8 equal to the table of spot values; N1 shown at full throttle falls from 102 % at sea level to 85–98 % at FL350 |
 | 16 | Random inputs, sixteen 60 s flights from 160 to 350 KIAS and 5,000 to 40,000 ft | no NaN; nothing outside the envelope flag that the inputs did not ask for |
 
 When a band can't be met, stop and report the numbers.
