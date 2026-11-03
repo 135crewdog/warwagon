@@ -107,12 +107,12 @@ Rigid body, six degrees of freedom, constant mass, flat non-rotating earth, as R
 
 ### 5.1 The build-up
 
-Each step, in stability axes, with q̂ = q·c̄/(2V), p̂ = p·b/(2V), r̂ = r·b/(2V) (rates in rad/s) and δ in degrees:
+Each step, in stability axes. The rate derivatives are stability-axis derivatives (data 8), so the body rates are rotated first: p_s = p·cosα + r·sinα, r_s = r·cosα − p·sinα, and q̂ = q·c̄/(2V), p̂ = p_s·b/(2V), r̂ = r_s·b/(2V) (rates in rad/s); δ in degrees:
 
 ```
 CL = f_M(M)·k_e(q̄)·CL_tab(α) + CL_δs·i_s + CL_δe·δe + CL_q·q̂
-CD = CD_tab(α) + ΔCD_s + ΔCD_M(M, CL)
-Cm = f_M(M)·Cm_tab(α) + s_e(q̄)·CL + ΔCm_M(M) + k_s(q̄)·Cm_δs·i_s + Cm_δe·δe + k_q(q̄)·Cm_q*·q̂ + ΔCm_T
+CD = CD_pol(CL) + ΔCD_stall(α) + ΔCD_M(M, CL)
+Cm = f_M(M)·k_e(q̄)·Cm_tab(α) + s_e(q̄)·CL + ΔCm_M(M) + k_s(q̄)·Cm_δs·i_s + Cm_δe·δe + k_q(q̄)·Cm_q*·q̂ + ΔCm_T
 CY = CY_tab(β) + CY_δr·δr + CY_p·p̂ + CY_r·r̂
 Cl = Cl_tab(β) + Cl_δa·δa + Cl_δr·δr + Cl_p·p̂ + Cl_r·r̂
 Cn = Cn_tab(β) + Cn_δa·δa + Cn_δr·δr + Cn_p·p̂ + Cn_r·r̂
@@ -132,7 +132,7 @@ Check: the model's lift slope at cruise comes out 0.081 × 1.16 × 0.89 = 0.084 
 ### 5.3 Pitching moment
 
 - **Cm_tab(α)**: the tail-on, tail-0° table at Mach 0.28 about 0.25 c̄ (data 3.1), including the flattening from 9° to 14° (the swept wing's pitch-up) and the drop beyond. Cmα = −0.017 /deg, neutral point 0.46 c̄.
-- **f_M(M)** scales it as it scales the lift: the neutral point does not move with Mach below 0.85 (FLEXSTAB has it at 0.454–0.458 c̄ from Mach 0.21 to 0.77, data 8.4; A3's tail-off Cm against CL stays vertical to 0.85, data 9.2), so the moment slope rises in step with the lift slope.
+- **f_M(M)·k_e(q̄)** scale it as they scale the lift, so the Mach rise and the elastic loss act on the moment slope as on the lift slope (a tail-on Cmα is a lift slope times an arm): the neutral point does not move with Mach below 0.85 (FLEXSTAB has it at 0.454–0.458 c̄ from Mach 0.21 to 0.77, data 8.4; A3's tail-off Cm against CL stays vertical to 0.85, data 9.2), so the moment slope rises in step with the lift slope.
 - **s_e(q̄)·CL** is the elastic forward shift of the neutral point (5.7).
 - **ΔCm_M(M)**: Mach tuck (5.6).
 - **Cm_δs = −0.0284 /deg** of stabiliser leading edge up (data 3.1; FLEXSTAB −0.028 to −0.0325 agrees); **Cm_δe = −0.015 /deg** (data 11.1, an estimate from the stabiliser by the elevator's chord ratio; the one longitudinal number with no measurement behind it). k_s(q̄) is the stabiliser's elastic factor (5.7).
@@ -143,8 +143,10 @@ Check: at cruise (240,000 lb, FL300, Mach 0.78, CL 0.37) the terms sum to a stab
 
 ### 5.4 Drag
 
-- **CD_tab(α)**: the tail-on, tail-0° polar at Mach 0.28 (data 4.1), rising steeply past 9°.
-- **ΔCD_s = −0.0038**, one constant: the full-scale correction, fitted so the model at Mach 0.70 reproduces Lux's flight-measured polar (data 9.4) at CL 0.40. It then lands on his CL 0.45 and 0.50 points within 0.0005 without further adjustment, so the tunnel's polar has the aircraft's shape and only its level was wrong (skin friction at a twelfth of the Reynolds number, data 4.2's estimate of −0.002 being too small). Lux's polars are of the trimmed aircraft, so the cruise trim drag is inside this constant and no separate trim-drag term is carried; the few counts by which trim drag varies with stabiliser angle are left out.
+Drag is indexed by lift, not by angle of attack: induced drag goes with CL², and the α at which the aircraft makes a given CL is not the tunnel's once the lift slope is scaled for Mach and the elastic wing (5.2). The tunnel's polar is read as pairs (CL_tab(α), CD_tab(α)) from data 2.1 and 4.1.
+
+- **CD_pol(CL) = 0.0155 + 0.047·CL²**, the clean polar below the drag rise, a formula because the physics gives the shape (`docs/research-plan.md` 3, step 5). Its curvature k is Lux's flight-measured 0.047 (CD 0.0230 to 0.0272 from CL 0.40 to 0.50 at Mach 0.70, data 9.4), which is also the tunnel's 0.048 (data 4.1): tunnel and flight agree on the shape. Its level is flight's: 0.0155 at zero lift, against the tunnel's 0.0191, the full-scale correction being the skin friction at a twelfth of the Reynolds number (data 4.2's −0.002 was too small, and data 4.1's first guess of 0.015–0.017 right). Lux's polars are of the trimmed aircraft, so the cruise trim drag is inside this level and no separate trim-drag term is carried; the few counts by which trim drag varies with stabiliser angle are left out. The polar is evaluated at the total CL of 5.2.
+- **ΔCD_stall(α) = max(0, CD_tab(α) − (0.0191 + 0.0481·CL_tab(α)²))**: the tunnel's separation drag beyond its own parabola, zero on the straight part of the lift curve by construction and climbing from about 8° (0.005 at 8°, 0.05 at 12°, 0.16 at 16°). At Mach 0.28 the two terms together reproduce the tunnel's CD(α) table less a near-constant 0.0036–0.0045, so the tunnel still sets the shape of the stall.
 - **ΔCD_M(M, CL)**: the drag rise. To Mach 0.80 the flight data (data 9.4, CL 0.40): 0 to Mach 0.70, +0.0003 at 0.75, +0.0004 at 0.78, +0.0005 at 0.80, independent of CL. Above 0.80 the tunnel's increments relative to its own 0.80 curve, by CL (the owner's trace, data 9.1 and `research/charts/A3-fig43-CD.json`), added to the 0.0005:
 
   | CL | 0.82 | 0.85 | 0.90 |
@@ -157,7 +159,7 @@ Check: at cruise (240,000 lb, FL300, Mach 0.78, CL 0.37) the terms sum to a stab
 
   Below CL 0.2 and above 0.6 the end rows are held; above Mach 0.90 the 0.90 column is held and the flag of section 4 is set. The joint at 0.80 is the decision of data 9.4: the flight polars say the full-scale rise starts later than the tunnel's, and the tunnel alone says how steeply it then climbs.
 
-Check: at Mach 0.78 and CL 0.42 the build-up gives 0.0243; the flight-measured drag of the complete aircraft is 0.024 (Lux, and Crenshaw's flight-test point: data 9.4, 8.3).
+Check: at Mach 0.70 the polar gives 0.0230, 0.0250 and 0.0272 at CL 0.40, 0.45 and 0.50 (Lux: 0.0230, 0.0255, 0.0272); at Mach 0.78 and CL 0.42 the build-up gives 0.0242, and the flight-measured drag of the complete aircraft is 0.024 (Lux, and Crenshaw's flight-test point: data 9.4, 8.3).
 
 ### 5.5 Lateral-directional
 
@@ -181,6 +183,8 @@ FLEXSTAB's rigid-to-elastic pairs at two dynamic pressures (data 8.6) are linear
 - **Lift slope**: k_e(q̄) = 1 − 0.0004·q̄ (0.93 at 181, 0.89 at 280).
 - **Stabiliser**: k_s(q̄) = 1 − 0.0003·q̄ (the tail bends too; −8 % at cruise).
 - **Pitch damping**: k_q(q̄) = 1 − 0.0004·q̄.
+
+Check: with k_e on the moment table as on the lift (5.3), the model's elastic Cmα at 280 psf is 0.888 × (−0.0220) + 0.053 × 0.0876 = −0.0149 /deg against FLEXSTAB's rigid −0.0220 and elastic −0.0150 (data 8.6), and the static margin 0.21 − 0.053 = 0.16 c̄.
 
 The lateral derivatives get no elastic correction: the flight-test values used for the dampings already include it, and the static ones are inside Crenshaw's bracket (5.5). These corrections are what makes the jet handle like a flexible 707-class transport rather than a stiff tunnel model; they are labelled as FLEXSTAB's, not measured.
 
@@ -320,7 +324,7 @@ Three layers, all headless in Node with nothing installed, and each flight test 
 
 ### 12.1 The model is the data
 
-- **Every table is its chart.** For each table in `src/sim/data/`, the test reads the chart's JSON record in `research/charts/` and checks every breakpoint value is equal to the data file's row (exact, since both are typed from the same record), and that the derived constants (Cm_δs from the two tail runs, the ΔCD_s shift, the drag-rise table from the trace) are what sections 5.2–5.6 say.
+- **Every table is its chart.** For each table in `src/sim/data/`, the test reads the chart's JSON record in `research/charts/` and checks every breakpoint value is equal to the data file's row (exact, since both are typed from the same record), and that the derived constants (Cm_δs from the two tail runs, the polar's 0.0155 and 0.047 from Lux's points, the drag-rise table from the trace) are what sections 5.2–5.6 say; and that at Mach 0.28 the model's CD(α) from −4° to 8° is the tunnel's table less a constant, within ±0.001.
 - **The trim solver reproduces the flight points** (δe = 0, wings level):
 
   | Point | Condition | Pass when |
@@ -329,7 +333,7 @@ Three layers, all headless in Node with nothing installed, and each flight test 
   | Crenshaw cruise 2 | 130,000 lb, 45,600 ft, Mach 0.77 | θ 1.6 ± 1.0°; thrust 7,510 ± 15 %, and within the maximum available |
   | Crenshaw climb 3 | 297,000 lb, sea level, Mach 0.422, γ 4.01° | θ 7.0 ± 1.0°; thrust 38,800 ± 20 % (flight test; FLEXSTAB had 45,910) |
   | G5's 1998 trim point (data 13) | 240,000 lb, 21,000 ft, 622 ft/s | θ 2.5 ± 1.0° |
-  | Lux's polar (data 9.4) | 240,000 lb at the altitude giving CL 0.40, 0.45, 0.50 at Mach 0.70, 0.75, 0.78, 0.80 (where read) | CD within 0.0005 of the table's |
+  | Lux's polar (data 9.4) | 240,000 lb at the altitude giving CL 0.40, 0.45, 0.50 at Mach 0.70, 0.75, 0.78, 0.80 (where read) | CD within 0.0005 of the table's (the polar reproduces two of the Mach 0.70 points by construction; the others are the check) |
 
   The solver takes the weight as an argument for these; the game's weight is fixed.
 - **Atmosphere**: p, ρ, T and a at 0, 10,000, 20,000, 30,000, 36,089, 40,000 and 50,000 ft within 0.2 % of the 1976 standard tables.
