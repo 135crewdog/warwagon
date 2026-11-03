@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>War Wagon</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="War Wagon">
+  <meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icons/icon-180.png">
+  <link rel="icon" href="./icons/icon-32.png">
+  <link rel="stylesheet" href="./style.css">
+  <script type="importmap">{ "imports": { "three": "./vendor/three/build/three.module.js" } }</script>
+</head>
+<body>
+  <canvas id="view"></canvas>
+  <canvas id="hud"></canvas>
+
+  <div id="controls" hidden>
+    <div id="throttle" class="throttle" role="slider" aria-label="Throttle" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div class="track"><div class="mct"></div><div class="thumb"></div></div>
+    </div>
+    <div id="stick" class="stick" aria-hidden="true"><div class="dot"></div></div>
+    <button id="pause" class="pause" aria-label="Pause">II</button>
+  </div>
+
+  <pre id="debug" hidden></pre>
+
+  <div id="screens">
+    <section id="screen-start" class="screen">
+      <div class="card">
+        <h1>War Wagon</h1>
+        <p class="sub">A KC-135R. Hold the phone like a yoke.</p>
+        <button id="fly" class="btn primary">Fly</button>
+        <button id="settings-start" class="btn">Settings</button>
+        <p class="update" hidden>A new version is ready. <button class="link update-btn">Update</button></p>
+      </div>
+    </section>
+
+    <section id="screen-pause" class="screen" hidden>
+      <div class="card">
+        <h2>Paused</h2>
+        <button id="resume" class="btn primary">Resume</button>
+        <button id="recenter" class="btn">Recenter controls</button>
+        <button id="fly-again" class="btn">Fly again</button>
+        <button id="settings-open" class="btn">Settings</button>
+        <p class="update" hidden>A new version is ready. <button class="link update-btn">Update</button></p>
+      </div>
+    </section>
+
+    <section id="screen-settings" class="screen" hidden>
+      <div class="card">
+        <header class="bar"><button id="settings-done" class="link">Done</button><h2>Settings</h2><span class="spacer"></span></header>
+        <p class="label">Theme</p>
+        <div id="theme" class="segments" role="radiogroup" aria-label="Theme">
+          <button data-theme="light" role="radio">Light</button>
+          <button data-theme="dark" role="radio">Dark</button>
+          <button data-theme="auto" role="radio">Auto</button>
+        </div>
+        <a id="feedback" class="btn" href="mailto:135crewdog.github@gmail.com?subject=War%20Wagon%20feedback">Send feedback</a>
+        <button id="credits-open" class="btn">Credits</button>
+        <p class="version">War Wagon <span id="version"></span></p>
+      </div>
+    </section>
+
+    <section id="screen-credits" class="screen" hidden>
+      <div class="card">
+        <header class="bar"><button id="credits-back" class="link">Back</button><h2>Credits</h2><span class="spacer"></span></header>
+        <div class="credits">
+          <div><h3>Flight model</h3><p>Built from public KC-135 research: NASA’s wind-tunnel reports on the KC-135A (<a href="https://ntrs.nasa.gov/citations/19780004068" target="_blank" rel="noopener">TM 73,250</a> and the winglet programme), the Air Force’s <a href="https://apps.dtic.mil/sti/tr/pdf/ADA046152.pdf" target="_blank" rel="noopener">AFFDL-TR-77-23</a> for the Mach effects, NASA’s in-flight drag measurements, and Crenshaw’s AFIT thesis for the inertias, dampings and flight-test modes. Every number’s source is in the repository’s <a href="https://github.com/135crewdog/warwagon/blob/main/docs/kc135-data.md" target="_blank" rel="noopener">data file</a>. The engines are the F108’s certified ratings from EASA’s type certificate, lapsed by the equations in the OpenAP paper (CC BY).</p></div>
+          <div><h3>Camera and HUD</h3><p>After Ryan Vazquez’s <a href="https://vazgriz.com/346/flight-simulator-in-unity3d-part-1/" target="_blank" rel="noopener">flight-simulator series</a> and <a href="https://github.com/vazgriz/FlightSim" target="_blank" rel="noopener">its code</a>, MIT licence.</p></div>
+          <div><h3>The jet</h3><p>A placeholder built in code from the fact sheet’s dimensions, until a KC-135 model replaces it.</p></div>
+          <div><h3>3D</h3><p><a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>, MIT licence.</p></div>
+          <div><h3>Made by</h3><p><a href="https://github.com/135crewdog/warwagon" target="_blank" rel="noopener">135crewdog</a>, with <a href="https://claude.com/claude-code" target="_blank" rel="noopener">Claude Code</a>.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-rotate" class="screen" hidden>
+      <div class="card">
+        <h2>Rotate your phone</h2>
+        <p>War Wagon is flown in landscape. If it won't rotate, turn off Portrait Orientation Lock in Control Center.</p>
+      </div>
+    </section>
+
+    <section id="screen-denied" class="screen" hidden>
+      <div class="card">
+        <h2>Motion access denied</h2>
+        <p>War Wagon flies by tilting the phone, so it needs motion access. To fix it: close the app completely, open it again, tap Fly and choose Allow.</p>
+      </div>
+    </section>
+
+    <section id="screen-crashed" class="screen" hidden>
+      <div class="card">
+        <h2>Crashed</h2>
+        <button id="crash-again" class="btn primary">Fly again</button>
+      </div>
+    </section>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

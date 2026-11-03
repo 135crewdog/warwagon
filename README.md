@@ -1,6 +1,6 @@
 # War Wagon
 
-A KC-135R flight sim for iPhone. `CLAUDE.md` says what it is and the rules it's built under; `docs/flight-model.md` is the authority on the simulation and `docs/kc135-data.md` holds its numbers, with `research/` the charts they were read from.
+A KC-135R flight sim for iPhone, at `https://135crewdog.github.io/warwagon/`. `CLAUDE.md` says what it is and the rules it's built under; `docs/flight-model.md` is the authority on the simulation and `docs/kc135-data.md` holds its numbers, with `research/` the charts they were read from.
 
 ## Running the tests
 
@@ -10,7 +10,7 @@ You need Node 20 or later and nothing else: there are no dependencies to install
 node --test
 ```
 
-This runs every test under `tests/`. The tests print what they measured, not just pass or fail:
+This runs every test under `tests/` except the browser test. The tests print what they measured, not just pass or fail:
 
 - `tests/aero.test.js` checks every table in `src/sim/data/aero.js` against the chart record in `research/charts/` it was keyed from, and the derived constants against the sections of the flight model that define them.
 - `tests/trim.test.js` prints the trim solver's answers next to Crenshaw's flight conditions, the 1998 trim point and Lux's flight-measured drag polar.
@@ -39,6 +39,22 @@ node tests/flight/fly.js modes
 Run it with no arguments for the list of manoeuvres. Options are `--h` (ft), `--kcas`, `--t` (seconds), `--every` (print interval), `--throttle`, `--seed`, and `--notrim`, `--nodamper`, `--nocoord` to switch an automatic off. `modes` prints the linearised modes. The gains live in `src/sim/data/controls.js`; change one, fly again, and the difference is in the table.
 
 The same command runs in GitHub Actions on every push and pull request (`.github/workflows/test.yml`).
+
+## The browser smoke test
+
+`tests/browser/smoke.js` loads the app in headless Chromium at an iPhone-sized landscape viewport, taps Fly, feeds simulated tilt and checks that it renders and the jet responds. It needs Playwright with Chromium, which is a developer tool and not part of the app:
+
+```
+npm install --no-save playwright
+npx playwright install chromium
+node tests/browser/smoke.js            # pass a folder to save screenshots: node tests/browser/smoke.js shots
+```
+
+CI runs it on every push. Nothing replaces the phone: headless Chromium is not iOS.
+
+## Deploying
+
+Pushing to `main` runs the tests and publishes the app to GitHub Pages (`.github/workflows/pages.yml`). Phones keep the version they have until a new one is offered on the start or pause screen, which happens only when `APP_VERSION` in `src/version.js` and `VERSION` in `sw.js` change: bump both with every change to anything the app serves. The debug overlay at `?debug=1` shows the raw sensor angles, the derived pitch and roll, the yoke, n_z, α, β, the surfaces, N1 and the frame rate. The icons are drawn by `icons/make-icons.mjs`.
 
 ## The research tools
 
