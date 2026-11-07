@@ -29,7 +29,7 @@ The owner's design philosophy applies to everything a person sees or touches: ht
 | 1a | **Simulation core.** Atmosphere (1976 standard, tropopause included), aero with Mach effects, four F108 engines, actuators, equations of motion, trim solver, air data. Rage's `src/sim/` reused where it fits. Test layers 1 and 3 passing. No visuals. | Done |
 | 1b | **Flight controls, tuned.** Yoke to surfaces, spoiler roll assist, automatic trim, yaw damper with automatic coordination. Test layer 2 passing, and a headless flight script that prints time histories. | Done |
 | 1c | **The app.** A flat world, the placeholder jet, chase camera, HUD, UI, tilt, throttle, menus, PWA, Pages. Ends with the owner flying it on the iPhone. | Flown; the first fixes from the flights in |
-| 2 | **The UK.** A coarse base tile with six fine patches, imagery, water, earth curvature in the view, a place to choose on the start screen. | Not started |
+| 2 | **The UK.** A coarse base tile of the whole island with fine patches at the places worth flying, water, earth curvature in the view, imagery, a place to choose on the start screen. | The ground in: the base and the Mildenhall patch, the sea and the lakes, the curvature. Next: the owner's low-level routes as patches, then the places list, then imagery |
 
 Later milestones get specified when milestone 2 is done: the aircraft's features (landing gear with ground contact and wheel brakes, flaps, speed brakes, takeoff and landing at Mildenhall), then sound and a better 3D model. The KC-135 has inboard and outboard ailerons (the outboard pair locked out with the flaps up, which is why the model's roll power is the inboard aileron plus spoilers), inboard and outboard spoilers, and inboard and outboard flaps: the flaps milestone models them that way, and the jet's parts are named to match.
 
@@ -46,7 +46,10 @@ icons/                    app icons, drawn by make-icons.mjs
 src/main.js               composition root: wires sim, input, renderer, HUD and UI together
 src/version.js            APP_VERSION
 src/input/                tilt to yoke; browser-facing, maths kept pure and tested
-src/render/               all three.js code: world (sky and plain), the placeholder jet, camera, frame conversions
+src/osgb.js               latitude and longitude to the National Grid, pure maths
+src/places.js             the places to fly and their air starts
+src/render/               all three.js code: world (sky, sun, fog), terrain (the clipmap), heightmap (the CPU lookup, pure), the placeholder jet, camera, frame conversions
+terrain/                  base.png, places.png and region.json (the ground), CREDITS.md, make-heightmap.py (the OS Terrain 50 conversion)
 src/hud/                  the HUD
 src/ui/                   throttle, yoke indicator, screens
 vendor/three/             three.js r186: build/three.module.js, build/three.core.js, LICENSE, VERSION
@@ -76,16 +79,8 @@ tests/browser/smoke.js    loads the app in headless Chromium and flies a few sec
 ## The aircraft and the world
 
 - **The jet** is, for now, a low-poly placeholder built in code (`src/render/kc135.js`) from the fact sheet's dimensions: a lathed fuselage, wings swept 35° with dihedral, four engine pods on pylons, the fin, the stabilizer and the boom. Its elevators, ailerons, spoilers, rudder and stabilizer are separate named parts that move every frame to the simulation's actuator positions. A glTF model with the same part names can replace it later without touching anything else.
-- **Air start** (milestone 1): 10,000 ft over a flat world, wings level, trimmed for 1 g, at 280 KIAS (Mach 0.51; `docs/flight-model.md` 8.7). The throttle starts at the trim setting.
-- **The world** (milestone 2): the UK, in the British National Grid projection, through Rage's terrain pipeline (`make-heightmap.py`, `make-imagery.py`, the geometry clipmap, the CPU heightmap). A coarse base of about 200 m posts covering roughly 51.2° to 54.9° N and 4.3° W to 1.0° E, and six fine patches:
-  - RAF Mildenhall, with Lakenheath
-  - the Mach Loop (LFA 7)
-  - London
-  - the Lake District (LFA 17: Thirlmere, Dunmail Raise)
-  - RAF Fairford with Brize Norton
-  - the Peak District (Ladybower and the Derwent dams)
-
-  Heights from Copernicus GLO-30 for the base and OS Terrain 50 (Open Government Licence), GLO-30 or LiDAR for the patches; colour from Sentinel-2 imagery; the sea and the Lake and Peak reservoirs painted as water.
+- **Air start**: 5,000 ft above the ground at the place (`src/places.js`), wings level, trimmed for 1 g, at 280 KIAS, pointed at the sight. For now one place: over Newmarket, heading north-east to Mildenhall and Lakenheath. The throttle starts at the trim setting. (Milestone 1 started at 10,000 ft over a flat world; the tests still tune there, `docs/flight-model.md` 8.7.)
+- **The world** (milestone 2): Great Britain, in the British National Grid (EPSG:27700), from one source: Ordnance Survey's **OS Terrain 50** (Open Government Licence), through Rage's terrain pipeline (`terrain/make-heightmap.py`, the geometry clipmap, the CPU heightmap). A coarse base of 200 m posts over the whole island, eastings 60 to 660 km and northings 0 to 1,000 km (Shetland, Scilly and Northern Ireland, which the survey doesn't cover, are left out and read as sea), and fine patches of 1,024 posts at the survey's own 50 m, 51 km square, at the places worth flying. The first patch is RAF Mildenhall with Lakenheath; the rest follow the owner's low-level routes, given as latitudes and longitudes, with a patch placed on each. LiDAR for a patch if 50 m looks soft there. **Water** is found in the survey, not drawn: the sea (one constant per tile in OS Terrain 50, missing where a tile is all sea) and every lake and reservoir (flat at its surface, in a basin) are marked in the heightmaps' blue channel and painted by the renderer. Colour from Sentinel-2 imagery, exported by the owner from the Copernicus Browser, in a later pull request; until then the ground is coloured by height and slope. The world origin is RAF Mildenhall (easting 569,000, northing 278,000).
 - **Crash:** below the ground that is there the flight ends, as in Rage.
 
 ## Throttle and engines

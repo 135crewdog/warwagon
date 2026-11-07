@@ -1,16 +1,19 @@
-// The sky, the sun, the fog and the flat ground of milestone 1: a dome that
-// fades to the horizon colour with an afternoon sun, fair-weather cumulus
-// painted on it (a texture of the sky, infinitely far, nothing is flown
-// through), and a flat plain coloured by noise so speed and height read.
-// From 10,000 ft the horizon is far: the far plane is 60 km and the fog
-// starts beyond 20 km. Metres; world x east, y up, z south. The sky and
-// the clouds are Rage's; the ground is this milestone's stand-in for the UK.
+// The sky, the sun and the fog: a dome that fades to the horizon colour with
+// an afternoon sun, fair-weather cumulus painted on it (a texture of the sky,
+// infinitely far, nothing is flown through), and fog that softens the far
+// country. The ground itself is terrain.js, which takes the fog and the sun
+// from here. The world is seen from far up: at FL300 the horizon is 200 nm
+// away, so the far plane is 450 km and the fog runs from 40 km to 300 km;
+// the earth's curvature in terrain.js puts the horizon itself where it
+// belongs. Metres; world x east, y up, z south. The sky and the clouds are
+// Rage's.
 
 import * as THREE from 'three';
 
 const HORIZON = 0xb9c7d6;
 const ZENITH = 0x3f78c8;
-export const FAR = 60000;
+export const FAR = 450000;
+const FOG_NEAR = 40000, FOG_FAR = 300000;
 // The direction to the sun: 45° up, bearing 225° (south-west), mid-afternoon.
 export const SUN = new THREE.Vector3(-0.5, 0.7071, 0.5).normalize();
 
@@ -18,7 +21,7 @@ const skyVertex = `
   varying vec3 dir;
   void main() { dir = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`;
 
-const NOISE_GLSL = `
+export const NOISE_GLSL = `
   float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
   float noise(vec2 p) {
     vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f);
@@ -50,38 +53,9 @@ const skyFragment = `
     gl_FragColor = vec4(sky, 1.0);
   }`;
 
-// The ground: fields of two greens and a brown from noise at a few scales,
-// a faint grain for speed close up, and the sun's shading on a flat plain
-// is just its colour. The plane follows the camera, so the pattern is in
-// world coordinates, not the mesh's.
-const groundVertex = `
-  varying vec3 wpos;
-  void main() {
-    vec4 w = modelMatrix * vec4(position, 1.0);
-    wpos = w.xyz;
-    gl_Position = projectionMatrix * viewMatrix * w;
-  }`;
-const groundFragment = `
-  uniform vec3 fogColor;
-  uniform float fogNear, fogFar;
-  varying vec3 wpos;
-  ${NOISE_GLSL}
-  void main() {
-    vec2 p = wpos.xz;
-    float fields = noise(p / 900.0);                              // field-sized patches
-    float big = fbm(p / 9000.0);                                  // the country's larger weave
-    vec3 green = vec3(0.33, 0.47, 0.22), pale = vec3(0.55, 0.58, 0.30), brown = vec3(0.45, 0.36, 0.24);
-    vec3 c = mix(green, pale, smoothstep(0.35, 0.65, fields));
-    c = mix(c, brown, smoothstep(0.6, 0.8, big) * 0.6);
-    c *= 0.9 + 0.2 * noise(p / 60.0);                             // the grain
-    float depth = length(wpos - cameraPosition);
-    float f = smoothstep(fogNear, fogFar, depth);
-    gl_FragColor = vec4(mix(c, fogColor, f), 1.0);
-  }`;
-
 export function createWorld(scene) {
   scene.background = new THREE.Color(HORIZON);
-  const fog = new THREE.Fog(HORIZON, 20000, FAR);
+  const fog = new THREE.Fog(HORIZON, FOG_NEAR, FOG_FAR);
   scene.fog = fog;
 
   const sky = new THREE.Mesh(
@@ -94,26 +68,13 @@ export function createWorld(scene) {
   );
   scene.add(sky);
 
-  const ground = new THREE.Mesh(
-    new THREE.PlaneGeometry(FAR * 2.2, FAR * 2.2),
-    new THREE.ShaderMaterial({
-      uniforms: { fogColor: { value: new THREE.Color(HORIZON) }, fogNear: { value: fog.near }, fogFar: { value: fog.far } },
-      vertexShader: groundVertex, fragmentShader: groundFragment,
-    }),
-  );
-  ground.rotation.x = -Math.PI / 2;
-  scene.add(ground);
-
   const sun = new THREE.DirectionalLight(0xffffff, 2.2);
   sun.position.copy(SUN);
   scene.add(sun, new THREE.HemisphereLight(0xdfe8f5, 0x4c5e3f, 0.9));
 
   return {
     fog, sun: sun.position,
-    // keep the sky and the plain centred on the camera; the plain's pattern is in world space, so it does not move with it
-    update(cameraPosition) {
-      sky.position.copy(cameraPosition);
-      ground.position.set(cameraPosition.x, 0, cameraPosition.z);
-    },
+    // keep the sky centred on the camera
+    update(cameraPosition) { sky.position.copy(cameraPosition); },
   };
 }

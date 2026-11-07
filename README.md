@@ -54,6 +54,14 @@ CI runs it on every push. Nothing replaces the phone: headless Chromium is not i
 
 ## Deploying
 
+**The ground.** `terrain/` holds the heightmaps the app draws, made once by `terrain/make-heightmap.py` from Ordnance Survey's OS Terrain 50 (the ASCII grid download of Great Britain from the OS Data Hub, free under the Open Government Licence; `terrain/CREDITS.md`). It needs Python with numpy and scipy, about 3 GB of memory and five minutes:
+
+```bash
+python3 terrain/make-heightmap.py terr50_gagg_gb.zip terrain/
+```
+
+It writes `base.png` (the island at 200 m posts), `places.png` (the fine patches at 50 m) and `region.json`, plus `preview.png`, a picture of the base for checking by eye that is not committed. To add a place, add its name and centre to `PATCHES` in the script and run it again; the base does not change. The tests read the real files (`tests/terrain.test.js` checks the summits, the seas and the Fens).
+
 Pushing to `main` runs the tests and publishes the app to GitHub Pages (`.github/workflows/pages.yml`). Phones keep the version they have until a new one is offered on the start or pause screen, which happens only when `APP_VERSION` in `src/version.js` and `VERSION` in `sw.js` change: bump both with every change to anything the app serves. The debug overlay at `?debug=1` shows the raw sensor angles, the derived pitch and roll, the yoke, n_z, α, β, the surfaces, N1 and the frame rate. The icons are drawn by `icons/make-icons.mjs`.
 
 ## The research tools

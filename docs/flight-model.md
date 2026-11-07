@@ -35,7 +35,7 @@ What the pilot should feel: a big, stable, conventionally controlled jet. A pull
 
 ### 2.2 Frames
 
-As Rage: NED earth frame, flat and non-rotating, h = 0 at the ground, gravity 32.17 ft/s²; body frame as section 1; three.js world x east, y up, z south; one module owns every conversion and tests prove it. The reference quantities are the data's: S = 2,433 ft², b = 130.83 ft, c̄ = 20.16 ft (data 1, 10.1).
+As Rage: NED earth frame, flat and non-rotating, h = 0 at sea level, gravity 32.17 ft/s²; body frame as section 1; three.js world x east, y up, z south; one module owns every conversion and tests prove it. From milestone 2 the world is the British National Grid (EPSG:27700) about RAF Mildenhall (easting 569,000, northing 278,000): north and east are grid north and grid east, and h is height above Ordnance Datum Newlyn, the survey's sea level. The simulation flies over a flat earth; the earth's curvature is in the renderer only, which drops the ground by d²/2R so the horizon falls where it should (at 10,000 ft about 200 km off, at FL300 about 340), and in nothing the jet feels. The reference quantities are the data's: S = 2,433 ft², b = 130.83 ft, c̄ = 20.16 ft (data 1, 10.1).
 
 ### 2.3 Signs
 
@@ -81,7 +81,7 @@ Plain JavaScript with no DOM, no three.js and no browser APIs, so all of it runs
 | u, v, w | velocity in body axes | ft/s |
 | Q | attitude quaternion, body relative to NED, renormalised each step | |
 | p, q, r | body rates | rad/s |
-| north, east, h | position; h above the ground (0 in milestone 1; the terrain's height later) | ft |
+| north, east, h | position; h above sea level (the ground was at 0 in milestone 1; from milestone 2 it is the terrain's height) | ft |
 | T_i | thrust of each engine after the spool lag (four values; one command) | lbf |
 | δe, δa, δr, i_s | surface positions after the actuators | deg |
 | control memory | the yaw damper's washout state, the trim's deadband timer, the VSI's lag | |
@@ -101,7 +101,7 @@ Rigid body, six degrees of freedom, constant mass, flat non-rotating earth, as R
 
 **Outside the data.** The lookup angles are clamped to the tables' ranges (α −8° to 20°, β ±18°, Mach to 0.90) and the end values held, never extrapolated; beyond α −10° or 24°, |β| 20° or Mach 0.92 an `outOfEnvelope` flag is set for the debug overlay. The model must stay numerically stable there and never produce NaN; it is not asked to be right.
 
-**Ground.** When the jet is below the ground the flight ends in a crash state, `crashed(x, groundFt)`, as Rage. No landing gear in this milestone.
+**Ground.** When the jet is below the ground that is there, the terrain's height under it (`src/render/heightmap.js`, from the same images the renderer draws), the flight ends in a crash state, `crashed(x, groundFt)`, as Rage. No landing gear in this milestone.
 
 ## 5. Aerodynamics
 
@@ -283,7 +283,7 @@ with r_s = r·cosα − p·sinα the stability-axis yaw rate. The damper is real
 
 ### 8.7 Tuning targets
 
-Tune in 1b at the air start (10,000 ft, 280 KIAS), at cruise (FL300, Mach 0.78) and at FL350, Mach 0.80, all at 240,000 lb, with the trim solver plus finite-difference linearisation for the open-loop modes and the full simulation for the closed-loop checks. The numbers in 12.2 are the pass bands; the flight-test modes of data 8.5 are the centre of them. Explain every tuning decision in plain words in the pull request.
+Tune in 1b at the air start (10,000 ft, 280 KIAS; the tests keep this condition, while the app from milestone 2 starts 5,000 ft above the ground at the chosen place, 280 KIAS, trimmed the same way), at cruise (FL300, Mach 0.78) and at FL350, Mach 0.80, all at 240,000 lb, with the trim solver plus finite-difference linearisation for the open-loop modes and the full simulation for the closed-loop checks. The numbers in 12.2 are the pass bands; the flight-test modes of data 8.5 are the centre of them. Explain every tuning decision in plain words in the pull request.
 
 **Measured in 1b** (`tests/flight/modes.test.js`, bare airframe unless stated; `node tests/flight/fly.js modes` prints them):
 

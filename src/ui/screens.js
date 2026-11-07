@@ -68,5 +68,8 @@ export function createScreens({ version, onFly, onResume, onRecenter, onFlyAgain
     get current() { return current; },   // the screen showing, or null while flying
     // offer a waiting update on the start and pause screens only, never mid-flight
     offerUpdate(available) { for (const p of document.querySelectorAll('.update')) p.hidden = !available; },
+    // Fly is enabled once the ground has loaded; if it never does, say so
+    ready() { document.getElementById('fly').disabled = false; },
+    failed() { document.getElementById('load-error').hidden = false; },
   };
 }
