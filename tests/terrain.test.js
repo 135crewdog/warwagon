@@ -182,11 +182,11 @@ test('the real region: the island is at its heights and the sea is wet', { skip:
   const bases = meta.patches.find((q) => q.name === 'Mildenhall and Lakenheath');
   assert.equal(bases.post, 5, 'the two bases are LiDAR at 5 m');
   assert.equal(bases.blend, 500, 'nested in the OS patch with a short blend of its own');
-  const runways = [['Mildenhall runway 11/29, midpoint', 52.3614, 0.4864, 7, 12], ['Lakenheath runway 06/24, midpoint', 52.4093, 0.5610, 5, 14]];
+  const runways = [['Mildenhall runway 11/29, midpoint', 52.3614, 0.4864, 3, 12], ['Lakenheath runway 06/24, midpoint', 52.4093, 0.5610, 3, 14]];
   for (const [name, lat, lon, lo, hi] of runways) {
     const g = at(lat, lon);
     console.log(`  ${name}: ${g.h.toFixed(1)} m`);
-    assert.ok(g.h > lo && g.h < hi, `${name} from the LiDAR: ${g.h} m, between ${lo} and ${hi} (the airfields are about 10 m up)`);
+    assert.ok(g.h > lo && g.h < hi, `${name} from the LiDAR: ${g.h} m, between ${lo} and ${hi} (the published field elevations, 10 m, are each airfield's highest point)`);
   }
   assert.equal(s.post, 5, 'the finest posts in the region are the LiDAR\'s');
   const side = (patch.size - 1) * patch.post;

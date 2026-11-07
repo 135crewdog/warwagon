@@ -45,7 +45,7 @@ async function main() {
     // the ground loads (Fly is disabled until it has), and the air start is 5,000 ft above it over Newmarket, pointed at Mildenhall
     await page.waitForFunction(() => window.warwagon.terrain !== null, null, { timeout: 60000 });
     const ground = await page.evaluate(() => ({ patches: window.warwagon.terrain.region.patches.length, ground: window.warwagon.ground, water: window.warwagon.terrain.sampler.waterAt(-569000 + 400000, -(278000 - 400000)) }));
-    assert.equal(ground.patches, 1, 'the Mildenhall patch');
+    assert.equal(ground.patches, 2, 'the Mildenhall patch and the two bases in LiDAR');
     assert.ok(ground.ground > 50 && ground.ground < 250, `Newmarket's heath is about 110 ft up: ${ground.ground} ft`);
     assert.equal(ground.water, 0, 'the middle of England is dry');
     // tap Fly: no permission prompt in Chromium, so flight starts at once, at the air start
