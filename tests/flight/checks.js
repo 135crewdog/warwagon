@@ -95,11 +95,11 @@ export function check17() {
   const { rows } = flyManoeuvre('hold');
   const at = (t) => rows.find((r) => r.t >= t);
   const early = Math.abs(at(3.3).is - rows[0].is), late = rows[0].is - at(24.9).is;
-  // the same tilt is more elevator as the jet slows in the pull (the force meets less q̄), so the bound grows with it
-  const carried = Math.abs(at(24.9).de) * 0.53;
+  // the hold begins 3 s after the pull; the force held then (the elevator at 3.5 s) sets what the trim takes
+  const carried = Math.abs(at(3.5).de) * 0.53;
   const pass = early < 0.05 && late > 0.8 * carried && late < 1.2 * carried;
   return { name: '17 a quarter pull held at cruise for 25 s', pass,
-    text: `stabiliser moved ${f(early)}° in the first 3 s, then ${f(late)}° nose-up and stopped (the elevator held, ${f(at(5).de, 1)}° at 5 s and ${f(at(24.9).de, 1)}° at 25 s as the jet slows, is worth ${f(carried)}°); n_z ${f(at(5).nz)} at 5 s → ${f(at(24.9).nz)} at 25 s for the same yoke; KIAS ${f(rows[0].kcas, 0)} → ${f(at(24.9).kcas, 0)}` };
+    text: `stabiliser moved ${f(early)}° in the first 3 s, then ${f(late)}° nose-up and stopped (the ${f(at(3.5).de, 1)}° of elevator held when the hold began is worth ${f(carried)}°; the same tilt is ${f(at(24.9).de, 1)}° by 25 s as the jet slows); n_z ${f(at(5).nz)} at 5 s → ${f(at(24.9).nz)} at 25 s for the same yoke; KIAS ${f(rows[0].kcas, 0)} → ${f(at(24.9).kcas, 0)}` };
 }
 
 export function check18() {

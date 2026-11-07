@@ -15,7 +15,9 @@ export function createMemory() {
     qWash: 0,          // low-pass state of the pitch rate (deg/s) for the trim's lead
     deFilt: 0,         // the elevator command through a 1 s lag: what 'held steady' is measured against
     holdFor: 0,        // s the elevator has been held steady
-    unloaded: 0,       // deg of stabiliser the trim has run to carry the held force; reset when the yoke is released
+    unloaded: 0,       // deg of stabiliser the trim has run to carry the held force in this hold
+    allowance: 0,      // deg of stabiliser the force held when the hold began is worth: the most this hold trims out
+    wasHolding: false,
   };
 }
 
@@ -52,12 +54,17 @@ export function controlsStep(mem, yoke, meas, dt, automatics = { trim: true, dam
   const steady = Math.abs(de) > TRIM.holdMin && Math.abs(de - mem.deFilt) < TRIM.holdSteady;
   mem.deFilt += (de - mem.deFilt) * Math.min(1, dt / 1.0);
   mem.holdFor = steady ? mem.holdFor + dt : 0;
+  // a hold begins when the elevator has been steady for holdDelay; the force held then sets how much this
+  // hold may trim out, so a pilot relaxing the force as the trim comes in (as in the jet) is not stopped halfway
+  const holding = mem.holdFor > TRIM.holdDelay;
+  if (holding && !mem.wasHolding) { mem.allowance = Math.abs(de) * TRIM.unloadRatio; mem.unloaded = 0; }
+  mem.wasHolding = holding;
   let isRate = 0;
   if (automatics.trim) {
-    if (Math.abs(yoke.pitch) < PITCH.released) { isRate = trimRate(yoke.pitch, meas.nz, qDeg - mem.qWash); mem.unloaded = 0; }
-    else if (mem.holdFor > TRIM.holdDelay && Math.abs(mem.unloaded) < Math.abs(de) * TRIM.unloadRatio) {
-      // a pull (de < 0) trims nose-up (i_s down), until the stabiliser carries what the elevator is holding;
-      // the pilot relaxes the force as it comes in, as in the jet
+    if (Math.abs(yoke.pitch) < PITCH.released) { isRate = trimRate(yoke.pitch, meas.nz, qDeg - mem.qWash); mem.unloaded = 0; mem.allowance = 0; mem.wasHolding = false; }
+    else if (holding && Math.abs(mem.unloaded) < mem.allowance) {
+      // a pull (de < 0) trims nose-up (i_s down), at a rate set by the force still held, until the stabiliser
+      // carries what was held when the hold began; a pilot who does not relax gets the bound, not a runaway
       isRate = clamp(TRIM.kUnload * de, -SURFACES.is.rate, SURFACES.is.rate);
       mem.unloaded += isRate * dt;
     }
