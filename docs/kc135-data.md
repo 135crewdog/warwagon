@@ -641,7 +641,7 @@ The owner's trace of 3 November 2026 (in the table); the first reading by eye ag
 | Initial buffet CL | 0.71 | 0.75 | 0.76 | 0.70 | 0.63 | 0.58 | 0.50 | — |
 | Drag divergence CL | — | — | — | 0.68 | 0.57 | 0.46 | 0.33 | 0.20 (at 0.836) |
 
-The owner's trace of the dashed lines, 3 November 2026; the first reading by eye agreed within 0.02 in buffet CL and 0.03 in drag-divergence CL (the eye had placed the divergence line about 0.005 in Mach too low). The buffet boundary is the cue for the high-altitude, high-weight corner (Rage's buffet shake, driven by CL against this line). Drag divergence at CL 0.4 is Mach 0.81, agreeing with 9.1.
+The owner's trace of the dashed lines, 3 November 2026; the first reading by eye agreed within 0.02 in buffet CL and 0.03 in drag-divergence CL (the eye had placed the divergence line about 0.005 in Mach too low). The chart starts at Mach 0.50; the model extends the buffet line toward the low-speed stall below it (`docs/flight-model.md` 10: 0.95 at Mach 0.30), because holding 0.71 down to low Mach shook the jet 50 kt above the stall in the owner's first flights. The buffet boundary is the cue for the high-altitude, high-weight corner (Rage's buffet shake, driven by CL against this line). Drag divergence at CL 0.4 is Mach 0.81, agreeing with 9.1.
 
 ### 9.4 Full scale, in flight: CP-2211, Lux, figure 6 (PDF pages 117–118)
 
@@ -721,7 +721,7 @@ The KC-135R has a series yaw damper (G2). The bare airframe's dutch roll is damp
 - Below 10,000 ft and Mach 0.4, take-off rating: T/T₀ = A − 0.377(1+λ)/√((1+0.82λ)G₀) · Z·M + (0.23 + 0.19√λ) · X·M², with G₀ = 0.0606λ + 0.6337, A, Z, X cubic in p/p₀ as printed; λ = 6.0, T₀ = 22,000 lbf.
 - In the climb and cruise (10,000 to 40,000 ft): T/T_cr from equations 22–28, with the reference cruise thrust **T_cr = 0.2 T₀ + 890 N = 4,600 lbf** at an assumed reference of Mach 0.78, 35,000 ft (OpenAP's equation 29; no primary F108 cruise figure is public).
 - **The PMC stand-in:** the slider's top (take-off) and the detent (MCT, 98.1 % of take-off) ask for those fractions of this maximum; the N1 shown is mapped from thrust by N1 ≈ 102 % × √(T/T_max) (a stated approximation, to be fitted so flight idle and maximum land on plausible N1 values: the HUD number is a cue, not data).
-- **Flight idle:** 7 % of T₀ at sea level static (the ICAO idle point), lapsed with the same model; an assumption.
+- **Flight idle:** a gross thrust of 7 % of the local static maximum (the ICAO idle point; an assumption) less the ram drag of the idling engine's airflow, taken as 75 kg/s at sea level, a quarter of the take-off flow (an estimate, `docs/flight-model.md` 6): net thrust is negative above about 150 kt, which is what gives the 707-class idle descent.
 - **Spool-up:** first-order lag on N1 with a time constant of about 1 s above 20 % thrust, slower near idle, so that flight idle to 95 % takes just under 5 s at sea level (14 CFR 33.73's ceiling, E5). Tuned in 1a's tests.
 
 **Check against the airframe:** at 240,000 lb, FL300, Mach 0.78: q̄ = 268 psf, CL = 0.37, CD ≈ 0.023 (flight polar, 9.4), drag ≈ 15,000 lb, 3,750 lb per engine against about 5,300 lb available from the lapse model at FL300 (equation 22 at Mach 0.78: 1.15 × 4,600). Cruise is possible with about 40 % in hand, and the ceiling falls out where the two meet; test layer 3 checks it against the fact sheet's 50,000 ft at light weight.

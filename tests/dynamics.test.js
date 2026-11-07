@@ -51,14 +51,14 @@ test('each control and the thrust line move the jet the way docs/flight-model.md
   const r = rates(withDr, t.controls);
   assert.ok(r.xd[IX.R] < -0.005, 'positive rudder yaws the nose left');
   assert.ok(r.aux.ny > 0.005, 'and pushes the jet right');
-  const withBeta = makeState({ vt: 550, alpha: t.alpha * D2R, beta: 5 * D2R, theta: t.alpha * D2R, h: 10000, thrust: t.thrust, is: t.is });
+  const withBeta = makeState({ vt: 550, alpha: t.alpha * D2R, beta: 5 * D2R, theta: t.alpha * D2R, h: 10000, power: t.power, is: t.is });
   const b = rates(withBeta, t.controls);
   assert.ok(b.xd[IX.R] > 0.005, 'sideslip from the right yaws the nose right (weathercock)');
   assert.ok(b.xd[IX.P] < -0.005, 'and rolls the jet left (dihedral)');
-  const moreThrust = Float64Array.from(t.state); for (const i of [IX.T1, IX.T2, IX.T3, IX.T4]) moreThrust[i] += 2000;
-  const m = rates(moreThrust, t.controls);
+  const morePower = Float64Array.from(t.state); for (const i of [IX.F1, IX.F2, IX.F3, IX.F4]) morePower[i] += 0.2;
+  const m = rates(morePower, t.controls);
   assert.ok(m.xd[IX.Q] > 0, 'the thrust line below the CG pitches the nose up');
-  assert.ok(Math.abs(m.xd[IX.Q] - C7 * 8000 * Z_THRUST) < 1e-9);
+  assert.ok(Math.abs(m.xd[IX.Q] - C7 * (m.aux.thrust - base.aux.thrust) * Z_THRUST) < 1e-9);
   assert.ok(m.xd[IX.U] > base.xd[IX.U], 'and accelerates');
 });
 
