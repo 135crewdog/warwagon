@@ -1,14 +1,18 @@
 // War Wagon: the composition root. Wires the simulation, the tilt input, the
-// renderer, the HUD and the UI together. Nothing here changes the simulation
-// except the yoke and throttle values passed into step(). Rage's main.js,
-// without its places, terrain, look-around and plume.
+// renderer, the terrain, the HUD and the UI together. Nothing here changes
+// the simulation except the yoke and throttle values passed into step().
+// Rage's main.js, without its steerpoints and plume.
 
 import * as THREE from 'three';
 import { Simulation, stepsFor, DT } from './sim/simulation.js';
-import { IX, quaternionOf, crashed } from './sim/dynamics.js';
+import { IX, quaternionOf } from './sim/dynamics.js';
 import { positionToWorld, attitudeToWorld, vectorToWorld } from './render/frames.js';
 import * as Quat from './sim/quaternion.js';
 import { createWorld, FAR } from './render/world.js';
+import { createTerrain } from './render/terrain.js';
+import { decodeHeights, decodeWater, createSampler, createProjection } from './render/heightmap.js';
+import { METRES_PER_FOOT } from './render/frames.js';
+import { PLACES, placeNamed, airStartFor, START_AGL_FT } from './places.js';
 import { createAircraft } from './render/kc135.js';
 import { createChaseCamera } from './render/camera.js';
 import { createHud } from './hud/hud.js';
@@ -20,7 +24,7 @@ import { createLook, attachLook } from './input/look.js';
 import { SURFACES } from './sim/data/aircraft.js';
 import { APP_VERSION } from './version.js';
 
-const AIR_START = { h: 10000, kcas: 280 };   // 10,000 ft, 280 KIAS, wings level, trimmed (CLAUDE.md)
+const AIR_START_KCAS = 280;   // 5,000 ft above the ground at the place, 280 KIAS, wings level, trimmed (CLAUDE.md)
 const DEBUG = new URLSearchParams(location.search).get('debug') === '1';
 
 // ---- renderer, world, jet, camera, HUD ----
@@ -28,10 +32,50 @@ const view = document.getElementById('view');
 const renderer = new THREE.WebGLRenderer({ canvas: view, antialias: true, powerPreference: 'high-performance' });
 renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(60, 1, 2, FAR);
+// The near plane sits at 8 m: the chase camera is never nearer than 24 m to
+// any part of the jet, and the farther the near plane the better the depth
+// buffer tells apart hills 200 km off, with the far plane at 450 km.
+const camera = new THREE.PerspectiveCamera(60, 1, 8, FAR);
 const world = createWorld(scene);
 const jet = createAircraft();
 scene.add(jet);
+
+// The ground: the region of terrain/region.json (see heightmap.js), a base
+// tile of the island and an atlas of fine patches. Each heightmap is drawn
+// once to read its posts for the CPU sampler; the GPU reads the images.
+let terrain = null;
+async function loadTerrain() {
+  const region = await (await fetch('./terrain/region.json')).json();
+  // The heightmaps go to the GPU whole: three.js would shrink an image over
+  // the texture limit through a canvas, blending the encoded height bytes
+  // into nonsense while the CPU still read the true posts. Every iPhone the
+  // app supports allows 16,384; a device that allows less gets no ground.
+  const maxTexture = renderer.capabilities.maxTextureSize;
+  if (Math.max(region.base.w, region.base.h, region.atlas.w, region.atlas.h) > maxTexture) throw new Error(`the ground needs a ${region.base.h}-pixel texture and this device allows ${maxTexture}`);
+  const load = async (meta) => {
+    const image = new Image();
+    image.src = './terrain/' + meta.image;
+    await image.decode();
+    const canvas = document.createElement('canvas');
+    canvas.width = meta.w; canvas.height = meta.h;
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    ctx.drawImage(image, 0, 0);
+    const rgba = ctx.getImageData(0, 0, meta.w, meta.h).data;
+    return { image, heights: decodeHeights(rgba, meta.w * meta.h), water: decodeWater(rgba, meta.w * meta.h) };
+  };
+  const [base, atlas] = await Promise.all([load(region.base), load(region.atlas)]);
+  return {
+    sampler: createSampler(region, { base: base.heights, atlas: atlas.heights }, { base: base.water, atlas: atlas.water }),
+    projection: createProjection(region),
+    mesh: createTerrain(scene, region, { base: base.image, atlas: atlas.image }, world),
+    region,
+  };
+}
+// ground height in feet under a simulation state (north, east in feet)
+function groundFt(state) {
+  if (!terrain) return 0;
+  return terrain.sampler.heightAt(state[IX.EAST] * METRES_PER_FOOT, -state[IX.NORTH] * METRES_PER_FOOT) / METRES_PER_FOOT;
+}
 const chase = createChaseCamera(camera);
 const look = createLook();                  // look-around by dragging the view
 attachLook(view, look, () => mode === 'flying');
@@ -85,8 +129,10 @@ function poseOf(state) {
   return { position: new THREE.Vector3(p[0], p[1], p[2]), quaternion: new THREE.Quaternion(q[0], q[1], q[2], q[3]) };
 }
 
+const place = PLACES[0].name;   // one place for now; the owner's routes add the rest, and a list to the start screen
 function airStart() {
-  sim = new Simulation(AIR_START);
+  const start = terrain ? airStartFor(placeNamed(place), terrain.projection, terrain.sampler) : { h: START_AGL_FT };
+  sim = new Simulation({ ...start, kcas: AIR_START_KCAS });
   carry = 0;
   prevPose = pose = poseOf(sim.state);
   throttleValue = sim.trimThrottle;
@@ -95,6 +141,12 @@ function airStart() {
   renderPending = true;
 }
 airStart();
+// Fly waits for the ground: on a first visit it may still be downloading.
+loadTerrain().then((t) => {
+  terrain = t;
+  airStart();                                   // now 5,000 ft above the ground that is there
+  screens.ready();
+}, (e) => { console.error(e); screens.failed(e.message); });
 
 // ---- tilt input ----
 const tilt = { pitch: 0, roll: 0, confidence: 0, beta: 0, gamma: 0, alpha: 0, seen: false, at: 0 };
@@ -284,6 +336,9 @@ function velocityNed(state) {
 function noseNed(state) {
   return Quat.bodyToNed(quaternionOf(state), [1, 0, 0]);
 }
+function upNed(state) {
+  return Quat.bodyToNed(quaternionOf(state), [0, 0, -1]);
+}
 
 // ---- the loop ----
 const debug = document.getElementById('debug');
@@ -305,9 +360,10 @@ function frame(now) {
     fraction = clock.fraction;
     for (let i = 0; i < clock.steps; i++) {
       prevPose = pose;
+      sim.groundFt = groundFt(sim.state);     // the ground that is there: the simulation's own crash check reads it
       sim.step(yoke, throttleValue, DT);
       pose = poseOf(sim.state);
-      if (sim.crashed || crashed(sim.state)) { crash(); break; }
+      if (sim.crashed) { crash(); break; }
     }
   }
 
@@ -329,10 +385,12 @@ function frame(now) {
   look.update(elapsed);
   chase.update(elapsed, lerped.position, lerped.quaternion, { nz: aux.nz, buffet: sim.buffetFraction, qbar: aux.qbar }, look);
   world.update(camera.position);
+  if (terrain) terrain.mesh.update(camera.position);
   renderer.render(scene, camera);
 
   const air = sim.airdata;
-  hud.draw(air, sim.engines, projectDirection, velocityNed(sim.state), noseNed(sim.state), look.active);
+  air.ground = groundFt(sim.state);           // the terrain under the jet, for the radar altitude
+  hud.draw(air, sim.engines, projectDirection, velocityNed(sim.state), noseNed(sim.state), look.active, upNed(sim.state));
   if (mode === 'flying') stickIndicator.update(yoke, Math.abs(sfc.de) >= SURFACES.de.limit - 0.01, !neutral || tilt.confidence < 0.3);
 
   frames++;
@@ -343,6 +401,7 @@ function frame(now) {
       `pitch ${tilt.pitch.toFixed(1)}  roll ${tilt.roll.toFixed(1)}  conf ${tilt.confidence.toFixed(2)}  neutral ${neutral ? `${neutral.pitch.toFixed(1)}/${neutral.roll.toFixed(1)}` : '—'}`,
       `yoke ${yoke.pitch.toFixed(2)} / ${yoke.roll.toFixed(2)}  throttle ${throttleValue.toFixed(2)}`,
       `n_z ${air.nz.toFixed(2)}  α ${air.alpha.toFixed(1)}°  β ${air.beta.toFixed(1)}°  de ${sfc.de.toFixed(1)}  i_s ${sfc.is.toFixed(2)}  dr ${sfc.dr.toFixed(1)}  N1 ${sim.engines.n1.toFixed(0)}${sim.outOfEnvelope ? '  OUT' : ''}`,
+      `ground ${groundFt(sim.state).toFixed(0)} ft  agl ${(air.altitude - groundFt(sim.state)).toFixed(0)} ft`,
       `${fps.toFixed(0)} fps  ${renderer.info.render.calls} draws  ${mode}`,
     ].join('\n');
   }
@@ -360,4 +419,7 @@ window.warwagon = {
   set throttle(v) { throttleValue = v; throttle.set(v); },
   get neutral() { return neutral; },
   get draws() { return renderer.info.render.calls; },
+  get terrain() { return terrain; },
+  get ground() { return groundFt(sim.state); },
+  get place() { return place; },
 };

@@ -68,5 +68,12 @@ export function createScreens({ version, onFly, onResume, onRecenter, onFlyAgain
     get current() { return current; },   // the screen showing, or null while flying
     // offer a waiting update on the start and pause screens only, never mid-flight
     offerUpdate(available) { for (const p of document.querySelectorAll('.update')) p.hidden = !available; },
+    // Fly is enabled once the ground has loaded; if it never does, say so
+    ready() { document.getElementById('fly').disabled = false; },
+    failed(why) {
+      const p = document.getElementById('load-error');
+      if (why && /device allows/.test(why)) p.textContent = 'This device\u2019s graphics can\u2019t hold the ground, so it can\u2019t fly here.';
+      p.hidden = false;
+    },
   };
 }

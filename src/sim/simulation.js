@@ -44,6 +44,7 @@ export class Simulation {
     this.vsi = 0;
     this.memory = createMemory();
     this.crashed = false;
+    this.groundFt = 0;      // the ground under the jet, in feet above the sea; the app sets it from the terrain each step, the tests fly over a flat world at 0
     return this;
   }
 
@@ -71,7 +72,7 @@ export class Simulation {
     const xdot = new Float64Array(N);
     this.aux = derivative(this.state, this.controls, xdot, this.mass);
     this.vsi += (xdot[IX.H] * 60 - this.vsi) * dt / VSI_TAU;
-    if (crashed(this.state)) this.crashed = true;
+    if (crashed(this.state, this.groundFt)) this.crashed = true;   // the one place the flight ends on the ground
   }
 
   // The auxiliary quantities (n_z, α, q̄ ...) for a state and controls.

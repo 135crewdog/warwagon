@@ -1,0 +1,49 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync, existsSync } from 'node:fs';
+import { PLACES, DEFAULT_PLACE, placeNamed, airStartFor, START_AGL_FT } from '../src/places.js';
+import { createProjection } from '../src/render/heightmap.js';
+import { Simulation } from '../src/sim/simulation.js';
+import { IX } from '../src/sim/dynamics.js';
+import { METRES_PER_FOOT } from '../src/render/frames.js';
+
+const near = (a, b, tol, msg) => assert.ok(Math.abs(a - b) <= tol, `${msg ?? ''} ${a} vs ${b}`);
+const regionPath = new URL('../terrain/region.json', import.meta.url);
+const region = existsSync(regionPath) ? JSON.parse(readFileSync(regionPath)) : { origin: [569000, 278000], blend: 3000, patches: [{ name: 'Mildenhall', size: 1024, post: 50, x0: -25600, z0: -25600 }] };
+const projection = createProjection(region);
+
+test('places: each starts well inside its own fine patch, with a heading', () => {
+  assert.equal(DEFAULT_PLACE, 'RAF Mildenhall');
+  for (const place of PLACES) {
+    const patch = region.patches.find((p) => p.name === place.patch);
+    assert.ok(patch, `a patch named ${place.patch} for ${place.name}`);
+    const { x, z } = projection.fromLatLon(place.start.lat, place.start.lon);
+    const side = (patch.size - 1) * patch.post;
+    const depth = Math.min(x - patch.x0, patch.x0 + side - x, z - patch.z0, patch.z0 + side - z);
+    console.log(`  ${place.name}: start ${(depth / 1000).toFixed(1)} km inside its patch, heading ${place.start.heading}°`);
+    assert.ok(depth > region.blend + 5000, `${place.name} starts more than 5 km inside the fine ground, past the blend band`);
+    assert.ok(place.start.heading >= 0 && place.start.heading < 360);
+  }
+  assert.equal(placeNamed('Nowhere').name, 'RAF Mildenhall', 'an unknown name falls back to the first place');
+});
+
+test('places: the air start is 5,000 ft above the ground there, pointed the right way', () => {
+  const sampler = { heightAt: () => 10 };
+  const s = airStartFor(placeNamed('RAF Mildenhall'), projection, sampler);
+  near(s.h, 10 / METRES_PER_FOOT + START_AGL_FT, 0.01, 'height');
+  near(s.psi, 22 * Math.PI / 180, 1e-12, 'heading');
+  const { x, z } = projection.fromLatLon(52.245, 0.41);
+  near(s.east * METRES_PER_FOOT, x, 1e-6, 'east'); near(-s.north * METRES_PER_FOOT, z, 1e-6, 'north');
+  assert.ok(s.north < 0 && s.east < 0, 'Newmarket is south-west of Mildenhall, the origin');
+});
+
+test('places: the simulation takes the heading and position and is still trimmed', () => {
+  const sim = new Simulation({ h: 5100, kcas: 280, psi: 22 * Math.PI / 180, north: -40000, east: -20000 });
+  near(sim.airdata.heading, 22, 0.01, 'heading');
+  near(sim.state[IX.NORTH], -40000, 1e-9); near(sim.state[IX.EAST], -20000, 1e-9);
+  near(sim.aux.nz, 1, 0.01, '1 g');
+  near(sim.airdata.roll, 0, 0.01, 'wings level');
+  for (let i = 0; i < 50; i++) sim.step({ pitch: 0, roll: 0 }, sim.trimThrottle, 0.02);
+  near(sim.airdata.heading, 22, 0.05, 'heading holds');
+  near(sim.state[IX.H], 5100, 2, 'height holds');
+});

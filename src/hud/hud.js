@@ -52,6 +52,15 @@ export function vsiText(fpm) {
 // scale is read on the banked side. This gives a tick's angle on the glass,
 // from the pointer, positive clockwise, for the horizon's own angle on the
 // glass (0 level, negative, anticlockwise, in a right bank).
+// The radar altitude's text: shown under the altitude from 2,500 ft above
+// the ground down, to the nearest 10 ft, as the jet's radar altimeter reads;
+// null above that, and the line is left blank.
+export const RADAR_BELOW_FT = 2500;
+export function radarText(aglFt) {
+  if (!(aglFt < RADAR_BELOW_FT)) return null;
+  return `RA ${Math.max(0, Math.round(aglFt / 10) * 10)}`;
+}
+
 export function bankTickAngle(tickDeg, horizonDeg) {
   return tickDeg + horizonDeg || 0;
 }
@@ -86,11 +95,13 @@ export function createHud(canvas) {
   function dashed(on) { ctx.setLineDash(on ? [8, 6] : []); }
 
   // air: the airdata object (kcas, mach, altitude, vsi, heading, pitch, roll,
+  // and ground, the terrain's height under the jet in feet, set by main.js;
   // alpha, nz); engines: { n1 }; project: a NED direction → { x, y, visible }
   // on the screen; velocity and nose: unit NED directions of the flight path
   // and the body x axis; looking: true while the view is swung away from
-  // the chase position.
-  function draw(air, engines, project, velocity, nose, looking = false) {
+  // the chase position; up: the jet's own up as a unit NED direction, for
+  // the bank pointer (the plain chase view's screen-up if left out).
+  function draw(air, engines, project, velocity, nose, looking = false, up = null) {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, w, h);
     const cx = w / 2;
@@ -177,30 +188,49 @@ export function createHud(canvas) {
       dashed(false);
     }
 
-    // bank scale, under the heading tape: an arc of ticks that turns with
-    // the horizon (as the pitch ladder does, from the same projection; from
-    // the bank alone when the view is swung away), 0, 30 and 45 long, and a
-    // pointer fixed at the top of the glass, so the bank is read on the
-    // banked side; the radius is what fits under the heading
-    const bx = cx, by = cy, br = Math.min(120, cy - top - 62);
-    let horizonDeg = -air.roll;
-    const hc = project(direction(hdg, air.pitch)), hr = project(rightOf(hdg, air.pitch));
-    if (hc.visible && hr.visible) horizonDeg = Math.atan2(hr.y - hc.y, hr.x - hc.x) / D2R;
-    for (const t of BANK_TICKS) {
-      const a = (bankTickAngle(t, horizonDeg) - 90) * D2R;   // from straight up, positive clockwise
-      const long = t === 0 || Math.abs(t) === 30 || Math.abs(t) === 45;
-      const r0 = br, r1 = br + (long ? 12 : 6);
-      stroke(() => { ctx.moveTo(bx + r0 * Math.cos(a), by + r0 * Math.sin(a)); ctx.lineTo(bx + r1 * Math.cos(a), by + r1 * Math.sin(a)); });
-      if (long && t !== 0) text(String(Math.abs(t)), bx + (br + 23) * Math.cos(a), by + (br + 23) * Math.sin(a), 'center', 11);
+    // bank scale: conformal, like the ladder. The arc of ticks is centred on
+    // the waterline, so it stays in front of the jet whatever the view, and
+    // turns with the horizon (from the same projection as the pitch ladder;
+    // from the bank alone when the horizon can't be projected), 0, 30 and
+    // 45 long; the pointer belongs to the jet, so it points along the jet's
+    // own up as the view sees it, and the bank is read on the banked side.
+    // Drawn only while the nose is in view. The radius is what fits under
+    // the heading tape in the plain chase view.
+    if (n.visible) {
+      const bx = n.x, by = n.y, br = Math.min(120, cy - top - 62);
+      let horizonDeg = -air.roll, jetDeg = 0;
+      const hc = project(direction(hdg, air.pitch)), hr = project(rightOf(hdg, air.pitch));
+      if (hc.visible && hr.visible) horizonDeg = Math.atan2(hr.y - hc.y, hr.x - hc.x) / D2R;
+      if (up) {
+        const u = project([nose[0] + 0.05 * up[0], nose[1] + 0.05 * up[1], nose[2] + 0.05 * up[2]]);   // a little above the nose, the jet's way up
+        if (u.visible) jetDeg = Math.atan2(u.x - n.x, -(u.y - n.y)) / D2R;                           // clockwise from screen-up
+      }
+      for (const t of BANK_TICKS) {
+        const a = (bankTickAngle(t, horizonDeg) - 90) * D2R;   // from straight up, positive clockwise
+        const long = t === 0 || Math.abs(t) === 30 || Math.abs(t) === 45;
+        const r0 = br, r1 = br + (long ? 12 : 6);
+        stroke(() => { ctx.moveTo(bx + r0 * Math.cos(a), by + r0 * Math.sin(a)); ctx.lineTo(bx + r1 * Math.cos(a), by + r1 * Math.sin(a)); });
+        if (long && t !== 0) text(String(Math.abs(t)), bx + (br + 23) * Math.cos(a), by + (br + 23) * Math.sin(a), 'center', 11);
+      }
+      const pa = (jetDeg - 90) * D2R, tx = -Math.sin(pa), ty = Math.cos(pa);   // the pointer's direction, and along the arc
+      const px = bx + br * Math.cos(pa), py = by + br * Math.sin(pa);
+      stroke(() => {
+        ctx.moveTo(px, py);
+        ctx.lineTo(px - 14 * Math.cos(pa) - 6 * tx, py - 14 * Math.sin(pa) - 6 * ty);
+        ctx.lineTo(px - 14 * Math.cos(pa) + 6 * tx, py - 14 * Math.sin(pa) + 6 * ty);
+        ctx.closePath();
+      });
     }
-    stroke(() => { ctx.moveTo(bx, by - br); ctx.lineTo(bx - 6, by - br + 14); ctx.lineTo(bx + 6, by - br + 14); ctx.closePath(); });
 
     // airspeed (KIAS) on the left; altitude on the right with the VSI above it, signed feet per minute
     stroke(() => { ctx.moveTo(left + 46, cy); ctx.lineTo(left + 54, cy - 5); ctx.lineTo(left + 54, cy + 5); ctx.closePath(); });
     text(String(Math.round(air.kcas)), left + 42, cy, 'right', 20);
     stroke(() => { ctx.moveTo(right - 46, cy); ctx.lineTo(right - 54, cy - 5); ctx.lineTo(right - 54, cy + 5); ctx.closePath(); });
     text(String(Math.round(air.altitude)), right - 42, cy, 'left', 20);
-    text(vsiText(air.vsi), right - 42, cy - 24, 'left', 14);
+    // the VSI above and the radar altitude below start under the pointer's left edge, so the three lines align
+    text(vsiText(air.vsi), right - 54, cy - 24, 'left', 14);
+    const ra = radarText(air.altitude - (air.ground ?? 0));   // the radar altitude, inside 2,500 ft of the ground
+    if (ra) text(ra, right - 54, cy + 24, 'left', 14);
 
     // g, AoA, Mach and the engines' N1, lower left, as Rage's HUD stacks them
     const rows = [bottom - 54, bottom - 36, bottom - 18, bottom];
