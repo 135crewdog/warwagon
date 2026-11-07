@@ -20,6 +20,15 @@ says where each lies.
   Mildenhall, 1,536 posts (76.8 km) about 52.32° N 0.54° E, taking in RAF
   Mildenhall, RAF Lakenheath, Ely, Cambridge, Newmarket and Bury St Edmunds.
   The owner's low-level routes add the rest.
+- Nested inside Mildenhall's patch, **Mildenhall and Lakenheath**: 12.8 km
+  (eastings 565.6 to 578.4 km, northings 272.6 to 285.4 km) at 5 m posts,
+  from the Environment Agency's **LiDAR Composite DTM** (1 m, bare earth,
+  England), Open Government Licence v3.0, © Environment Agency copyright
+  and/or database right 2026, fetched from its WCS service
+  (environment.data.gov.uk/spatialdata/lidar-composite-digital-terrain-model-dtm-1m)
+  by `fetch-lidar.py`. Each 5 m post is the mean of 25 of the survey's cells;
+  voids are filled from OS Terrain 50 and the water is OS Terrain 50's read
+  at its posts. It blends into the OS patch over 500 m.
 - The blue channel of both is water: how much of each post is sea, lake or
   reservoir, found in the survey as regions of one height (the sea at or
   below half a metre and connected to the open sea; a lake at least half a

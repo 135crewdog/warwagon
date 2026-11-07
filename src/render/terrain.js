@@ -33,7 +33,7 @@ function heightGlsl(patches) {
   uniform vec2 baseSize, atlasSize, baseRange, atlasRange;   // posts; min, max − min
   uniform float blend, fade;
   uniform vec4 patchRect[${patches}];   // x0, z0, side, post; coarsest first
-  uniform vec4 patchPix[${patches}];    // px, py, size
+  uniform vec4 patchPix[${patches}];    // px, py, size, blend (the patch's own band)
   // a post's height (x) and water fraction (y)
   vec2 decode(vec4 t, vec2 range) { return vec2(range.x + (t.r * 65280.0 + t.g * 255.0) / 65535.0 * range.y, t.b); }
   vec2 basePost(vec2 ij) { return decode(texture2D(baseMap, (ij + 0.5) / baseSize), baseRange); }
@@ -55,7 +55,7 @@ function heightGlsl(patches) {
   }
   // each patch's weight at xz: how far inside its edge band the point is
   void weigh(vec2 xz, out float w[${patches}]) {
-    for (int i = 0; i < ${patches}; i++) w[i] = inside(xz, patchRect[i].xy, patchRect[i].zz, blend);
+    for (int i = 0; i < ${patches}; i++) w[i] = inside(xz, patchRect[i].xy, patchRect[i].zz, patchPix[i].w);
   }
   // the ground (height, water) at xz with the patches weighed at w (the point's own, or a neighbour's for a slope)
   vec2 groundWith(vec2 xz, float w[${patches}]) {
@@ -186,7 +186,7 @@ export function createTerrain(scene, region, images, world) {
     baseRange: { value: new THREE.Vector2(base.min, base.max - base.min) }, atlasRange: { value: new THREE.Vector2(atlas.min, atlas.max - atlas.min) },
     blend: { value: region.blend }, fade: { value: region.fade },
     patchRect: { value: patches.map((p) => new THREE.Vector4(p.x0, p.z0, (p.size - 1) * p.post, p.post)) },
-    patchPix: { value: patches.map((p) => new THREE.Vector4(p.px, p.py, p.size, 0)) },
+    patchPix: { value: patches.map((p) => new THREE.Vector4(p.px, p.py, p.size, p.blend ?? region.blend)) },
     sun: { value: world.sun.clone().normalize() }, fogColor: { value: world.fog.color }, fogNear: { value: world.fog.near }, fogFar: { value: world.fog.far },
   };
   const levels = [];

@@ -43,8 +43,10 @@ export function createProjection(region) {
 // heightAt(x, z): the ground height in metres at world x (east) and z
 // (south, so −north): the base, with each patch that covers the point laid
 // over it in turn, coarsest first, blended in across the band inside its
-// edge, so where patches overlap the finer one shows and every join is
-// smooth; and across the band inside the base's own edge the ground eases
+// edge (the region's blend, or the patch's own where it has one: a LiDAR
+// patch nested in an OS patch blends over a short band, the two surveys
+// agreeing to a metre or two), so where patches overlap the finer one shows
+// and every join is smooth; and across the band inside the base's own edge the ground eases
 // to the flat sea, which it keeps beyond. waterAt(x, z): the water fraction
 // there, 0..1, read the same way.
 export function createSampler(region, heights, water = null) {
@@ -67,7 +69,7 @@ export function createSampler(region, heights, water = null) {
     let h = bilinear(baseAt, base.w, base.h, (x - base.x0) / base.post, (z - base.z0) / base.post);
     for (const p of order) {
       const side = (p.size - 1) * p.post;
-      const w = inside(x, z, p.x0, p.z0, side, side, blend);
+      const w = inside(x, z, p.x0, p.z0, side, side, p.blend ?? blend);
       if (w > 0) h += w * (bilinear(patchAt(p), p.size, p.size, (x - p.x0) / p.post, (z - p.z0) / p.post) - h);
     }
     const outer = inside(x, z, base.x0, base.z0, (base.w - 1) * base.post, (base.h - 1) * base.post, fade);

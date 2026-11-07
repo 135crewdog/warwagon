@@ -59,6 +59,11 @@ test('heightmap: each patch laid over the base in turn, blended in across its ed
   near(s.heightAt(75, 0), 1687.5, 0.01, 'and no step where their weights cross');
   near(s.heightAt(-1000, 1000), 1000, 0.01, 'outside every patch: the base');
   assert.equal(s.post, 100, 'the finest post spacing');
+  // a patch with a blend of its own: B's band shrinks to 20 m, A's stays the region's 100 m
+  const own = region(); own.meta.patches[1].blend = 20;
+  const t = createSampler(own.meta, own.heights);
+  near(t.heightAt(60, 0), 2200, 0.01, '10 m inside B: A at 0.4 over the base gives 1400, then B at 0.5 of its own 20 m band gives 2200');
+  near(t.heightAt(75, 0), 1000 + 0.25 * 1000 + 1 * (3000 - 1250), 0.01, '25 m inside B: B is fully in on its own band while A is still blending');
 });
 
 test('heightmap: the base is bilinear between its posts and eases to the flat sea at its edge', () => {
@@ -174,6 +179,16 @@ test('the real region: the island is at its heights and the sea is wet', { skip:
   assert.ok(fen.w < 0.2, 'the fens below sea level are land, not sea');
   const patch = meta.patches.find((q) => q.name === 'Mildenhall');
   assert.equal(patch.post, 50, 'the patch is OS Terrain 50 at its own posts');
+  const bases = meta.patches.find((q) => q.name === 'Mildenhall and Lakenheath');
+  assert.equal(bases.post, 5, 'the two bases are LiDAR at 5 m');
+  assert.equal(bases.blend, 500, 'nested in the OS patch with a short blend of its own');
+  const runways = [['Mildenhall runway 11/29, midpoint', 52.3614, 0.4864, 7, 12], ['Lakenheath runway 06/24, midpoint', 52.4093, 0.5610, 5, 14]];
+  for (const [name, lat, lon, lo, hi] of runways) {
+    const g = at(lat, lon);
+    console.log(`  ${name}: ${g.h.toFixed(1)} m`);
+    assert.ok(g.h > lo && g.h < hi, `${name} from the LiDAR: ${g.h} m, between ${lo} and ${hi} (the airfields are about 10 m up)`);
+  }
+  assert.equal(s.post, 5, 'the finest posts in the region are the LiDAR\'s');
   const side = (patch.size - 1) * patch.post;
   const towns = [['RAF Mildenhall', 52.3619, 0.4864], ['RAF Lakenheath', 52.4093, 0.5610], ['Ely', 52.3989, 0.2621], ['Cambridge', 52.2053, 0.1218], ['Newmarket', 52.2459, 0.4063], ['Bury St Edmunds', 52.2460, 0.7118]];
   for (const [name, lat, lon] of towns) {
