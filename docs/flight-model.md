@@ -232,7 +232,7 @@ The tilt is a force on the yoke, and the elevator moves as far as that force can
 δe = −clamp(x_pitch · K_e / q̄, −20, 20)      // deg; K_e in deg·psf; then the actuator
 ```
 
-This is the physics of a reversible control, not a gain schedule: a surface's hinge moment grows with q̄ as its pitching power does, so a given force gives about the same g at every speed above the stall, the stick-force-per-g a transport pilot feels, and at low speed the same force reaches the stops. **K_e = 1,100 deg·psf**: full tilt at cruise (q̄ 268 psf) gives 4.1° of elevator and a peak of 2.2 g (the short period overshoots a steady pull). The 2,100 first estimated gave 8° and took the jet to 3.1 g and 18° of α, through the lift plateau; 1,500 gave 2.7 g, and in the owner's first flights the pitch was "super easy to pull too hard", so it came down to 1,100 and the tilt for full force went from 25° to 30° (11.2): a heavy jet wants a longer yoke. The push side is symmetric, which overstates a real yoke's forward travel a little and is accepted.
+This is the physics of a reversible control, not a gain schedule: a surface's hinge moment grows with q̄ as its pitching power does, so a given force gives about the same g at every speed above the stall, the stick-force-per-g a transport pilot feels, and at low speed the same force reaches the stops. **K_e = 1,300 deg·psf**: full tilt at cruise (q̄ 268 psf) gives 4.9° of elevator and a peak of about 2.4 g (the short period overshoots a steady pull). The 2,100 first estimated gave 8° and took the jet to 3.1 g and 18° of α, through the lift plateau; 1,500 gave 2.7 g, and in the owner's first flights the pitch was "super easy to pull too hard", so it came down to 1,100 and the tilt for full force went from 25° to 30° (11.2): a heavy jet wants a longer yoke. With both changes the second flight found the pitch "a little bit too heavy", so K_e went back up to 1,300 with the 30° tilt kept. The push side is symmetric, which overstates a real yoke's forward travel a little and is accepted.
 
 There is no g limiter, no AoA limiter and no stall protection: the jet's own stability and the buffet are the protection, as in the aircraft.
 
@@ -387,7 +387,7 @@ The modes are measured with the trim frozen and the yaw damper off unless stated
 | 15 | Thrust cap | T_max at sea level static = 22,000; at FL200 and FL350 at Mach 0.6 and 0.8 equal to the table of spot values; N1 shown at full throttle falls from 102 % at sea level to 85–98 % at FL350 |
 | 16 | Random inputs, sixteen 60 s flights from 160 to 350 KIAS and 5,000 to 40,000 ft | no NaN; nothing outside the envelope flag that the inputs did not ask for |
 | 17 | A quarter pull held at cruise for 25 s | the stabiliser does not move in the first 3 s, then runs nose-up and stops at 0.53° per degree of elevator held (8.3) |
-| 18 | Throttle to idle at cruise, a scripted pilot holds altitude by force, 90 s | the altitude holds within 300 ft while the jet slows, and the elevator still held at the end is under 1°: the trim took the force |
+| 18 | Throttle to idle at cruise, a scripted pilot holds altitude by force, 90 s (the pilot's gains are in elevator terms, so a change of K_e doesn't change the pilot) | the altitude holds within 300 ft while the jet slows, and the elevator still held at the end is under 1°: the trim took the force |
 
 When a band can't be met, stop and report the numbers.
 

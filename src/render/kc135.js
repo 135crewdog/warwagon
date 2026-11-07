@@ -153,12 +153,15 @@ export function createAircraft() {
   stab.position.set(0, 0.4, NOSE_Z + 35.3);
   jet.add(stab);
 
-  // the boom, stowed: from under the tail, aft and down
-  const boom = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.3, 13, 10), DARK);
+  // the boom, stowed: pivoted under the aft fuselage below the fin, ahead of
+  // the stabiliser, and trailing aft a little below the tail cone, its tip a
+  // couple of metres past the tail (the first placing, from the very end of
+  // the tail, looked slid back under the empennage to the owner)
+  const boom = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.3, 11, 10), DARK);
   boom.name = 'boom';
-  boom.geometry.translate(0, -6.5, 0);
-  boom.rotation.x = -(90 + 15) * D2R;    // along +z, 15° down
-  boom.position.set(0, -1.0, NOSE_Z + 40);
+  boom.geometry.translate(0, -5.5, 0);
+  boom.rotation.x = -(90 + 8) * D2R;     // along +z, 8° down
+  boom.position.set(0, -1.6, NOSE_Z + 32.5);
   jet.add(boom);
 
   for (const name of ['aileronR', 'aileronL', 'spoilerR', 'spoilerL', 'elevatorR', 'elevatorL']) parts[name] = jet.getObjectByName(name);

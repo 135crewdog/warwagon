@@ -4,7 +4,7 @@
 
 export const PITCH = {
   // The yoke is a force: δe = −x·K_E/q̄, clamped to the travel (8.2).
-  kE: 1100,            // deg·psf: full tilt at cruise (q̄ 268) gives 4.1° of elevator (1,500 gave 5.6° and 2.7 g, and the owner found the pitch too easy to over-control)
+  kE: 1300,            // deg·psf: full tilt at cruise (q̄ 268) gives 4.9° of elevator (1,500 gave 5.6° and 2.7 g and the owner found the pitch too easy to over-control; 1,100 gave 4.1° and was a little too heavy on the second flight)
   released: 0.05,      // |x_pitch| below this is a released yoke
 };
 
