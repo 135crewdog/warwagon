@@ -153,15 +153,17 @@ export function createAircraft() {
   stab.position.set(0, 0.4, NOSE_Z + 35.3);
   jet.add(stab);
 
-  // the boom, stowed: pivoted under the aft fuselage below the fin, ahead of
-  // the stabiliser, and trailing aft a little below the tail cone, its tip a
-  // couple of metres past the tail (the first placing, from the very end of
-  // the tail, looked slid back under the empennage to the owner)
-  const boom = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.3, 11, 10), DARK);
+  // the boom, stowed: raised flush under the tail cone, as the jet carries
+  // it with the boom latched up. It pivots under the aft fuselage below the
+  // fin and lies along the tail cone's underside, which sweeps up about 7°
+  // from there to the tail, its nozzle just short of the tail's end (the
+  // fuselage lathe's lower line runs from 1.70 m below the axis at the
+  // pivot to 0.55 m at the tail; the boom's centre keeps about 0.35 m under it)
+  const boom = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.3, 10, 10), DARK);
   boom.name = 'boom';
-  boom.geometry.translate(0, -5.5, 0);
-  boom.rotation.x = -(90 - 8) * D2R;     // the shaft (local −y) swung onto +z, aft, and 8° down: the tip 1.9 m past the tail and 3.1 m below the axis, clear of the tail cone
-  boom.position.set(0, -1.6, NOSE_Z + 32.5);
+  boom.geometry.translate(0, -5, 0);
+  boom.rotation.x = -(90 + 7) * D2R;     // the shaft (local −y) swung onto +z, aft, and 7° up along the tail cone
+  boom.position.set(0, -2.05, NOSE_Z + 32.5);
   jet.add(boom);
 
   for (const name of ['aileronR', 'aileronL', 'spoilerR', 'spoilerL', 'elevatorR', 'elevatorL']) parts[name] = jet.getObjectByName(name);
