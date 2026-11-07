@@ -15,9 +15,11 @@ says where each lies.
   block mean of the survey: 3,001 by 5,001 posts 200 m apart. The sea, which
   the survey holds as a constant per tile and leaves out where a tile is all
   sea, is set to 0 m and marked as water.
-- `places.png`: the fine patches, 1,024 posts of 50 m a side each (51.2 km),
-  the survey's own posts: RAF Mildenhall with Lakenheath (about 52.36° N
-  0.49° E). The owner's low-level routes add the rest.
+- `places.png`: the fine patches at the survey's own 50 m posts, 1,024 posts
+  (51.2 km) a side unless a place needs more, packed into one atlas:
+  Mildenhall, 1,536 posts (76.8 km) about 52.32° N 0.54° E, taking in RAF
+  Mildenhall, RAF Lakenheath, Ely, Cambridge, Newmarket and Bury St Edmunds.
+  The owner's low-level routes add the rest.
 - The blue channel of both is water: how much of each post is sea, lake or
   reservoir, found in the survey as regions of one height (the sea at or
   below half a metre and connected to the open sea; a lake at least half a

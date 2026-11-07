@@ -330,6 +330,9 @@ function velocityNed(state) {
 function noseNed(state) {
   return Quat.bodyToNed(quaternionOf(state), [1, 0, 0]);
 }
+function upNed(state) {
+  return Quat.bodyToNed(quaternionOf(state), [0, 0, -1]);
+}
 
 // ---- the loop ----
 const debug = document.getElementById('debug');
@@ -381,7 +384,7 @@ function frame(now) {
 
   const air = sim.airdata;
   air.ground = groundFt(sim.state);           // the terrain under the jet, for the radar altitude
-  hud.draw(air, sim.engines, projectDirection, velocityNed(sim.state), noseNed(sim.state), look.active);
+  hud.draw(air, sim.engines, projectDirection, velocityNed(sim.state), noseNed(sim.state), look.active, upNed(sim.state));
   if (mode === 'flying') stickIndicator.update(yoke, Math.abs(sfc.de) >= SURFACES.de.limit - 0.01, !neutral || tilt.confidence < 0.3);
 
   frames++;

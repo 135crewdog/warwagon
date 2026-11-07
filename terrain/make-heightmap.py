@@ -38,12 +38,14 @@ SRC = 50                         # m, OS Terrain 50's posts
 BASE_POST = 200                  # m, the base's posts: a 4 × 4 block mean
 BASE_E = (60000, 660000)         # the base's box: mainland Britain with its islands, Scilly and Shetland excepted
 BASE_N = (0, 1000000)            #   (3,001 × 5,001 posts, under the 16.8 million pixels iOS lets one canvas hold)
-PATCH = 1024                     # posts per side of every patch: 51.2 km of 50 m posts
+PATCH = 1024                     # posts per side of a patch unless it says otherwise: 51.2 km of 50 m posts
 LAKE_MIN = 200                   # posts: a flat region at least this big (half a square kilometre) in a basin is a lake
 SEA_MAX = 0.5                    # m: the sea's constant is never above this
-# name, centre latitude, centre longitude (WGS 84). The patch is PATCH posts of SRC metres about it, snapped to OS's posts.
+# name, centre latitude, centre longitude (WGS 84), posts a side (PATCH if left out). A patch is that many
+# posts of SRC metres about its centre, snapped to OS's posts. Mildenhall's takes in Lakenheath, Ely,
+# Cambridge, Newmarket and Bury St Edmunds, which span 50 km, so it is 1,536 posts: 76.8 km.
 PATCHES = [
-    ('Mildenhall', 52.36, 0.49),
+    ('Mildenhall', 52.32, 0.54, 1536),
 ]
 
 # --- WGS 84 latitude and longitude to the National Grid (the same maths as src/osgb.js) ---
@@ -179,20 +181,27 @@ open(os.path.join(out, 'base.png'), 'wb').write(png(quantise(base, lo), base_wat
 meta_base = dict(image='base.png', w=w, h=h, post=BASE_POST, x0=x0, z0=z0, min=lo, max=lo + 65535 * STEP, flat=0.0)
 print(f'base: {w} x {h} posts every {BASE_POST} m, heights {lo:.0f}..{base.max():.0f} m, {base_water.mean() * 100:.0f} % water')
 
-# the patches: PATCH posts of SRC metres about each centre, the posts OS's own, into the atlas two across
-atlas_w, atlas_h = 2 * PATCH, PATCH * max(1, (len(PATCHES) + 1) // 2)
+# the patches: so many posts of SRC metres about each centre, the posts OS's own, packed into the atlas in
+# shelves, largest first, the atlas as wide as two ordinary patches or the largest patch
+specs = [(p[0], p[1], p[2], p[3] if len(p) > 3 else PATCH) for p in PATCHES]
+specs.sort(key=lambda p: -p[3])
+atlas_w = max(2 * PATCH, max(p[3] for p in specs))
+placed = []; shelf_y = 0; shelf_h = 0; x = 0
+for name, lat, lon, n in specs:
+    if x + n > atlas_w: shelf_y += shelf_h; shelf_h = 0; x = 0
+    placed.append((name, lat, lon, n, x, shelf_y)); x += n; shelf_h = max(shelf_h, n)
+atlas_h = shelf_y + shelf_h
 atlas = np.zeros((atlas_h, atlas_w), np.float32); atlas_water = np.zeros((atlas_h, atlas_w), np.float32)
 patches = []
-for k, (name, lat, lon) in enumerate(PATCHES):
+for name, lat, lon, n, px, py in placed:
     E, N = osgb(lat, lon)
     cE = round((E - SRC / 2) / SRC) * SRC + SRC / 2; cN = round((N - SRC / 2) / SRC) * SRC + SRC / 2   # the nearest post
-    c0 = col_of(cE) - PATCH // 2 + 1; r0 = row_of(cN) - PATCH // 2
-    z = heights[r0:r0 + PATCH, c0:c0 + PATCH]; wz = water[r0:r0 + PATCH, c0:c0 + PATCH]
-    px, py = (k % 2) * PATCH, (k // 2) * PATCH
-    atlas[py:py + PATCH, px:px + PATCH] = z; atlas_water[py:py + PATCH, px:px + PATCH] = wz
-    xw, zw = world(cE - (PATCH // 2 - 1) * SRC, cN + (PATCH // 2) * SRC)
-    patches.append(dict(name=name, px=px, py=py, size=PATCH, post=SRC, x0=xw, z0=zw, centre=[lat, lon], en=[round(E), round(N)]))
-    print(f'  {name}: {PATCH * SRC / 1000:.1f} km about E {E:.0f} N {N:.0f}, heights {z.min():.0f}..{z.max():.0f} m, {wz.mean() * 100:.1f} % water, at atlas ({px}, {py})')
+    c0 = col_of(cE) - n // 2 + 1; r0 = row_of(cN) - n // 2
+    z = heights[r0:r0 + n, c0:c0 + n]; wz = water[r0:r0 + n, c0:c0 + n]
+    atlas[py:py + n, px:px + n] = z; atlas_water[py:py + n, px:px + n] = wz
+    xw, zw = world(cE - (n // 2 - 1) * SRC, cN + (n // 2) * SRC)
+    patches.append(dict(name=name, px=px, py=py, size=n, post=SRC, x0=xw, z0=zw, centre=[lat, lon], en=[round(E), round(N)]))
+    print(f'  {name}: {n * SRC / 1000:.1f} km about E {E:.0f} N {N:.0f}, heights {z.min():.0f}..{z.max():.0f} m, {wz.mean() * 100:.1f} % water, at atlas ({px}, {py})')
 lo_a = float(np.floor(atlas.min()))
 open(os.path.join(out, 'places.png'), 'wb').write(png(quantise(atlas, lo_a), atlas_water))
 meta = dict(

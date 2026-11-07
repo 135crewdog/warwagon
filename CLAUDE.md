@@ -100,7 +100,7 @@ A Rage-style green HUD, with tanker numbers (see Departures: the real jet has no
 - **Heading** across the top, degrees true, the readout in the tape's own row under the lubber line so the tape's numbers pass beneath it.
 - **Pitch ladder** with the horizon line, the **flight path marker** and the **waterline**.
 - **N1 %**, from the engines, not the slider, so the spool lag shows.
-- **g** and **AoA**, stacked lower left with the Mach and N1 as Rage's HUD stacks them, and a **bank scale** as Boeing's displays draw it: an arc of ticks at 0, 10, 20, 30 and 45° over the centre, under the heading, that turns with the horizon, and a pointer fixed to the jet at the top, so the bank is read on the banked side. (Added after the owner's first flights; a glass-fixed arc with a moving pointer, below the centre as on a fighter HUD and then above, read wrong to a pilot.)
+- **g** and **AoA**, stacked lower left with the Mach and N1 as Rage's HUD stacks them, and a **bank scale** as Boeing's displays draw it: an arc of ticks at 0, 10, 20, 30 and 45° about the waterline, under the heading, that turns with the horizon, and a pointer fixed to the jet, so the bank is read on the banked side; conformal like the ladder, it stays in front of the jet when the view is swung round. (Added after the owner's first flights; a glass-fixed arc with a moving pointer, below the centre as on a fighter HUD and then above, read wrong to a pilot.)
 - **Look-around** by dragging the view, as Rage: the camera swings round the jet and eases back when the finger lifts.
 
 ## Departures
