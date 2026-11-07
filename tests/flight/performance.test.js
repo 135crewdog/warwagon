@@ -36,7 +36,7 @@ test('cruise: 530 mph (460 KTAS, Mach 0.78) at 30,000 ft within MCT, with climb 
   const mach = t.aux.mach;
   const needed = 4 * t.thrust, mct = 4 * mctThrust(30000, mach), max = 4 * maxThrust(30000, mach);
   const roc = vt * (max - needed) / WEIGHT * 60;
-  console.log(`  460 KTAS at 30,000 ft (Mach ${mach.toFixed(3)}): needs ${needed.toFixed(0)} lbf of ${mct.toFixed(0)} at MCT; ${roc.toFixed(0)} ft/min in hand at take-off power; throttle ${throttleFor(t.thrust, 30000, mach).toFixed(2)}`);
+  console.log(`  460 KTAS at 30,000 ft (Mach ${mach.toFixed(3)}): needs ${needed.toFixed(0)} lbf of ${mct.toFixed(0)} at MCT; ${roc.toFixed(0)} ft/min in hand at take-off power; throttle ${throttleFor(t.power).toFixed(2)}`);
   assert.ok(needed < mct);
   assert.ok(roc >= 500, `rate of climb ${roc}`);
 });
@@ -92,7 +92,7 @@ test('the zero-g parabola: from 350 KIAS, a 1.8 g pull-up to 45° then 20 s or m
 
 test('the 1 g clean stall at 240,000 lb is about 160 KEAS (not public; reported, with the 707\'s 1.14 CLmax)', () => {
   const vt = trueAirspeedFromKcas(160, 0);
-  const t = trimLevel(vt, 0);
+  const t = trimLevel(vt, 0, { guess: { alpha: 13, is: -3 } });   // the 1 g trim here sits on the lift plateau; start the solver near it
   const a = airdata(t.state, t.aux);
   console.log(`  160 KCAS at sea level trims at α ${t.alpha.toFixed(1)}°, CL ${t.aux.coefficients.CL.toFixed(3)}, i_s ${t.is.toFixed(1)}°, ${(100 * t.aux.coefficients.buffetFraction).toFixed(0)} % of the buffet boundary; KEAS ${a.keas.toFixed(0)}`);
   assert.ok(t.ok && t.aux.coefficients.CL > 1.05);

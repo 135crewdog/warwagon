@@ -16,6 +16,7 @@ import { createThrottle } from './ui/throttle.js';
 import { createStickIndicator } from './ui/stick.js';
 import { createScreens } from './ui/screens.js';
 import { upInScreen, tiltOf, stickFrom, smooth, MAPPING } from './input/tilt.js';
+import { createLook, attachLook } from './input/look.js';
 import { SURFACES } from './sim/data/aircraft.js';
 import { APP_VERSION } from './version.js';
 
@@ -32,6 +33,8 @@ const world = createWorld(scene);
 const jet = createAircraft();
 scene.add(jet);
 const chase = createChaseCamera(camera);
+const look = createLook();                  // look-around by dragging the view
+attachLook(view, look, () => mode === 'flying');
 const hud = createHud(document.getElementById('hud'));
 
 let sizedW = 0, sizedH = 0;
@@ -170,6 +173,7 @@ function startFlight() {
 function pause() {
   if (mode !== 'flying') return;
   mode = 'paused';
+  look.reset();                               // resume from the plain chase view
   screens.show('pause');
   checkForUpdate();
 }
@@ -186,6 +190,7 @@ function resume() {
 function flyAgain() {
   if (isPortrait()) return;
   airStart();
+  look.reset();
   mode = 'start';
   controls.hidden = true;
   screens.show('start');
@@ -321,12 +326,13 @@ function frame(now) {
   const aux = sim.aux;
   const sfc = sim.surfaces;
   jet.surfaces.set(sfc.de, sfc.da, sfc.dr, sfc.is);
-  chase.update(elapsed, lerped.position, lerped.quaternion, { nz: aux.nz, buffet: sim.buffetFraction, qbar: aux.qbar });
+  look.update(elapsed);
+  chase.update(elapsed, lerped.position, lerped.quaternion, { nz: aux.nz, buffet: sim.buffetFraction, qbar: aux.qbar }, look);
   world.update(camera.position);
   renderer.render(scene, camera);
 
   const air = sim.airdata;
-  hud.draw(air, sim.engines, projectDirection, velocityNed(sim.state), noseNed(sim.state));
+  hud.draw(air, sim.engines, projectDirection, velocityNed(sim.state), noseNed(sim.state), look.active);
   if (mode === 'flying') stickIndicator.update(yoke, Math.abs(sfc.de) >= SURFACES.de.limit - 0.01, !neutral || tilt.confidence < 0.3);
 
   frames++;
@@ -349,6 +355,7 @@ window.warwagon = {
   get mode() { return mode; },
   get sim() { return sim; },
   get yoke() { return yoke; },
+  get look() { return look; },
   get surfaces() { return jet.surfaces; },
   set throttle(v) { throttleValue = v; throttle.set(v); },
   get neutral() { return neutral; },

@@ -80,12 +80,12 @@ test('deadband, then linear to full force', () => {
 
 test('stick from tilt against the neutral, with roll fading on low confidence', () => {
   const neutral = { pitch: 30, roll: -5, confidence: 0.9 };
-  const pull = stickFrom({ pitch: 30 + 25, roll: -5, confidence: 0.9 }, neutral);
+  const pull = stickFrom({ pitch: 30 + MAPPING.pitchFull, roll: -5, confidence: 0.9 }, neutral);
   near(pull.pitch, MAPPING.pitchSign * 1, 1e-12);
   near(pull.roll, 0, 1e-12);
-  const right = stickFrom({ pitch: 30, roll: -5 + 30, confidence: 0.9 }, neutral);
+  const right = stickFrom({ pitch: 30, roll: -5 + MAPPING.rollFull, confidence: 0.9 }, neutral);
   near(right.roll, MAPPING.rollSign * 1, 1e-12);
-  const faded = stickFrom({ pitch: 30, roll: -5 + 30, confidence: 0.15 }, neutral);
+  const faded = stickFrom({ pitch: 30, roll: -5 + MAPPING.rollFull, confidence: 0.15 }, neutral);
   near(faded.roll, MAPPING.rollSign * 0.5, 1e-12);
   // roll wraps: neutral at 170°, now at −170° is a 20° turn, not −340°
   const w = stickFrom({ pitch: 30, roll: -170, confidence: 1 }, { pitch: 30, roll: 170, confidence: 1 });
@@ -97,4 +97,25 @@ test('the smoothing filter has a 20 ms time constant and tolerates a bad dt', ()
   near(y, 1 - Math.exp(-1), 1e-12);
   assert.equal(smooth(0.3, 1, 0), 1);
   assert.equal(smooth(0.3, 1, NaN), 1);
+});
+// ---- look-around (src/input/look.js) ----
+import { createLook, DEG_PER_PX, YAW_MAX, PITCH_MAX } from '../src/input/look.js';
+
+test('look-around: a drag swings the view, dragging the world; it eases back when released', () => {
+  const look = createLook();
+  look.drag(100, 0);
+  assert.equal(look.yaw, 0, 'nothing moves until a finger is down');
+  look.begin();
+  look.drag(100, 40);
+  near(look.yaw, 100 * DEG_PER_PX, 1e-9, 'drag right looks left (positive yaw)');
+  near(look.pitch, 40 * DEG_PER_PX, 1e-9, 'drag down looks up (positive pitch)');
+  look.drag(5000, 5000);
+  assert.equal(look.yaw, YAW_MAX); assert.equal(look.pitch, PITCH_MAX);
+  look.update(1);
+  assert.equal(look.yaw, YAW_MAX, 'held: no return while the finger is down');
+  look.release();
+  for (let i = 0; i < 60; i++) look.update(1 / 60);
+  assert.ok(Math.abs(look.yaw) < 5 && Math.abs(look.pitch) < 3, `mostly back within a second: ${look.yaw} ${look.pitch}`);
+  for (let i = 0; i < 120; i++) look.update(1 / 60);
+  assert.equal(look.yaw, 0); assert.equal(look.pitch, 0); assert.equal(look.active, false);
 });

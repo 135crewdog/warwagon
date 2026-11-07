@@ -1,11 +1,14 @@
-// Four F108s, docs/flight-model.md section 6: the maximum available at the
-// present altitude and Mach (the certified rating lapsed by the Bartel and
-// Young equations as printed in OpenAP, the stand-in for the PMC), the
-// throttle with its MCT detent, the spool lag, and the N1 shown.
+// Four F108s, docs/flight-model.md section 6. An engine's state is its power
+// fraction f, 0 at flight idle and 1 at the take-off rating, which follows the
+// throttle through the spool lag. Its net thrust is f of the rated thrust at
+// the present altitude and Mach (the certified rating lapsed by the Bartel and
+// Young equations as printed in OpenAP, the stand-in for the PMC) plus (1 − f)
+// of the flight-idle net thrust, which is the idle's small gross thrust less
+// the ram drag of the air passing through it, and is negative at speed.
 
-import { atmosphere, P0 } from './atmosphere.js';
+import { atmosphere, P0, RHO0 } from './atmosphere.js';
 import {
-  T0, MCT_FRACTION, IDLE_FRACTION, BYPASS, T_CRUISE, M_CRUISE, H_CRUISE, H_LOW, H_HIGH,
+  T0, MCT_FRACTION, IDLE_FRACTION, MDOT_IDLE, BYPASS, T_CRUISE, M_CRUISE, H_CRUISE, H_LOW, H_HIGH,
   DETENT, N1_MAX, TAU_FAST, TAU_IDLE, FAST_FRACTION,
 } from './data/engine.js';
 
@@ -31,7 +34,7 @@ function enrouteThrust(pressure, mach) {
   return T_CRUISE * (c1 * Math.log(pressure / P_CRUISE) + c2);
 }
 
-// The maximum thrust available from one engine, lbf, at altitude h (ft) and
+// The rated (maximum) net thrust of one engine, lbf, at altitude h (ft) and
 // Mach: take-off rating to H_LOW, en-route rating from H_HIGH, blended in
 // pressure between.
 export function maxThrust(h, mach) {
@@ -46,38 +49,47 @@ export function maxThrust(h, mach) {
 }
 
 export function mctThrust(h, mach) { return MCT_FRACTION * maxThrust(h, mach); }
-export function idleThrust(h, mach) { return IDLE_FRACTION * maxThrust(h, mach); }
 
-// The throttle s (0..1) to the commanded thrust per engine: idle to MCT below
+// Flight idle's net thrust, lbf: a small gross thrust (IDLE_FRACTION of the
+// local static maximum) less the ram drag of the idling engine's airflow,
+// MDOT_IDLE·σ·V. Positive at rest, negative above about 150 kt.
+export function idleThrust(h, vt) {
+  const { rho } = atmosphere(vt, h);
+  return IDLE_FRACTION * maxThrust(h, 0) - MDOT_IDLE * (rho / RHO0) * vt;
+}
+
+// One engine's net thrust at power fraction f (0 idle .. 1 take-off). Not
+// clamped here: the state is, and the trim solver needs the slope beyond the
+// ends to know a condition is out of reach.
+export function netThrust(f, h, mach, vt) {
+  return f * maxThrust(h, mach) + (1 - f) * idleThrust(h, vt);
+}
+
+// The throttle s (0..1) to the commanded power fraction: idle to MCT below
 // the detent, MCT to take-off above it.
-export function commandedThrust(s, h, mach) {
-  const tmax = maxThrust(h, mach);
-  const idle = IDLE_FRACTION * tmax, mct = MCT_FRACTION * tmax;
+export function commandedPower(s) {
   const t = s < 0 ? 0 : s > 1 ? 1 : s;
-  if (t <= DETENT) return idle + (mct - idle) * t / DETENT;
-  return mct + (tmax - mct) * (t - DETENT) / (1 - DETENT);
+  if (t <= DETENT) return MCT_FRACTION * t / DETENT;
+  return MCT_FRACTION + (1 - MCT_FRACTION) * (t - DETENT) / (1 - DETENT);
 }
 
-// The throttle position that commands a given thrust per engine (for the air
-// start): the inverse of commandedThrust.
-export function throttleFor(thrust, h, mach) {
-  const tmax = maxThrust(h, mach);
-  const idle = IDLE_FRACTION * tmax, mct = MCT_FRACTION * tmax;
-  if (thrust <= mct) return Math.max(0, (thrust - idle) / (mct - idle) * DETENT);
-  return Math.min(1, DETENT + (thrust - mct) / (tmax - mct) * (1 - DETENT));
+// The throttle position that commands a given power fraction (for the air
+// start): the inverse of commandedPower.
+export function throttleFor(f) {
+  if (f <= MCT_FRACTION) return Math.max(0, f / MCT_FRACTION * DETENT);
+  return Math.min(1, DETENT + (f - MCT_FRACTION) / (1 - MCT_FRACTION) * (1 - DETENT));
 }
 
-// The spool lag's time constant at the present thrust (lbf).
-export function spoolTau(thrust) {
-  const f = thrust / T0;
+// The spool lag's time constant at the present power fraction.
+export function spoolTau(f) {
   if (f >= FAST_FRACTION) return TAU_FAST;
-  if (f <= IDLE_FRACTION) return TAU_IDLE;
-  return TAU_IDLE + (TAU_FAST - TAU_IDLE) * (f - IDLE_FRACTION) / (FAST_FRACTION - IDLE_FRACTION);
+  if (f <= 0) return TAU_IDLE;
+  return TAU_IDLE + (TAU_FAST - TAU_IDLE) * f / FAST_FRACTION;
 }
 
-// Rate of change of one engine's thrust toward its command, lbf/s.
-export function thrustRate(command, thrust) {
-  return (command - thrust) / spoolTau(thrust);
+// Rate of change of one engine's power fraction toward its command, per second.
+export function powerRate(command, f) {
+  return (command - f) / spoolTau(f);
 }
 
 // The maximum N1 shown, per cent (flight model 6): the PMC caps the fan's
@@ -88,10 +100,11 @@ export function maxN1(h) {
   return N1_MAX * Math.sqrt(atmosphere(0, h).theta);
 }
 
-// The N1 shown for a thrust: the square law against the local maximum.
-export function n1(thrust, h, mach) {
-  const t = Math.max(0, thrust);
-  return maxN1(h) * Math.sqrt(t / maxThrust(h, mach));
+// The N1 shown for a power fraction: the square law from the idle's share of
+// the static thrust to the local maximum. About 27 % at idle at sea level.
+export function n1(f, h) {
+  const p = f < 0 ? 0 : f > 1 ? 1 : f;
+  return maxN1(h) * Math.sqrt(IDLE_FRACTION + (1 - IDLE_FRACTION) * p);
 }
 
 export { DETENT };

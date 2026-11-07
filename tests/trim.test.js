@@ -73,11 +73,11 @@ test('the air start trims inside the stabiliser\'s travel and the throttle\'s ra
   assert.ok(t.is > -14 && t.is < 0.5);
   assert.ok(t.controls.throttle > 0.05 && t.controls.throttle < 0.85);
   assert.ok(Math.abs(t.aux.nz - Math.cos(t.alpha * Math.PI / 180)) < 1e-6);
-  const turn = trimTurnAtLoad(vt, 10000, t.aux.nz + 1e-6, { thrust: t.thrust });
+  const turn = trimTurnAtLoad(vt, 10000, t.aux.nz + 1e-6, { power: t.power });
   assert.ok(turn.ok, `turn residual ${turn.residual}`);
   assert.ok(Math.abs(turn.alpha - t.alpha) < 1e-3 && Math.abs(turn.is - t.is) < 1e-3 && Math.abs(turn.psidot) < 1e-3);
   // a 1.3 g level turn at the same thrust: the speed bleeds, the geometry holds
-  const t13 = trimTurnAtLoad(vt, 10000, 1.3, { thrust: t.thrust });
+  const t13 = trimTurnAtLoad(vt, 10000, 1.3, { power: t.power });
   assert.ok(t13.ok, `1.3 g turn residual ${t13.residual}`);
   assert.ok(Math.abs(t13.phi * 180 / Math.PI - Math.acos(1 / 1.3) * 180 / Math.PI) < 3, `bank ${t13.phi * 180 / Math.PI}`);
   let x = t13.state;

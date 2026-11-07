@@ -2,19 +2,19 @@
 // equations of motion. Used by the tests (docs/flight-model.md 12.1 and 12.3)
 // and by the air start. Degrees in and out for the angles the caller sets;
 // the state itself is in radians. The unknowns of a KC-135 trim are α, the
-// stabiliser i_s and the thrust per engine, with the elevator centred.
+// stabiliser i_s and the engines' power fraction, with the elevator centred.
 
 import { makeState, derivative, IX, N, D2R } from './dynamics.js';
 import { atmosphere } from './atmosphere.js';
-import { throttleFor } from './engine.js';
+import { throttleFor, netThrust } from './engine.js';
 import { MASS, G } from './data/aircraft.js';
 
 // A steady flight condition: zero sideslip, flight-path angle gamma (rad,
 // wings level only), or a level turn at psidot (rad/s) at bank phi (rad).
-// thrust is per engine. Surfaces are set directly in the state; the
+// power is the engines' fraction. Surfaces are set directly in the state; the
 // actuators are not in the loop. Returns the state, the controls, the
 // derivative and the aux values.
-export function steadyFlight({ vt, h, alpha, is = 0, de = 0, da = 0, dr = 0, phi = 0, psidot = 0, gamma = 0, thrust = 0, mass = MASS }) {
+export function steadyFlight({ vt, h, alpha, is = 0, de = 0, da = 0, dr = 0, phi = 0, psidot = 0, gamma = 0, power = 0, mass = MASS }) {
   const a = alpha * D2R;
   const theta = gamma !== 0 ? a + gamma : Math.atan(Math.cos(phi) * Math.tan(a));
   const x = makeState({
@@ -22,10 +22,9 @@ export function steadyFlight({ vt, h, alpha, is = 0, de = 0, da = 0, dr = 0, phi
     p: -psidot * Math.sin(theta),
     q: psidot * Math.cos(theta) * Math.sin(phi),
     r: psidot * Math.cos(theta) * Math.cos(phi),
-    thrust, de, da, dr, is,
+    power, de, da, dr, is,
   });
-  const mach = atmosphere(vt, h).mach;
-  const controls = { throttle: throttleFor(thrust, h, mach), de, da, dr, isRate: 0 };
+  const controls = { throttle: throttleFor(power), de, da, dr, isRate: 0 };
   const xdot = new Float64Array(N);
   const aux = derivative(x, controls, xdot, mass);
   return { x, controls, xdot, aux };
@@ -116,27 +115,30 @@ export function trim(fixed, free, zero) {
   const out = { ...fixed };
   names.forEach((k, i) => { out[k] = sol.x[i]; });
   const flight = build(sol.x);
-  return { ...out, ok: sol.ok, residual: sol.residual, state: flight.x, controls: flight.controls, aux: flight.aux };
+  const mach = atmosphere(out.vt, out.h).mach;
+  // thrust: the net thrust per engine at the trim, lbf, for the reports
+  return { ...out, thrust: netThrust(out.power ?? 0, out.h, mach, out.vt), ok: sol.ok, residual: sol.residual, state: flight.x, controls: flight.controls, aux: flight.aux };
 }
 
 // Steady wings-level flight at a given speed, height and flight-path angle
-// (deg, default level) with the elevator centred: α (deg), i_s (deg) and
-// thrust per engine (lbf). mass (slug) defaults to the jet's.
+// (deg, default level) with the elevator centred: α (deg), i_s (deg) and the
+// engines' power fraction (with the net thrust per engine it gives, lbf).
+// mass (slug) defaults to the jet's.
 export function trimLevel(vt, h, { gamma = 0, mass = MASS, guess = {} } = {}) {
   const alpha0 = guess.alpha ?? Math.min(12, Math.max(-2, 2.4e5 / (vt * vt)));
   return trim(
     { vt, h, gamma: gamma * D2R, mass },
-    { alpha: alpha0, is: guess.is ?? -1, thrust: guess.thrust ?? 4000 },
+    { alpha: alpha0, is: guess.is ?? -1, power: guess.power ?? 0.3 },
     ['udot', 'wdot', 'qdot'],
   );
 }
 
 // A level turn at a given load factor with speed free to bleed: α, i_s, φ,
-// δa, δr and ψ̇ for n_z at the given thrust per engine.
-export function trimTurnAtLoad(vt, h, nz, { thrust = 4000, mass = MASS, guess = {} } = {}) {
+// δa, δr and ψ̇ for n_z at the given power fraction.
+export function trimTurnAtLoad(vt, h, nz, { power = 0.3, mass = MASS, guess = {} } = {}) {
   const phi0 = Math.acos(Math.min(1, 1 / Math.max(nz, 1)));
   return trim(
-    { vt, h, thrust, nz, mass },
+    { vt, h, power, nz, mass },
     { alpha: guess.alpha ?? 3, is: guess.is ?? -2, phi: guess.phi ?? phi0, da: 0, dr: 0, psidot: guess.psidot ?? 0.05 },
     ['vdot', 'normal', 'pdot', 'qdot', 'rdot', 'nz'],
   );

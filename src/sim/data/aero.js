@@ -105,6 +105,10 @@ export const CN_P = 0.019;
 export const CY_P = -0.185;
 export const CY_R = 0.71;
 
-// Buffet onset, CL against Mach (flight model 10; data 9.3).
-export const BUFFET_MACH = [0.50, 0.60, 0.70, 0.75, 0.78, 0.80, 0.82];
-export const BUFFET_CL = [0.71, 0.75, 0.76, 0.70, 0.63, 0.58, 0.50];
+// Buffet onset, CL against Mach (flight model 10; data 9.3). The chart starts
+// at Mach 0.50; below it the boundary is taken to rise toward the low-speed
+// stall's CL, 0.95 at Mach 0.30 (the owner's first flights found the 0.71
+// held down to low Mach shook the jet from 207 KIAS in level flight at
+// 10,000 ft, 50 kt above the stall).
+export const BUFFET_MACH = [0.30, 0.50, 0.60, 0.70, 0.75, 0.78, 0.80, 0.82];
+export const BUFFET_CL = [0.95, 0.71, 0.75, 0.76, 0.70, 0.63, 0.58, 0.50];

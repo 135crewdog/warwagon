@@ -28,7 +28,7 @@ The owner's design philosophy applies to everything a person sees or touches: ht
 | 0 | **The data.** Read the sources in `docs/kc135-sources.md`, digitize their charts by the procedure in `docs/research-plan.md`, and write `docs/flight-model.md` and `docs/kc135-data.md`. No app code. | Done: sources archived and logged; the charts read and checked against the owner's traces (two batches); `docs/kc135-data.md` and `docs/flight-model.md` written |
 | 1a | **Simulation core.** Atmosphere (1976 standard, tropopause included), aero with Mach effects, four F108 engines, actuators, equations of motion, trim solver, air data. Rage's `src/sim/` reused where it fits. Test layers 1 and 3 passing. No visuals. | Done |
 | 1b | **Flight controls, tuned.** Yoke to surfaces, spoiler roll assist, automatic trim, yaw damper with automatic coordination. Test layer 2 passing, and a headless flight script that prints time histories. | Done |
-| 1c | **The app.** A flat world, the placeholder jet, chase camera, HUD, UI, tilt, throttle, menus, PWA, Pages. Ends with the owner flying it on the iPhone. | Built; waiting for the owner's flights |
+| 1c | **The app.** A flat world, the placeholder jet, chase camera, HUD, UI, tilt, throttle, menus, PWA, Pages. Ends with the owner flying it on the iPhone. | Flown; the first fixes from the flights in |
 | 2 | **The UK.** A coarse base tile with six fine patches, imagery, water, earth curvature in the view, a place to choose on the start screen. | Not started |
 
 Later milestones get specified when milestone 2 is done: the aircraft's features (landing gear with ground contact and wheel brakes, flaps, speed brakes, takeoff and landing at Mildenhall), then sound and a better 3D model. The KC-135 has inboard and outboard ailerons (the outboard pair locked out with the flaps up, which is why the model's roll power is the inboard aileron plus spoilers), inboard and outboard spoilers, and inboard and outboard flaps: the flaps milestone models them that way, and the jet's parts are named to match.
@@ -92,7 +92,7 @@ tests/browser/smoke.js    loads the app in headless Chromium and flies a few sec
 
 - One slider for all four engines, along the left edge, as in Rage.
 - **The bottom is flight idle N1.**
-- **A detent at MCT** (maximum continuous thrust): the thumb has to cross a small gap to go above it, up to maximum (takeoff) thrust.
+- **A detent at MCT** (maximum continuous thrust): the track around it snaps to MCT, and the thumb has to cross a small gap to go above it, up to maximum (takeoff) thrust.
 - **The maximum N1 changes with altitude** (and Mach), as the F108's power management controls (PMCs) stop the engines over-boosting. The PMC's schedule isn't public, so the model caps thrust at the certified rating (take-off 22,000 lbf, or MCT below the detent, from EASA's type certificate) lapsed with Mach and altitude, and shows the N1 that gives it. The slider asks for a fraction of what's available at the present condition.
 - **The spool lag is real**: slow near idle, about a 1 s time constant above 20 % thrust, and flight idle to 95 % in under 5 s, the certification ceiling.
 
@@ -102,9 +102,11 @@ A Rage-style green HUD, with tanker numbers (see Departures: the real jet has no
 
 - **KIAS** on the left, **Mach** under it.
 - **Altitude** in feet on the right, with the **VSI** at the top of the altitude display: a signed number (+ climbing, − descending) in feet per minute, lagged like a real vertical speed indicator. The KC-135's lag isn't public; a generic instrument value is used and stated.
-- **Heading** across the top, degrees true.
+- **Heading** across the top, degrees true, the readout in the tape's own row under the lubber line so the tape's numbers pass beneath it.
 - **Pitch ladder** with the horizon line, the **flight path marker** and the **waterline**.
 - **N1 %**, from the engines, not the slider, so the spool lag shows.
+- **g** and **AoA**, stacked lower left with the Mach and N1 as Rage's HUD stacks them, and a **bank scale** as Boeing's displays draw it: an arc of ticks at 0, 10, 20, 30 and 45° over the centre, under the heading, that turns with the horizon, and a pointer fixed to the jet at the top, so the bank is read on the banked side. (Added after the owner's first flights; a glass-fixed arc with a moving pointer, below the centre as on a fighter HUD and then above, read wrong to a pilot.)
+- **Look-around** by dragging the view, as Rage: the camera swings round the jet and eases back when the finger lifts.
 
 ## Departures
 

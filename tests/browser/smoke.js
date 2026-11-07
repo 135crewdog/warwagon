@@ -94,6 +94,14 @@ async function main() {
     await shot('power');
     await page.evaluate(() => { window.warwagon.throttle = 0.3; });
 
+    // look around: a drag on the view swings the camera; lifting the finger eases it back
+    await page.mouse.move(600, 200); await page.mouse.down(); await page.mouse.move(420, 240, { steps: 6 });
+    const yaw = await page.evaluate(() => window.warwagon.look.yaw);
+    assert.ok(yaw < -20, `dragging left looks right: yaw ${yaw}`);
+    await shot('look');
+    await page.mouse.up();
+    await page.waitForFunction(() => window.warwagon.look.yaw === 0 && !window.warwagon.look.active, null, { timeout: 15000 });
+
     // pause, settings, theme, resume
     await page.click('#pause');
     await page.waitForFunction(() => window.warwagon.mode === 'paused');

@@ -61,11 +61,15 @@ export function check12() {
   const rel = sim.releasedAt;
   const afterRelease = rows.filter((r) => r.t > rel);
   const noseDown = afterRelease.find((r) => r.q < -0.5)?.t;
-  const alphaBack = afterRelease.find((r) => r.alpha < 12)?.t;
+  const atRelease = rows.find((r) => r.t >= rel);
+  const later = afterRelease.filter((r) => r.t <= rel + 10);
+  const alphaMin10 = Math.min(...later.map((r) => r.alpha));
+  // released near the stall with the trim where the pilot's held force left it, the nose drops and α falls
+  // back toward the trim's angle; it need not return to the air start's
   const pass = rel !== null && buffetAt !== undefined && buffetAt < 14 && noseDown !== undefined && noseDown - rel <= 3
-    && alphaBack !== undefined && alphaBack - rel <= 10 && !summary.nan;
+    && alphaMin10 < atRelease.alpha - 3 && !summary.nan;
   return { name: '12 idle, altitude held to 15° α, then released', pass,
-    text: `buffet from α ${f(buffetAt, 1)}°; released at ${f(rel, 0)} s and ${f(rows.find((r) => r.t >= rel)?.kcas, 0)} KIAS with the elevator at ${f(rows.find((r) => r.t >= rel)?.de, 1)}°; nose drops ${f(noseDown - rel, 1)} s after release, α back under 12° after ${f(alphaBack - rel, 1)} s, peak α ${f(summary.alphaMax, 1)}°, n_z min ${f(summary.nzMin)}` };
+    text: `buffet from α ${f(buffetAt, 1)}°; released at ${f(rel, 0)} s and ${f(atRelease?.kcas, 0)} KIAS with the elevator at ${f(atRelease?.de, 1)}° and the stabiliser at ${f(atRelease?.is, 1)}°; nose drops ${f(noseDown - rel, 1)} s after release, α down to ${f(alphaMin10, 1)}° within 10 s, peak α ${f(summary.alphaMax, 1)}°, n_z min ${f(summary.nzMin)}` };
 }
 
 export function check13() {
@@ -87,6 +91,26 @@ export function check4Rudder() {
     text: `rudder to ${f(Math.max(...rows.map((r) => Math.abs(r.dr))), 1)}° (authority ${f(rudderLimit(rows[0].keas), 1)}° at ${f(rows[0].keas, 0)} KEAS), |β| ${f(summary.betaMax, 1)}° → ${f(betaLate, 2)}° after 20 s` };
 }
 
+export function check17() {
+  const { rows } = flyManoeuvre('hold');
+  const at = (t) => rows.find((r) => r.t >= t);
+  const early = Math.abs(at(3.3).is - rows[0].is), late = rows[0].is - at(24.9).is;
+  // the hold begins 3 s after the pull; the force held then (the elevator at 3.5 s) sets what the trim takes
+  const carried = Math.abs(at(3.5).de) * 0.53;
+  const pass = early < 0.05 && late > 0.8 * carried && late < 1.2 * carried;
+  return { name: '17 a quarter pull held at cruise for 25 s', pass,
+    text: `stabiliser moved ${f(early)}° in the first 3 s, then ${f(late)}° nose-up and stopped (the ${f(at(3.5).de, 1)}° of elevator held when the hold began is worth ${f(carried)}°; the same tilt is ${f(at(24.9).de, 1)}° by 25 s as the jet slows); n_z ${f(at(5).nz)} at 5 s → ${f(at(24.9).nz)} at 25 s for the same yoke; KIAS ${f(rows[0].kcas, 0)} → ${f(at(24.9).kcas, 0)}` };
+}
+
+export function check18() {
+  const { rows } = flyManoeuvre('holdAltitude');
+  const last = rows[rows.length - 1];
+  const deEnd = Math.max(...after(rows, 80).map((r) => Math.abs(r.de)));
+  const pass = deEnd < 1.0 && Math.abs(last.alt - rows[0].alt) < 300 && last.kcas < rows[0].kcas - 20;
+  return { name: '18 throttle to idle at cruise, altitude held by force, 90 s', pass,
+    text: `KIAS ${f(rows[0].kcas, 0)} → ${f(last.kcas, 0)}; altitude held within ${f(Math.max(...rows.map((r) => Math.abs(r.alt - rows[0].alt))), 0)} ft; the elevator still held at the end ${f(deEnd)}° (the trim took the rest: stabiliser ${f(rows[0].is)} → ${f(last.is)}°)` };
+}
+
 export function check16() {
   let nan = 0, flagged = 0, crashed = 0, nzMax = 0, nzMin = 9;
   const starts = [[160, 5000], [200, 10000], [250, 20000], [280, 35000]];
@@ -102,4 +126,4 @@ export function check16() {
     text: `no NaN in ${16 - nan} of 16; ${flagged} left the data's envelope (flagged), ${crashed} flew into the ground; n_z ${f(nzMin)} to ${f(nzMax)}` };
 }
 
-export const CHECKS = [check4Rudder, () => check7(CRUISE, 'cruise'), () => check7(AIR_START, 'the air start'), check8, check9, check10, check11, check12, check13, check16];
+export const CHECKS = [check4Rudder, () => check7(CRUISE, 'cruise'), () => check7(AIR_START, 'the air start'), check8, check9, check10, check11, check12, check13, check16, check17, check18];
