@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { throttleFromPosition, positionFromThrottle } from '../src/ui/throttle.js';
 import { DETENT } from '../src/sim/engine.js';
-import { vsiText, bankPointerAngle, BANK_TICKS } from '../src/hud/hud.js';
+import { vsiText, bankTickAngle, BANK_TICKS } from '../src/hud/hud.js';
 
 const near = (a, b, tol) => assert.ok(Math.abs(a - b) <= tol, `${a} vs ${b}`);
 
@@ -18,12 +18,12 @@ test('the throttle snaps to MCT around its detent, with a gap to cross before ta
   assert.ok(throttleFromPosition(0.5) > 0.5 && throttleFromPosition(0.5) < 0.55, 'the track below the detent is squeezed a little to make room for the snap zone');
 });
 
-test('the bank scale has its long ticks at 0, 30 and 45 and its pointer reads on the banked side, to the scale\'s end', () => {
+test('the bank scale has its long ticks at 0, 30 and 45; its arc turns with the horizon under a pointer fixed to the jet, so the bank reads on the banked side', () => {
   for (const t of [0, 30, 45, -30, -45]) assert.ok(BANK_TICKS.includes(t));
-  assert.equal(bankPointerAngle(0), 0);
-  assert.equal(bankPointerAngle(30), 30, 'a 30° right bank: the pointer on the right-hand 30, as Boeing\'s displays read it');
-  assert.equal(bankPointerAngle(-45), -45);
-  assert.equal(bankPointerAngle(80), 50, 'held at the scale\'s end');
+  assert.equal(bankTickAngle(0, 0), 0, 'level: the 0 tick under the pointer');
+  assert.equal(bankTickAngle(30, -30), 0, 'a 30° right bank turns the horizon, and the arc, 30° anticlockwise: the right-hand 30 stands under the pointer');
+  assert.equal(bankTickAngle(0, -30), -30, 'and the 0 tick is 30° to the left of it');
+  assert.equal(bankTickAngle(-45, 45), 0, 'a 45° left bank: the left-hand 45 under the pointer');
 });
 
 test('the VSI reads signed feet per minute to the nearest 50', () => {

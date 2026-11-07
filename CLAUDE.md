@@ -105,7 +105,7 @@ A Rage-style green HUD, with tanker numbers (see Departures: the real jet has no
 - **Heading** across the top, degrees true.
 - **Pitch ladder** with the horizon line, the **flight path marker** and the **waterline**.
 - **N1 %**, from the engines, not the slider, so the spool lag shows.
-- **g** and **AoA**, stacked lower left with the Mach and N1 as Rage's HUD stacks them, and a **bank scale**: ticks on an arc over the centre at 0, 10, 20, 30 and 45°, under the heading, with a pointer that reads on the banked side as Boeing's displays do. (Added after the owner's first flights; an arc below the centre, as on a fighter HUD, was tried and read wrong to a pilot, and the owner chose the Boeing reading over the ADI's sky pointer.)
+- **g** and **AoA**, stacked lower left with the Mach and N1 as Rage's HUD stacks them, and a **bank scale** as Boeing's displays draw it: an arc of ticks at 0, 10, 20, 30 and 45° over the centre, under the heading, that turns with the horizon, and a pointer fixed to the jet at the top, so the bank is read on the banked side. (Added after the owner's first flights; a glass-fixed arc with a moving pointer, below the centre as on a fighter HUD and then above, read wrong to a pilot.)
 - **Look-around** by dragging the view, as Rage: the camera swings round the jet and eases back when the finger lifts.
 
 ## Departures

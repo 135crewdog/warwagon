@@ -8,8 +8,9 @@
 // camera, so the marker sits on the point the jet is flying toward and the
 // ladder rolls and scales with the camera. Rage's layout: airspeed left,
 // altitude right (with the VSI above it), heading across the top, g, α, Mach
-// and the engines' N1 stacked lower left; and a bank scale over the centre,
-// read on the banked side as Boeing's displays read it.
+// and the engines' N1 stacked lower left; and a bank scale over the centre
+// whose arc turns with the horizon under a pointer fixed to the jet, as
+// Boeing's displays draw it.
 
 const GREEN = '#7cff4f';
 const OUTLINE = 'rgba(0,0,0,0.75)';
@@ -44,13 +45,15 @@ export function vsiText(fpm) {
   return (v > 0 ? '+' : '−') + Math.abs(v);
 }
 
-// Where the bank pointer sits on the scale over the centre: the angle from
-// the 0 tick, positive clockwise. The scale is read on the banked side, as
-// Boeing's displays read it (the owner's choice over the attitude
-// indicator's sky pointer, which swings the other way): a right bank puts
-// the pointer on the right-hand marks. Held at the scale's end beyond 45°.
-export function bankPointerAngle(bankDeg) {
-  return Math.max(-50, Math.min(50, bankDeg));
+// The bank scale is drawn as Boeing's displays draw it: the arc of ticks
+// belongs to the horizon and turns with it, and the pointer belongs to the
+// jet and stays fixed at the top of the glass, so in a right bank the arc
+// turns anticlockwise and the pointer stands over the right-hand ticks: the
+// scale is read on the banked side. This gives a tick's angle on the glass,
+// from the pointer, positive clockwise, for the horizon's own angle on the
+// glass (0 level, negative, anticlockwise, in a right bank).
+export function bankTickAngle(tickDeg, horizonDeg) {
+  return tickDeg + horizonDeg || 0;
 }
 
 export function createHud(canvas) {
@@ -172,28 +175,23 @@ export function createHud(canvas) {
       dashed(false);
     }
 
-    // bank scale: an arc of ticks over the centre, fixed on the glass as an
-    // attitude indicator's scale is fixed on its case, 0 at the top, 30 and
-    // 45 long, and a pointer on the inside of the arc that swings to the bank
-    // angle on the banked side; it sits under the heading tape, so the radius
-    // is what fits
+    // bank scale, under the heading tape: an arc of ticks that turns with
+    // the horizon (as the pitch ladder does, from the same projection; from
+    // the bank alone when the view is swung away), 0, 30 and 45 long, and a
+    // pointer fixed at the top of the glass, so the bank is read on the
+    // banked side; the radius is what fits under the heading
     const bx = cx, by = cy, br = Math.min(110, cy - top - 76);
+    let horizonDeg = -air.roll;
+    const hc = project(direction(hdg, air.pitch)), hr = project(rightOf(hdg, air.pitch));
+    if (hc.visible && hr.visible) horizonDeg = Math.atan2(hr.y - hc.y, hr.x - hc.x) / D2R;
     for (const t of BANK_TICKS) {
-      const a = (t - 90) * D2R;                      // from straight up, positive clockwise
+      const a = (bankTickAngle(t, horizonDeg) - 90) * D2R;   // from straight up, positive clockwise
       const long = t === 0 || Math.abs(t) === 30 || Math.abs(t) === 45;
       const r0 = br, r1 = br + (long ? 12 : 6);
       stroke(() => { ctx.moveTo(bx + r0 * Math.cos(a), by + r0 * Math.sin(a)); ctx.lineTo(bx + r1 * Math.cos(a), by + r1 * Math.sin(a)); });
       if (long && t !== 0) text(String(Math.abs(t)), bx + (br + 23) * Math.cos(a), by + (br + 23) * Math.sin(a), 'center', 11);
     }
-    const pa = (bankPointerAngle(air.roll) - 90) * D2R;
-    const px = bx + (br - 4) * Math.cos(pa), py = by + (br - 4) * Math.sin(pa);
-    const tx = -Math.sin(pa), ty = Math.cos(pa);   // along the arc
-    stroke(() => {
-      ctx.moveTo(bx + br * Math.cos(pa), by + br * Math.sin(pa));
-      ctx.lineTo(px - 6 * tx - 10 * Math.cos(pa), py - 6 * ty - 10 * Math.sin(pa));
-      ctx.lineTo(px + 6 * tx - 10 * Math.cos(pa), py + 6 * ty - 10 * Math.sin(pa));
-      ctx.closePath();
-    });
+    stroke(() => { ctx.moveTo(bx, by - br); ctx.lineTo(bx - 6, by - br + 14); ctx.lineTo(bx + 6, by - br + 14); ctx.closePath(); });
 
     // airspeed (KIAS) on the left; altitude on the right with the VSI above it, signed feet per minute
     stroke(() => { ctx.moveTo(left + 46, cy); ctx.lineTo(left + 54, cy - 5); ctx.lineTo(left + 54, cy + 5); ctx.closePath(); });
