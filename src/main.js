@@ -46,6 +46,12 @@ scene.add(jet);
 let terrain = null;
 async function loadTerrain() {
   const region = await (await fetch('./terrain/region.json')).json();
+  // The heightmaps go to the GPU whole: three.js would shrink an image over
+  // the texture limit through a canvas, blending the encoded height bytes
+  // into nonsense while the CPU still read the true posts. Every iPhone the
+  // app supports allows 16,384; a device that allows less gets no ground.
+  const maxTexture = renderer.capabilities.maxTextureSize;
+  if (Math.max(region.base.w, region.base.h, region.atlas.w, region.atlas.h) > maxTexture) throw new Error(`the ground needs a ${region.base.h}-pixel texture and this device allows ${maxTexture}`);
   const load = async (meta) => {
     const image = new Image();
     image.src = './terrain/' + meta.image;
@@ -140,7 +146,7 @@ loadTerrain().then((t) => {
   terrain = t;
   airStart();                                   // now 5,000 ft above the ground that is there
   screens.ready();
-}, (e) => { console.error(e); screens.failed(); });
+}, (e) => { console.error(e); screens.failed(e.message); });
 
 // ---- tilt input ----
 const tilt = { pitch: 0, roll: 0, confidence: 0, beta: 0, gamma: 0, alpha: 0, seen: false, at: 0 };

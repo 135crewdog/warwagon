@@ -25,5 +25,7 @@ says where each lies.
   below half a metre and connected to the open sea; a lake at least half a
   square kilometre in a basin).
 
+The images are sent to the GPU whole, so the base's longer side (5,001) must stay under the device's texture limit; every iPhone the app supports allows 16,384, and the app refuses to fly on a device that allows less rather than draw a shrunken, wrong ground.
+
 `preview.png`, if present, is the script's picture of the base for checking
 by eye and is not part of the app.
