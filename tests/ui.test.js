@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { throttleFromPosition, positionFromThrottle } from '../src/ui/throttle.js';
 import { DETENT } from '../src/sim/engine.js';
-import { vsiText, bankTickAngle, BANK_TICKS } from '../src/hud/hud.js';
+import { vsiText, bankTickAngle, BANK_TICKS, radarText, RADAR_BELOW_FT } from '../src/hud/hud.js';
 
 const near = (a, b, tol) => assert.ok(Math.abs(a - b) <= tol, `${a} vs ${b}`);
 
@@ -32,4 +32,15 @@ test('the VSI reads signed feet per minute to the nearest 50', () => {
   assert.equal(vsiText(1234), '+1250');
   assert.equal(vsiText(-760), '−750');
   assert.equal(vsiText(-26), '−50');
+});
+
+test('the radar altitude shows from 2,500 ft above the ground down, to the nearest 10 ft, and not above', () => {
+  assert.equal(RADAR_BELOW_FT, 2500);
+  assert.equal(radarText(5000), null);
+  assert.equal(radarText(2500), null, 'at 2,500 exactly it is off');
+  assert.equal(radarText(2499), 'RA 2500', 'just under: on, and rounded to ten');
+  assert.equal(radarText(1234), 'RA 1230');
+  assert.equal(radarText(47), 'RA 50');
+  assert.equal(radarText(-3), 'RA 0', 'never below zero');
+  assert.equal(radarText(NaN), null, 'no ground known: off');
 });

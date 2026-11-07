@@ -5,7 +5,7 @@
 
 import * as THREE from 'three';
 import { Simulation, stepsFor, DT } from './sim/simulation.js';
-import { IX, quaternionOf, crashed } from './sim/dynamics.js';
+import { IX, quaternionOf } from './sim/dynamics.js';
 import { positionToWorld, attitudeToWorld, vectorToWorld } from './render/frames.js';
 import * as Quat from './sim/quaternion.js';
 import { createWorld, FAR } from './render/world.js';
@@ -351,9 +351,10 @@ function frame(now) {
     fraction = clock.fraction;
     for (let i = 0; i < clock.steps; i++) {
       prevPose = pose;
+      sim.groundFt = groundFt(sim.state);     // the ground that is there: the simulation's own crash check reads it
       sim.step(yoke, throttleValue, DT);
       pose = poseOf(sim.state);
-      if (sim.crashed || crashed(sim.state, groundFt(sim.state))) { crash(); break; }   // the ground that is there
+      if (sim.crashed) { crash(); break; }
     }
   }
 
@@ -379,6 +380,7 @@ function frame(now) {
   renderer.render(scene, camera);
 
   const air = sim.airdata;
+  air.ground = groundFt(sim.state);           // the terrain under the jet, for the radar altitude
   hud.draw(air, sim.engines, projectDirection, velocityNed(sim.state), noseNed(sim.state), look.active);
   if (mode === 'flying') stickIndicator.update(yoke, Math.abs(sfc.de) >= SURFACES.de.limit - 0.01, !neutral || tilt.confidence < 0.3);
 

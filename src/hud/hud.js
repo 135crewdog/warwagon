@@ -52,6 +52,15 @@ export function vsiText(fpm) {
 // scale is read on the banked side. This gives a tick's angle on the glass,
 // from the pointer, positive clockwise, for the horizon's own angle on the
 // glass (0 level, negative, anticlockwise, in a right bank).
+// The radar altitude's text: shown under the altitude from 2,500 ft above
+// the ground down, to the nearest 10 ft, as the jet's radar altimeter reads;
+// null above that, and the line is left blank.
+export const RADAR_BELOW_FT = 2500;
+export function radarText(aglFt) {
+  if (!(aglFt < RADAR_BELOW_FT)) return null;
+  return `RA ${Math.max(0, Math.round(aglFt / 10) * 10)}`;
+}
+
 export function bankTickAngle(tickDeg, horizonDeg) {
   return tickDeg + horizonDeg || 0;
 }
@@ -86,6 +95,7 @@ export function createHud(canvas) {
   function dashed(on) { ctx.setLineDash(on ? [8, 6] : []); }
 
   // air: the airdata object (kcas, mach, altitude, vsi, heading, pitch, roll,
+  // and ground, the terrain's height under the jet in feet, set by main.js;
   // alpha, nz); engines: { n1 }; project: a NED direction → { x, y, visible }
   // on the screen; velocity and nose: unit NED directions of the flight path
   // and the body x axis; looking: true while the view is swung away from
@@ -201,6 +211,8 @@ export function createHud(canvas) {
     stroke(() => { ctx.moveTo(right - 46, cy); ctx.lineTo(right - 54, cy - 5); ctx.lineTo(right - 54, cy + 5); ctx.closePath(); });
     text(String(Math.round(air.altitude)), right - 42, cy, 'left', 20);
     text(vsiText(air.vsi), right - 42, cy - 24, 'left', 14);
+    const ra = radarText(air.altitude - (air.ground ?? 0));   // the radar altitude under it, inside 2,500 ft of the ground
+    if (ra) text(ra, right - 42, cy + 24, 'left', 14);
 
     // g, AoA, Mach and the engines' N1, lower left, as Rage's HUD stacks them
     const rows = [bottom - 54, bottom - 36, bottom - 18, bottom];

@@ -4,6 +4,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { inflateSync } from 'node:zlib';
 import { decodeHeights, decodeWater, createSampler, createProjection } from '../src/render/heightmap.js';
 import { crashed, IX } from '../src/sim/dynamics.js';
+import { Simulation } from '../src/sim/simulation.js';
 
 const near = (a, b, tol, msg) => assert.ok(Math.abs(a - b) <= tol, `${msg ?? ''} ${a} vs ${b}`);
 
@@ -98,6 +99,15 @@ test('the crash is against the ground that is there', () => {
   assert.equal(crashed(x, 499), false);
   assert.equal(crashed(x, 500), true);
   assert.equal(crashed(x, 1200), true);
+  // the simulation's own check reads the ground it is given, so land below sea level (the Fens) is flown over, not crashed into
+  const low = new Simulation({ h: 50, kcas: 280 });
+  low.groundFt = -30;
+  low.step({ pitch: 0, roll: 0 }, low.trimThrottle); low.step({ pitch: 0, roll: 0 }, low.trimThrottle);
+  assert.equal(low.crashed, false, 'at 50 ft over ground at −30 ft: flying');
+  low.state[IX.H] = -10; low.step({ pitch: 0, roll: 0 }, low.trimThrottle);
+  assert.equal(low.crashed, false, 'at −10 ft over ground at −30 ft: still flying, below the sea but above the fen');
+  low.groundFt = 0; low.step({ pitch: 0, roll: 0 }, low.trimThrottle);
+  assert.equal(low.crashed, true, 'and into ground at 0 ft');
 });
 
 // The PNGs make-heightmap.py writes: 8-bit RGB, each row under one of PNG's
@@ -164,7 +174,11 @@ test('the real region: the island is at its heights and the sea is wet', { skip:
   assert.ok(fen.w < 0.2, 'the fens below sea level are land, not sea');
   const patch = meta.patches.find((q) => q.name === 'Mildenhall');
   assert.equal(patch.post, 50, 'the patch is OS Terrain 50 at its own posts');
-  const { x, z } = p.fromLatLon(52.3619, 0.4864);
   const side = (patch.size - 1) * patch.post;
-  assert.ok(x > patch.x0 + meta.blend && x < patch.x0 + side - meta.blend && z > patch.z0 + meta.blend && z < patch.z0 + side - meta.blend, 'Mildenhall is well inside its patch');
+  const towns = [['RAF Mildenhall', 52.3619, 0.4864], ['RAF Lakenheath', 52.4093, 0.5610], ['Ely', 52.3989, 0.2621], ['Cambridge', 52.2053, 0.1218], ['Newmarket', 52.2459, 0.4063], ['Bury St Edmunds', 52.2460, 0.7118]];
+  for (const [name, lat, lon] of towns) {
+    const { x, z } = p.fromLatLon(lat, lon);
+    const depth = Math.min(x - patch.x0, patch.x0 + side - x, z - patch.z0, patch.z0 + side - z);
+    assert.ok(depth > meta.blend + 2000, `${name} is inside the fine ground, past the blend band: ${(depth / 1000).toFixed(1)} km in`);
+  }
 });
