@@ -160,7 +160,7 @@ export function createAircraft() {
   const boom = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.3, 11, 10), DARK);
   boom.name = 'boom';
   boom.geometry.translate(0, -5.5, 0);
-  boom.rotation.x = -(90 + 8) * D2R;     // along +z, 8° down
+  boom.rotation.x = -(90 - 8) * D2R;     // the shaft (local −y) swung onto +z, aft, and 8° down: the tip 1.9 m past the tail and 3.1 m below the axis, clear of the tail cone
   boom.position.set(0, -1.6, NOSE_Z + 32.5);
   jet.add(boom);
 
