@@ -2,12 +2,12 @@
 // degrees of freedom, constant mass, flat non-rotating earth, integrated at a
 // fixed 120 Hz with fourth-order Runge-Kutta. Pure functions over a flat
 // Float64Array state so every step is deterministic. The shape is Rage's;
-// the state carries four engine thrusts and the stabiliser instead of the
-// F-16's power state.
+// the state carries four engines' power fractions and the stabiliser instead
+// of the F-16's power state.
 
 import { atmosphere, RHO0 } from './atmosphere.js';
 import { coefficients } from './aero.js';
-import { commandedThrust, thrustRate } from './engine.js';
+import { commandedPower, powerRate, netThrust } from './engine.js';
 import { surfaceRate, clampSurface, stabiliserRate } from './actuators.js';
 import * as Quat from './quaternion.js';
 import {
@@ -20,23 +20,23 @@ const R2D = 180 / Math.PI;
 const D2R = Math.PI / 180;
 const FT_PER_S_PER_KNOT = 1.68781;
 
-// State layout. Velocities ft/s, rates rad/s, position ft, thrusts lbf, surfaces deg.
+// State layout. Velocities ft/s, rates rad/s, position ft, engine power fractions 0..1, surfaces deg.
 export const IX = Object.freeze({
   U: 0, V: 1, W: 2,
   Q0: 3, Q1: 4, Q2: 5, Q3: 6,
   P: 7, Q: 8, R: 9,
   NORTH: 10, EAST: 11, H: 12,
-  T1: 13, T2: 14, T3: 15, T4: 16,
+  F1: 13, F2: 14, F3: 15, F4: 16,
   DE: 17, DA: 18, DR: 19, IS: 20,
 });
 export const N = 21;
-export const ENGINES = [IX.T1, IX.T2, IX.T3, IX.T4];
+export const ENGINES = [IX.F1, IX.F2, IX.F3, IX.F4];
 
 // Build a state from flight-style quantities. vt ft/s; alpha, beta, phi,
-// theta, psi in radians; thrust per engine (lbf); the rest as in the state.
+// theta, psi in radians; power per engine (fraction); the rest as in the state.
 export function makeState({
   vt, alpha = 0, beta = 0, phi = 0, theta = 0, psi = 0,
-  p = 0, q = 0, r = 0, north = 0, east = 0, h = 0, thrust = 0, de = 0, da = 0, dr = 0, is = 0,
+  p = 0, q = 0, r = 0, north = 0, east = 0, h = 0, power = 0, de = 0, da = 0, dr = 0, is = 0,
 }) {
   const x = new Float64Array(N);
   x[IX.U] = vt * Math.cos(alpha) * Math.cos(beta);
@@ -46,7 +46,7 @@ export function makeState({
   x[IX.Q0] = Q[0]; x[IX.Q1] = Q[1]; x[IX.Q2] = Q[2]; x[IX.Q3] = Q[3];
   x[IX.P] = p; x[IX.Q] = q; x[IX.R] = r;
   x[IX.NORTH] = north; x[IX.EAST] = east; x[IX.H] = h;
-  for (const i of ENGINES) x[i] = thrust;
+  for (const i of ENGINES) x[i] = power;
   x[IX.DE] = de; x[IX.DA] = da; x[IX.DR] = dr; x[IX.IS] = is;
   return x;
 }
@@ -64,8 +64,11 @@ export function airOf(x) {
   return { vt, alpha: Math.atan2(w, u), beta: Math.asin(sb) };
 }
 
-export function totalThrust(x) {
-  return x[IX.T1] + x[IX.T2] + x[IX.T3] + x[IX.T4];
+// The four engines' net thrust, lbf, at the present altitude, Mach and speed.
+export function totalThrust(x, h, mach, vt) {
+  let t = 0;
+  for (const i of ENGINES) t += netThrust(x[i], h, mach, vt);
+  return t;
 }
 
 // Equivalent airspeed in knots from dynamic pressure, for the rudder's authority.
@@ -87,7 +90,7 @@ export function derivative(x, controls, xdot, mass = MASS) {
   const alphaDeg = alpha * R2D, betaDeg = beta * R2D;
   const atm = atmosphere(vt, h);
   const qbar = atm.qbar, mach = atm.mach;
-  const thrust = totalThrust(x);
+  const thrust = totalThrust(x, h, mach, vt);
 
   const c = coefficients({
     alphaDeg, betaDeg, de: x[IX.DE], da: x[IX.DA], dr: x[IX.DR], is: x[IX.IS],
@@ -124,8 +127,8 @@ export function derivative(x, controls, xdot, mass = MASS) {
   xdot[IX.EAST] = vned[1];
   xdot[IX.H] = -vned[2];
 
-  const tcmd = commandedThrust(controls.throttle, h, mach);
-  for (const i of ENGINES) xdot[i] = thrustRate(tcmd, x[i]);
+  const fcmd = commandedPower(controls.throttle);
+  for (const i of ENGINES) xdot[i] = powerRate(fcmd, x[i]);
   xdot[IX.DE] = surfaceRate('de', controls.de, x[IX.DE]);
   xdot[IX.DA] = surfaceRate('da', controls.da, x[IX.DA]);
   xdot[IX.DR] = surfaceRate('dr', controls.dr, x[IX.DR], rudderLimit(keasOf(qbar)));
@@ -137,7 +140,7 @@ export function derivative(x, controls, xdot, mass = MASS) {
     nz: -qs * c.cz * rm / G,       // accelerometer load factor, +1 in level flight
     ny: qs * c.cy * rm / G,
     ax, ay, az,
-    thrustCommand: tcmd,
+    powerCommand: fcmd,
     coefficients: c,
     outOfEnvelope: alphaDeg < ALPHA_ENVELOPE[0] || alphaDeg > ALPHA_ENVELOPE[1]
       || Math.abs(betaDeg) > BETA_ENVELOPE || mach > MACH_ENVELOPE,
@@ -166,7 +169,7 @@ export function step(x, controls, dt = DT, mass = MASS) {
   y[IX.DA] = clampSurface('da', y[IX.DA]);
   y[IX.DR] = clampSurface('dr', y[IX.DR], rudderLimit(keasOf(aux.qbar)));
   y[IX.IS] = clampSurface('is', y[IX.IS]);
-  for (const i of ENGINES) if (y[i] < 0) y[i] = 0;
+  for (const i of ENGINES) { if (y[i] < 0) y[i] = 0; else if (y[i] > 1) y[i] = 1; }
   return { state: y, aux };
 }
 

@@ -43,7 +43,7 @@ export function createChaseCamera(camera) {
       // buffet: a small, high-frequency shake that starts at 90 % of the
       // buffet boundary and is full on it, stronger at higher dynamic pressure
       const a = Math.max(0, Math.min(1, (aux.buffet - BUFFET_ONSET) / (BUFFET_FULL - BUFFET_ONSET)));
-      const amp = 0.35 * a * a * Math.min(1.5, aux.qbar / 250);
+      const amp = 0.12 * a * a * Math.min(1.5, aux.qbar / 250);   // a third of the first value: the owner's first flights found it violent
       shake.set(
         Math.sin(t * 61.3) + 0.5 * Math.sin(t * 97.1),
         Math.sin(t * 73.7 + 1.3) + 0.5 * Math.sin(t * 113.9),

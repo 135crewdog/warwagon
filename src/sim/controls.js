@@ -13,6 +13,11 @@ export function createMemory() {
   return {
     rWash: 0,          // low-pass state of the stability-axis yaw rate (rad/s); washout = r_s − rWash
     qWash: 0,          // low-pass state of the pitch rate (deg/s) for the trim's lead
+    deFilt: 0,         // the elevator command through a 1 s lag: what 'held steady' is measured against
+    holdFor: 0,        // s the elevator has been held steady
+    unloaded: 0,       // deg of stabiliser the trim has run to carry the held force in this hold
+    allowance: 0,      // deg of stabiliser the force held when the hold began is worth: the most this hold trims out
+    wasHolding: false,
   };
 }
 
@@ -45,14 +50,32 @@ export function controlsStep(mem, yoke, meas, dt, automatics = { trim: true, dam
   const da = rollControlFor(yoke.roll);
   const qDeg = meas.q * R2D;
   mem.qWash += (qDeg - mem.qWash) * Math.min(1, dt / TRIM.qWashoutTau);
-  const isRate = automatics.trim ? trimRate(yoke.pitch, meas.nz, qDeg - mem.qWash) : 0;
+  // a sustained force: the elevator held away from centre and steady
+  const steady = Math.abs(de) > TRIM.holdMin && Math.abs(de - mem.deFilt) < TRIM.holdSteady;
+  mem.deFilt += (de - mem.deFilt) * Math.min(1, dt / 1.0);
+  mem.holdFor = steady ? mem.holdFor + dt : 0;
+  // a hold begins when the elevator has been steady for holdDelay; the force held then sets how much this
+  // hold may trim out, so a pilot relaxing the force as the trim comes in (as in the jet) is not stopped halfway
+  const holding = mem.holdFor > TRIM.holdDelay;
+  if (holding && !mem.wasHolding) { mem.allowance = Math.abs(de) * TRIM.unloadRatio; mem.unloaded = 0; }
+  mem.wasHolding = holding;
+  let isRate = 0;
+  if (automatics.trim) {
+    if (Math.abs(yoke.pitch) < PITCH.released) { isRate = trimRate(yoke.pitch, meas.nz, qDeg - mem.qWash); mem.unloaded = 0; mem.allowance = 0; mem.wasHolding = false; }
+    else if (holding && Math.abs(mem.unloaded) < mem.allowance) {
+      // a pull (de < 0) trims nose-up (i_s down), at a rate set by the force still held, until the stabiliser
+      // carries what was held when the hold began; a pilot who does not relax gets the bound, not a runaway
+      isRate = clamp(TRIM.kUnload * de, -SURFACES.is.rate, SURFACES.is.rate);
+      mem.unloaded += isRate * dt;
+    }
+  }
 
   // 8.5: the yaw damper on the washed-out stability-axis yaw rate, plus the coordination
   const rs = meas.r * Math.cos(meas.alpha) - meas.p * Math.sin(meas.alpha);
   mem.rWash += (rs - mem.rWash) * Math.min(1, dt / YAW.washoutTau);
   let dr = 0;
   if (automatics.damper) dr += YAW.kyd * (rs - mem.rWash) * R2D;
-  if (automatics.coordination) dr += YAW.kny * meas.ny;
+  if (automatics.coordination) dr += YAW.kny * Math.min(YAW.knyMax, YAW.knyQbar / Math.max(meas.qbar, 1)) * meas.ny;
   const lim = rudderLimit(meas.keas);
   dr = clamp(dr, -lim, lim);
 

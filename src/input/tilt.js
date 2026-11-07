@@ -10,7 +10,7 @@ const D2R = Math.PI / 180;
 const R2D = 180 / Math.PI;
 
 export const MAPPING = {
-  pitchFull: 25,        // deg of tilt from neutral for full force
+  pitchFull: 30,        // deg of tilt from neutral for full force (Rage's 25; a heavy jet wants a longer yoke)
   rollFull: 30,
   pitchDeadband: 2,     // deg, standing in for the stick's breakout force
   rollDeadband: 1.5,

@@ -54,6 +54,13 @@ export const MANOEUVRES = {
   idle: { ...CRUISE, t: 60, throttle: 0, script: () => centred },
   // 9: throttle to full from the air start, yoke released
   full: { ...AIR_START, t: 60, throttle: 1, script: () => centred },
+  // 17: a quarter pull held at cruise for 25 s: the stabiliser takes the load after a few seconds
+  hold: { ...CRUISE, t: 25, script: (t) => (t >= 0.5 ? { pitch: 0.3, roll: 0 } : centred) },
+  // 18: throttle to idle at cruise with a pilot holding altitude by force; the trim unloads the force
+  holdAltitude: {
+    ...CRUISE, t: 90, throttle: 0,
+    make: (sim) => { const hold = altitudeHold(sim.airdata.altitude); return (t, s, dt) => ({ pitch: hold(s, dt), roll: 0 }); },
+  },
   // 10: full pull at cruise from t = 0.5 s
   pull: { ...CRUISE, t: 5.5, script: (t) => (t >= 0.5 ? { pitch: 1, roll: 0 } : centred) },
   // 11: roll to a 30° bank with a quarter wheel, then release everything
@@ -81,9 +88,11 @@ export const MANOEUVRES = {
     setup: (sim) => { sim.state[IX.V] = sim.aux.vt * Math.sin(5 / R2D); sim.aux = sim.auxFor(sim.state, sim.controls); },
     script: () => centred,
   },
-  // 12: idle, a scripted pilot holds altitude until α reaches 15°, then releases the yoke
+  // 12: idle, a scripted pilot holds altitude until α reaches 15°, then releases the yoke. The automatic trim
+  // is off: with it on it follows the pilot's held force to the stall, as the real trim would, and the released jet
+  // stays near its stalled trim; this test is of the airframe's own pitch-down
   stall: {
-    ...AIR_START, t: 240, throttle: 0,
+    ...AIR_START, t: 240, throttle: 0, automatics: { trim: false, damper: true, coordination: true },
     make: (sim) => {
       const hold = altitudeHold(sim.airdata.altitude);
       let released = null;

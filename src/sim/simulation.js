@@ -98,8 +98,8 @@ export class Simulation {
   // The engines for the HUD: N1 per cent from the thrust, not the slider.
   get engines() {
     const x = this.state;
-    const thrust = (x[IX.T1] + x[IX.T2] + x[IX.T3] + x[IX.T4]) / 4;
-    return { thrust, n1: n1(thrust, x[IX.H], this.aux.mach) };
+    const power = (x[IX.F1] + x[IX.F2] + x[IX.F3] + x[IX.F4]) / 4;
+    return { power, thrust: this.aux.thrust / 4, n1: n1(power, x[IX.H]) };
   }
 
   // CL as a fraction of the buffet boundary (section 10's cue).

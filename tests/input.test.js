@@ -80,12 +80,12 @@ test('deadband, then linear to full force', () => {
 
 test('stick from tilt against the neutral, with roll fading on low confidence', () => {
   const neutral = { pitch: 30, roll: -5, confidence: 0.9 };
-  const pull = stickFrom({ pitch: 30 + 25, roll: -5, confidence: 0.9 }, neutral);
+  const pull = stickFrom({ pitch: 30 + MAPPING.pitchFull, roll: -5, confidence: 0.9 }, neutral);
   near(pull.pitch, MAPPING.pitchSign * 1, 1e-12);
   near(pull.roll, 0, 1e-12);
-  const right = stickFrom({ pitch: 30, roll: -5 + 30, confidence: 0.9 }, neutral);
+  const right = stickFrom({ pitch: 30, roll: -5 + MAPPING.rollFull, confidence: 0.9 }, neutral);
   near(right.roll, MAPPING.rollSign * 1, 1e-12);
-  const faded = stickFrom({ pitch: 30, roll: -5 + 30, confidence: 0.15 }, neutral);
+  const faded = stickFrom({ pitch: 30, roll: -5 + MAPPING.rollFull, confidence: 0.15 }, neutral);
   near(faded.roll, MAPPING.rollSign * 0.5, 1e-12);
   // roll wraps: neutral at 170°, now at −170° is a 20° turn, not −340°
   const w = stickFrom({ pitch: 30, roll: -170, confidence: 1 }, { pitch: 30, roll: 170, confidence: 1 });
