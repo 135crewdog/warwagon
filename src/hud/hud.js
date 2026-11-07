@@ -227,9 +227,10 @@ export function createHud(canvas) {
     text(String(Math.round(air.kcas)), left + 42, cy, 'right', 20);
     stroke(() => { ctx.moveTo(right - 46, cy); ctx.lineTo(right - 54, cy - 5); ctx.lineTo(right - 54, cy + 5); ctx.closePath(); });
     text(String(Math.round(air.altitude)), right - 42, cy, 'left', 20);
-    text(vsiText(air.vsi), right - 42, cy - 24, 'left', 14);
-    const ra = radarText(air.altitude - (air.ground ?? 0));   // the radar altitude under it, inside 2,500 ft of the ground
-    if (ra) text(ra, right - 42, cy + 24, 'left', 14);
+    // the VSI above and the radar altitude below start under the pointer's left edge, so the three lines align
+    text(vsiText(air.vsi), right - 54, cy - 24, 'left', 14);
+    const ra = radarText(air.altitude - (air.ground ?? 0));   // the radar altitude, inside 2,500 ft of the ground
+    if (ra) text(ra, right - 54, cy + 24, 'left', 14);
 
     // g, AoA, Mach and the engines' N1, lower left, as Rage's HUD stacks them
     const rows = [bottom - 54, bottom - 36, bottom - 18, bottom];
