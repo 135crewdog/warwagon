@@ -8,6 +8,8 @@ import { IX } from '../../src/sim/dynamics.js';
 import { atmosphere } from '../../src/sim/atmosphere.js';
 import { calibratedAirspeed, FT_PER_S_PER_KNOT } from '../../src/sim/airdata.js';
 
+import { PITCH } from '../../src/sim/data/controls.js';
+
 const R2D = 180 / Math.PI;
 
 // The KCAS that is a given Mach at a height.
@@ -33,14 +35,20 @@ export function mulberry32(seed) {
 }
 
 // A scripted pilot who holds altitude with the yoke (test 12).
+// A pilot holding altitude by force: a loop on the altitude error, the
+// vertical speed and the error's integral. Its gains were set with K_e at
+// 1,100 deg·psf and are held in elevator terms, since a pilot adapts to the
+// yoke's gearing: a heavier or lighter yoke does not change how much
+// elevator they use for a hundred feet of error.
 export function altitudeHold(h0) {
   let integ = 0;
+  const yoke = 1100 / PITCH.kE;
   return (sim, dt) => {
     const a = sim.airdata;
     const err = h0 - a.altitude;
     integ += err * dt;
     integ = Math.max(-3000, Math.min(3000, integ));
-    const x = 0.002 * err - 0.0004 * a.verticalSpeed + 0.0001 * integ;
+    const x = yoke * (0.002 * err - 0.0004 * a.verticalSpeed + 0.0001 * integ);
     return Math.max(-1, Math.min(1, x));
   };
 }
