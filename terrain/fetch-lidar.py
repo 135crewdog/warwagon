@@ -18,10 +18,17 @@ os.makedirs(out, exist_ok=True)
 for e in range(e0, e1, TILE):
     for n in range(n0, n1, TILE):
         path = os.path.join(out, f'dtm1m_{e}_{n}_{TILE}.tif')
-        if os.path.exists(path) and os.path.getsize(path) > 1000: continue
+        if os.path.exists(path): continue        # a tile is only ever saved whole, so one that exists is good
         url = f'{BASE}?service=WCS&version=2.0.1&request=GetCoverage&coverageId={COVERAGE}&format=image/tiff&subset=E({e},{e + TILE})&subset=N({n},{n + TILE})'
-        r = subprocess.run(['curl', '-sS', '-m', '900', url, '-o', path, '-w', '%{http_code} %{size_download}'], capture_output=True, text=True)
-        code, size = r.stdout.split()
-        if code != '200' or int(size) < 1000: raise SystemExit(f'{path}: HTTP {code}, {size} bytes: {open(path, "rb").read(200)}')
-        print(f'{os.path.basename(path)}: {int(size) / 1e6:.0f} MB')
+        # into a temporary file, renamed only when curl itself succeeded (a timeout or a cut transfer after
+        # the 200 leaves curl's exit code non-zero and the file short) and the server answered with a TIFF
+        part = path + '.part'
+        r = subprocess.run(['curl', '-sS', '-f', '-m', '900', url, '-o', part, '-w', '%{http_code} %{size_download}'], capture_output=True, text=True)
+        head = open(part, 'rb').read(4) if os.path.exists(part) else b''
+        if r.returncode != 0 or not r.stdout.startswith('200') or head[:2] not in (b'II', b'MM'):
+            body = open(part, 'rb').read(200) if os.path.exists(part) else b''
+            if os.path.exists(part): os.remove(part)
+            raise SystemExit(f'{os.path.basename(path)}: curl exit {r.returncode} ({r.stderr.strip()}), reply {r.stdout!r}: {body!r}')
+        os.replace(part, path)
+        print(f'{os.path.basename(path)}: {os.path.getsize(path) / 1e6:.0f} MB')
 print('done')
