@@ -97,18 +97,20 @@ export function createHud(canvas) {
     const cy = h / 2;
     const left = inset.left + 64, right = w - inset.right - 60, top = inset.top + 14, bottom = h - inset.bottom - 18;
 
-    // heading tape across the top, degrees true
+    // heading tape across the top, degrees true: the readout sits in the
+    // tape's own row under the lubber line, and the tape's numbers pass
+    // beneath it as the jet turns, which keeps the top of the glass short
     const hdg = air.heading;
-    stroke(() => { ctx.moveTo(cx, top + 22); ctx.lineTo(cx - 5, top + 30); ctx.lineTo(cx + 5, top + 30); ctx.closePath(); });
-    text(String(Math.round(hdg) % 360).padStart(3, '0'), cx, top + 40, 'center', 15);
+    stroke(() => { ctx.moveTo(cx, top + 13); ctx.lineTo(cx - 5, top + 4); ctx.lineTo(cx + 5, top + 4); ctx.closePath(); });
+    text(String(Math.round(hdg) % 360).padStart(3, '0'), cx, top + 24, 'center', 15);
     const span = 60, pxDeg = (w * 0.5) / span;
     for (let d = -span / 2; d <= span / 2; d += 5) {
       const deg = Math.round((hdg + d) / 5) * 5;
       const x = cx + (deg - hdg) * pxDeg;
-      if (Math.abs(x - cx) > w * 0.26) continue;
+      if (Math.abs(x - cx) > w * 0.26 || Math.abs(x - cx) < 8) continue;   // clear of the lubber line
       const major = deg % 10 === 0;
       stroke(() => { ctx.moveTo(x, top + 4); ctx.lineTo(x, top + (major ? 14 : 9)); });
-      if (major) text(String(((deg % 360) + 360) % 360 / 10).padStart(2, '0'), x, top + 22, 'center', 12);
+      if (major && Math.abs(x - cx) > 30) text(String(((deg % 360) + 360) % 360 / 10).padStart(2, '0'), x, top + 23, 'center', 12);   // under the readout otherwise
     }
 
     // pitch ladder: each bar is a fixed-size symbol drawn where its pitch
@@ -116,7 +118,7 @@ export function createHud(canvas) {
     // Only the bars within LADDER_RANGE of the nose show, plus the horizon
     // line itself, the way a real HUD's glass shows a window of the ladder.
     ctx.save();
-    ctx.beginPath(); ctx.rect(cx - w * 0.3, top + 52, w * 0.6, bottom - top - 130); ctx.clip();
+    ctx.beginPath(); ctx.rect(cx - w * 0.3, top + 36, w * 0.6, bottom - top - 114); ctx.clip();
     const pFirst = Math.ceil((air.pitch - LADDER_RANGE) / 5) * 5, pLast = Math.floor((air.pitch + LADDER_RANGE) / 5) * 5;
     const bars = [];
     for (let p = pFirst; p <= pLast; p += 5) if (p >= -85 && p <= 85) bars.push(p);
@@ -180,7 +182,7 @@ export function createHud(canvas) {
     // the bank alone when the view is swung away), 0, 30 and 45 long, and a
     // pointer fixed at the top of the glass, so the bank is read on the
     // banked side; the radius is what fits under the heading
-    const bx = cx, by = cy, br = Math.min(110, cy - top - 76);
+    const bx = cx, by = cy, br = Math.min(120, cy - top - 62);
     let horizonDeg = -air.roll;
     const hc = project(direction(hdg, air.pitch)), hr = project(rightOf(hdg, air.pitch));
     if (hc.visible && hr.visible) horizonDeg = Math.atan2(hr.y - hc.y, hr.x - hc.x) / D2R;

@@ -304,7 +304,7 @@ Nothing in the lift, moment, drag or sideslip tables was tuned: these are what t
 - **KIAS**: the calibrated airspeed from impact pressure as Rage section 9 (subsonic only; a KC-135 never sees the Rayleigh branch). No position-error correction is public, so **KIAS is shown equal to KCAS**, stated.
 - **Altitude**: h in feet (pressure altitude equals geometric altitude in the standard atmosphere).
 - **VSI**: the vertical speed ḣ in ft/min through a first-order lag, **τ = 4 s**, a generic instrument value (data: none; stated). Shown signed, + climbing, − descending, rounded to 50 ft/min.
-- **Heading**: degrees true, 0–359, from the Euler angles.
+- **Heading**: degrees true, 0–359, from the Euler angles. A tape across the top with the readout in the tape's own row under the lubber line, the tape's numbers passing beneath it as the jet turns (the owner's layout, to keep the top of the glass short for the bank scale).
 - **N1**: section 6, from the engines' thrust, not the slider, so the spool lag shows. One number: the four engines are matched.
 - **Flight path marker** (the velocity vector) and **waterline** (the nose), as Rage.
 - **g**: n_z from section 7, one decimal, and **AoA**: α in degrees, one decimal. Stacked in the lower left with the Mach and the N1, as Rage's HUD stacks its g, AoA, Mach and power (added after the owner's first flights: there was no g meter, and the pitch axis is flown by g).

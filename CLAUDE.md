@@ -102,7 +102,7 @@ A Rage-style green HUD, with tanker numbers (see Departures: the real jet has no
 
 - **KIAS** on the left, **Mach** under it.
 - **Altitude** in feet on the right, with the **VSI** at the top of the altitude display: a signed number (+ climbing, − descending) in feet per minute, lagged like a real vertical speed indicator. The KC-135's lag isn't public; a generic instrument value is used and stated.
-- **Heading** across the top, degrees true.
+- **Heading** across the top, degrees true, the readout in the tape's own row under the lubber line so the tape's numbers pass beneath it.
 - **Pitch ladder** with the horizon line, the **flight path marker** and the **waterline**.
 - **N1 %**, from the engines, not the slider, so the spool lag shows.
 - **g** and **AoA**, stacked lower left with the Mach and N1 as Rage's HUD stacks them, and a **bank scale** as Boeing's displays draw it: an arc of ticks at 0, 10, 20, 30 and 45° over the centre, under the heading, that turns with the horizon, and a pointer fixed to the jet at the top, so the bank is read on the banked side. (Added after the owner's first flights; a glass-fixed arc with a moving pointer, below the centre as on a fighter HUD and then above, read wrong to a pilot.)
