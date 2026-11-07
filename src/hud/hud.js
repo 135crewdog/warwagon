@@ -9,7 +9,7 @@
 // ladder rolls and scales with the camera. Rage's layout: airspeed left,
 // altitude right (with the VSI above it), heading across the top, g, α, Mach
 // and the engines' N1 stacked lower left; and a bank scale over the centre,
-// as an attitude indicator's, with a sky pointer.
+// read on the banked side as Boeing's displays read it.
 
 const GREEN = '#7cff4f';
 const OUTLINE = 'rgba(0,0,0,0.75)';
@@ -45,11 +45,12 @@ export function vsiText(fpm) {
 }
 
 // Where the bank pointer sits on the scale over the centre: the angle from
-// the 0 tick, positive clockwise. It is a sky pointer, as on the attitude
-// indicator: it points at the sky's zenith, so a right bank swings it to
-// the left of the 0 tick, and it is held at the scale's end beyond 45°.
+// the 0 tick, positive clockwise. The scale is read on the banked side, as
+// Boeing's displays read it (the owner's choice over the attitude
+// indicator's sky pointer, which swings the other way): a right bank puts
+// the pointer on the right-hand marks. Held at the scale's end beyond 45°.
 export function bankPointerAngle(bankDeg) {
-  return 0 - Math.max(-50, Math.min(50, bankDeg)) || 0;
+  return Math.max(-50, Math.min(50, bankDeg));
 }
 
 export function createHud(canvas) {
@@ -173,8 +174,9 @@ export function createHud(canvas) {
 
     // bank scale: an arc of ticks over the centre, fixed on the glass as an
     // attitude indicator's scale is fixed on its case, 0 at the top, 30 and
-    // 45 long, and a sky pointer on the inside of the arc that swings to the
-    // bank angle; it sits under the heading tape, so the radius is what fits
+    // 45 long, and a pointer on the inside of the arc that swings to the bank
+    // angle on the banked side; it sits under the heading tape, so the radius
+    // is what fits
     const bx = cx, by = cy, br = Math.min(110, cy - top - 76);
     for (const t of BANK_TICKS) {
       const a = (t - 90) * D2R;                      // from straight up, positive clockwise

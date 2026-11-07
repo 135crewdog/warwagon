@@ -18,12 +18,12 @@ test('the throttle snaps to MCT around its detent, with a gap to cross before ta
   assert.ok(throttleFromPosition(0.5) > 0.5 && throttleFromPosition(0.5) < 0.55, 'the track below the detent is squeezed a little to make room for the snap zone');
 });
 
-test('the bank scale has its long ticks at 0, 30 and 45 and its sky pointer swings left in a right bank, to the scale\'s end', () => {
+test('the bank scale has its long ticks at 0, 30 and 45 and its pointer reads on the banked side, to the scale\'s end', () => {
   for (const t of [0, 30, 45, -30, -45]) assert.ok(BANK_TICKS.includes(t));
   assert.equal(bankPointerAngle(0), 0);
-  assert.equal(bankPointerAngle(30), -30, 'a 30° right bank: the pointer 30° left of the 0 tick, as on the attitude indicator');
-  assert.equal(bankPointerAngle(-45), 45);
-  assert.equal(bankPointerAngle(80), -50, 'held at the scale\'s end');
+  assert.equal(bankPointerAngle(30), 30, 'a 30° right bank: the pointer on the right-hand 30, as Boeing\'s displays read it');
+  assert.equal(bankPointerAngle(-45), -45);
+  assert.equal(bankPointerAngle(80), 50, 'held at the scale\'s end');
 });
 
 test('the VSI reads signed feet per minute to the nearest 50', () => {
