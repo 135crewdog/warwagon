@@ -92,7 +92,7 @@ tests/browser/smoke.js    loads the app in headless Chromium and flies a few sec
 
 - One slider for all four engines, along the left edge, as in Rage.
 - **The bottom is flight idle N1.**
-- **A detent at MCT** (maximum continuous thrust): the thumb has to cross a small gap to go above it, up to maximum (takeoff) thrust.
+- **A detent at MCT** (maximum continuous thrust): the track around it snaps to MCT, and the thumb has to cross a small gap to go above it, up to maximum (takeoff) thrust.
 - **The maximum N1 changes with altitude** (and Mach), as the F108's power management controls (PMCs) stop the engines over-boosting. The PMC's schedule isn't public, so the model caps thrust at the certified rating (take-off 22,000 lbf, or MCT below the detent, from EASA's type certificate) lapsed with Mach and altitude, and shows the N1 that gives it. The slider asks for a fraction of what's available at the present condition.
 - **The spool lag is real**: slow near idle, about a 1 s time constant above 20 % thrust, and flight idle to 95 % in under 5 s, the certification ceiling.
 
@@ -105,6 +105,8 @@ A Rage-style green HUD, with tanker numbers (see Departures: the real jet has no
 - **Heading** across the top, degrees true.
 - **Pitch ladder** with the horizon line, the **flight path marker** and the **waterline**.
 - **N1 %**, from the engines, not the slider, so the spool lag shows.
+- **g** and **AoA**, stacked lower left with the Mach and N1 as Rage's HUD stacks them, and a **bank scale** like an attitude indicator's: ticks on an arc over the centre at 0, 10, 20, 30 and 45°, with a sky pointer that swings to the bank angle. (Added after the owner's first flights; an arc below the centre, as on a fighter HUD, was tried and read wrong to a pilot.)
+- **Look-around** by dragging the view, as Rage: the camera swings round the jet and eases back when the finger lifts.
 
 ## Departures
 

@@ -1,23 +1,26 @@
 // The throttle: a slim vertical slider on the left edge, driven by pointer
 // events with pointer capture, keeping its value when released. The bottom
-// is flight idle; a detent at MCT: the thumb has to cross a small gap to go
-// above it, up to take-off thrust (docs/flight-model.md section 6).
+// is flight idle; a detent at MCT: a zone of the track around it snaps to
+// MCT exactly, so the thumb finds it, and has to cross the zone's top to go
+// above, up to take-off thrust (docs/flight-model.md sections 6 and 11.3).
 
 import { DETENT } from '../sim/engine.js';
 
-const GAP = 0.08;   // fraction of the track the thumb must cross past MCT
+const SNAP = 0.05;  // fraction of the track below MCT that snaps to it
+const GAP = 0.08;   // fraction of the track above MCT the thumb must cross to go past it
 
 // Pointer position along the track (0 bottom .. 1 top) → throttle 0..1.
 export function throttleFromPosition(pos) {
   const p = Math.max(0, Math.min(1, pos));
-  if (p <= DETENT) return p;
+  if (p < DETENT - SNAP) return p / (DETENT - SNAP) * DETENT;
   if (p <= DETENT + GAP) return DETENT;
   return DETENT + (p - DETENT - GAP) / (1 - DETENT - GAP) * (1 - DETENT);
 }
 
 // The inverse, for drawing the thumb.
 export function positionFromThrottle(t) {
-  if (t <= DETENT) return t;
+  if (t < DETENT) return t / DETENT * (DETENT - SNAP);
+  if (t === DETENT) return DETENT;
   return DETENT + GAP + (t - DETENT) / (1 - DETENT) * (1 - DETENT - GAP);
 }
 

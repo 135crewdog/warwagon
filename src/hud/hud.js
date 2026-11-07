@@ -6,8 +6,10 @@
 // The HUD is conformal with the view: the flight-path marker, the waterline
 // and the pitch ladder are world directions projected through the chase
 // camera, so the marker sits on the point the jet is flying toward and the
-// ladder rolls and scales with the camera. Rage's HUD, with the F-16's
-// readouts replaced by KIAS, Mach, altitude with the VSI, and N1.
+// ladder rolls and scales with the camera. Rage's layout: airspeed left,
+// altitude right (with the VSI above it), heading across the top, g, α, Mach
+// and the engines' N1 stacked lower left; and a bank scale over the centre,
+// as an attitude indicator's, with a sky pointer.
 
 const GREEN = '#7cff4f';
 const OUTLINE = 'rgba(0,0,0,0.75)';
@@ -15,6 +17,7 @@ const D2R = Math.PI / 180;
 const LADDER_RANGE = 12.5;   // deg of pitch each side of the nose that the ladder shows
 const BAR_HALF = 64;         // px, half-length of a pitch bar; the bars are symbols, so they never shrink
 const BAR_GAP = 22;          // px, half the gap in the middle of a bar
+export const BANK_TICKS = [-45, -30, -20, -10, 0, 10, 20, 30, 45];   // deg, the bank scale's ticks; 0, 30 and 45 long
 
 // A unit NED direction at heading ψ and pitch θ (degrees).
 function direction(headingDeg, pitchDeg) {
@@ -39,6 +42,14 @@ export function vsiText(fpm) {
   const v = Math.round(fpm / 50) * 50;
   if (v === 0) return '0';
   return (v > 0 ? '+' : '−') + Math.abs(v);
+}
+
+// Where the bank pointer sits on the scale over the centre: the angle from
+// the 0 tick, positive clockwise. It is a sky pointer, as on the attitude
+// indicator: it points at the sky's zenith, so a right bank swings it to
+// the left of the 0 tick, and it is held at the scale's end beyond 45°.
+export function bankPointerAngle(bankDeg) {
+  return 0 - Math.max(-50, Math.min(50, bankDeg)) || 0;
 }
 
 export function createHud(canvas) {
@@ -70,11 +81,12 @@ export function createHud(canvas) {
   }
   function dashed(on) { ctx.setLineDash(on ? [8, 6] : []); }
 
-  // air: the airdata object (kcas, mach, altitude, vsi, heading, pitch);
-  // engines: { n1 }; project: a NED direction → { x, y, visible } on the
-  // screen; velocity and nose: unit NED directions of the flight path and
-  // the body x axis.
-  function draw(air, engines, project, velocity, nose) {
+  // air: the airdata object (kcas, mach, altitude, vsi, heading, pitch, roll,
+  // alpha, nz); engines: { n1 }; project: a NED direction → { x, y, visible }
+  // on the screen; velocity and nose: unit NED directions of the flight path
+  // and the body x axis; looking: true while the view is swung away from
+  // the chase position.
+  function draw(air, engines, project, velocity, nose, looking = false) {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, w, h);
     const cx = w / 2;
@@ -100,7 +112,7 @@ export function createHud(canvas) {
     // Only the bars within LADDER_RANGE of the nose show, plus the horizon
     // line itself, the way a real HUD's glass shows a window of the ladder.
     ctx.save();
-    ctx.beginPath(); ctx.rect(cx - w * 0.3, top + 52, w * 0.6, bottom - top - 112); ctx.clip();
+    ctx.beginPath(); ctx.rect(cx - w * 0.3, top + 52, w * 0.6, bottom - top - 130); ctx.clip();
     const pFirst = Math.ceil((air.pitch - LADDER_RANGE) / 5) * 5, pLast = Math.floor((air.pitch + LADDER_RANGE) / 5) * 5;
     const bars = [];
     for (let p = pFirst; p <= pLast; p += 5) if (p >= -85 && p <= 85) bars.push(p);
@@ -142,11 +154,12 @@ export function createHud(canvas) {
     }
 
     // flight path marker: where the jet is actually going, held at the HUD's
-    // edge and dashed when it leaves the frame
-    const frame = { left: left + 30, right: right - 30, top: top + 60, bottom: bottom - 70 };
+    // edge and dashed when it leaves the frame; while looking around it is
+    // simply where it is, in view or not
+    const frame = { left: left + 30, right: right - 30, top: top + 60, bottom: bottom - 90 };
     const f = project(velocity);
-    if (f.visible) {
-      const inFrame = f.x >= frame.left && f.x <= frame.right && f.y >= frame.top && f.y <= frame.bottom;
+    const inFrame = f.visible && f.x >= frame.left && f.x <= frame.right && f.y >= frame.top && f.y <= frame.bottom;
+    if (f.visible && (inFrame || !looking)) {
       const fx = Math.max(frame.left, Math.min(frame.right, f.x)), fy = Math.max(frame.top, Math.min(frame.bottom, f.y));
       dashed(!inFrame);
       stroke(() => {
@@ -158,17 +171,41 @@ export function createHud(canvas) {
       dashed(false);
     }
 
-    // airspeed (KIAS) on the left with the Mach under it; altitude on the
-    // right with the VSI above it, signed feet per minute
+    // bank scale: an arc of ticks over the centre, fixed on the glass as an
+    // attitude indicator's scale is fixed on its case, 0 at the top, 30 and
+    // 45 long, and a sky pointer on the inside of the arc that swings to the
+    // bank angle; it sits under the heading tape, so the radius is what fits
+    const bx = cx, by = cy, br = Math.min(110, cy - top - 76);
+    for (const t of BANK_TICKS) {
+      const a = (t - 90) * D2R;                      // from straight up, positive clockwise
+      const long = t === 0 || Math.abs(t) === 30 || Math.abs(t) === 45;
+      const r0 = br, r1 = br + (long ? 12 : 6);
+      stroke(() => { ctx.moveTo(bx + r0 * Math.cos(a), by + r0 * Math.sin(a)); ctx.lineTo(bx + r1 * Math.cos(a), by + r1 * Math.sin(a)); });
+      if (long && t !== 0) text(String(Math.abs(t)), bx + (br + 23) * Math.cos(a), by + (br + 23) * Math.sin(a), 'center', 11);
+    }
+    const pa = (bankPointerAngle(air.roll) - 90) * D2R;
+    const px = bx + (br - 4) * Math.cos(pa), py = by + (br - 4) * Math.sin(pa);
+    const tx = -Math.sin(pa), ty = Math.cos(pa);   // along the arc
+    stroke(() => {
+      ctx.moveTo(bx + br * Math.cos(pa), by + br * Math.sin(pa));
+      ctx.lineTo(px - 6 * tx - 10 * Math.cos(pa), py - 6 * ty - 10 * Math.sin(pa));
+      ctx.lineTo(px + 6 * tx - 10 * Math.cos(pa), py + 6 * ty - 10 * Math.sin(pa));
+      ctx.closePath();
+    });
+
+    // airspeed (KIAS) on the left; altitude on the right with the VSI above it, signed feet per minute
     stroke(() => { ctx.moveTo(left + 46, cy); ctx.lineTo(left + 54, cy - 5); ctx.lineTo(left + 54, cy + 5); ctx.closePath(); });
     text(String(Math.round(air.kcas)), left + 42, cy, 'right', 20);
-    text(`M ${air.mach.toFixed(2)}`, left + 42, cy + 24, 'right', 14);
     stroke(() => { ctx.moveTo(right - 46, cy); ctx.lineTo(right - 54, cy - 5); ctx.lineTo(right - 54, cy + 5); ctx.closePath(); });
     text(String(Math.round(air.altitude)), right - 42, cy, 'left', 20);
     text(vsiText(air.vsi), right - 42, cy - 24, 'left', 14);
 
-    // N1, from the engines and not the slider, lower left
-    text(`N1 ${Math.round(engines.n1)}`, left, bottom, 'left', 14);
+    // g, AoA, Mach and the engines' N1, lower left, as Rage's HUD stacks them
+    const rows = [bottom - 54, bottom - 36, bottom - 18, bottom];
+    text(`${air.nz.toFixed(1)} G`, left, rows[0], 'left', 14);
+    text(`α ${air.alpha.toFixed(1)}`, left, rows[1], 'left', 14);
+    text(`M ${air.mach.toFixed(2)}`, left, rows[2], 'left', 14);
+    text(`N1 ${Math.round(engines.n1)}`, left, rows[3], 'left', 14);
   }
 
   return { resize, draw };

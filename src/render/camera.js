@@ -3,7 +3,8 @@
 // reads. The cues of docs/flight-model.md section 10 (buffet shake, load)
 // are applied here, driven by the model and never by a timer. Rage's
 // camera, with its distances scaled to a 42 m jet and the buffet taken from
-// the buffet boundary rather than an angle of attack.
+// the buffet boundary rather than an angle of attack. A look-around
+// (src/input/look.js) orbits the camera around the jet in the jet's frame.
 
 import * as THREE from 'three';
 
@@ -12,6 +13,7 @@ const ABOVE = 10;         // m
 const LOAD_PER_G = 1.0;   // m the camera rises per g above 1 (and drops per g below), so the load reads as pushing the jet down
 const BUFFET_ONSET = 0.9; // fraction of the buffet boundary's CL where the shake starts
 const BUFFET_FULL = 1.05; // and where it is full
+const D2R = Math.PI / 180;
 
 export function createChaseCamera(camera) {
   const q = new THREE.Quaternion();          // the camera's own smoothed attitude
@@ -20,24 +22,30 @@ export function createChaseCamera(camera) {
   const aim = new THREE.Vector3();
   const up = new THREE.Vector3();
   const shake = new THREE.Vector3();
+  const lookQ = new THREE.Quaternion();     // the look-around, in the jet's frame
+  const qv = new THREE.Quaternion();        // attitude then look-around
+  const euler = new THREE.Euler();
   let first = true;
   let t = 0;
 
   return {
     // position, quaternion: the jet's world transform (interpolated).
     // aux: { nz, buffet, qbar } from the simulation, buffet being CL as a
-    // fraction of the buffet boundary.
-    update(dt, position, quaternion, aux) {
+    // fraction of the buffet boundary; look: { yaw, pitch } in degrees,
+    // positive left and up, zero for the plain chase view.
+    update(dt, position, quaternion, aux, look = { yaw: 0, pitch: 0 }) {
       t += dt;
       // follow attitude with a short time constant; snap on the first frame
       const k = first ? 1 : 1 - Math.exp(-dt / 0.15);
       q.slerp(quaternion, k);
       first = false;
 
+      lookQ.setFromEuler(euler.set(look.pitch * D2R, look.yaw * D2R, 0, 'YXZ'));
+      qv.copy(q).multiply(lookQ);
       // load: positive g pushes the jet toward its belly, so the camera looks
       // down on it from higher; negative g the other way
       const load = LOAD_PER_G * (Math.max(-1, Math.min(3, aux.nz)) - 1);
-      offset.set(0, ABOVE + load, BEHIND).applyQuaternion(q);
+      offset.set(0, ABOVE + load, BEHIND).applyQuaternion(qv);
       pos.copy(position).add(offset);
 
       // buffet: a small, high-frequency shake that starts at 90 % of the
@@ -53,8 +61,8 @@ export function createChaseCamera(camera) {
 
       camera.position.copy(pos);
       // aim a little above the jet so it sits in the lower third of the frame and the HUD's centre is clear sky
-      aim.set(0, 7.5, -34).applyQuaternion(q).add(position);
-      up.set(0, 1, 0).applyQuaternion(q);
+      aim.set(0, 7.5, -34).applyQuaternion(qv).add(position);
+      up.set(0, 1, 0).applyQuaternion(qv);
       camera.up.copy(up);
       camera.lookAt(aim);
     },

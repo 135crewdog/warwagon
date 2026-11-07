@@ -307,6 +307,8 @@ Nothing in the lift, moment, drag or sideslip tables was tuned: these are what t
 - **Heading**: degrees true, 0–359, from the Euler angles.
 - **N1**: section 6, from the engines' thrust, not the slider, so the spool lag shows. One number: the four engines are matched.
 - **Flight path marker** (the velocity vector) and **waterline** (the nose), as Rage.
+- **g**: n_z from section 7, one decimal, and **AoA**: α in degrees, one decimal. Stacked in the lower left with the Mach and the N1, as Rage's HUD stacks its g, AoA, Mach and power (added after the owner's first flights: there was no g meter, and the pitch axis is flown by g).
+- **Bank scale**: as an attitude indicator's, an arc over the centre under the heading tape, fixed on the glass, with ticks at 0, 10, 20, 30 and 45° either side, the 0, 30 and 45 ticks long, and a sky pointer on the inside of the arc: it points at the sky's zenith, so a right bank of φ swings it φ to the left of the 0 tick, held at the scale's end past 50°. The owner could not tell 30° of bank from the ladder alone, and found an arc below the centre, where a fighter HUD puts it, unlike anything a pilot reads bank from.
 
 ## 10. Cues: what the pilot feels without sound
 
@@ -334,7 +336,11 @@ Rage's section 11.1, unchanged: the screen-up vector, the neutral attitude captu
 
 ### 11.3 Throttle
 
-The slider on the left edge, as Rage, mapped to s = 0..1 with the detent at 0.85 (section 6): the thumb has to cross a small gap to go above MCT. It starts at the trim setting.
+The slider on the left edge, as Rage, mapped to s = 0..1 with the detent at 0.85 (section 6). The track just below the detent (5 % of it) snaps to MCT exactly, so the thumb finds the detent without hunting, and the thumb has to cross a gap (8 % of the track) above it to go past MCT, as Rage's throttle enters afterburner. It starts at the trim setting.
+
+### 11.4 Look-around
+
+A finger dragged on the view outside the controls swings the camera around the jet, as Rage: dragging the world, so drag left looks right and drag down looks up, a quarter degree per pixel, to 170° of yaw and 80° of pitch. When the finger lifts the view eases back to the chase position with a 0.25 s time constant. Tilt and throttle keep working meanwhile; the HUD's numbers stay put and its conformal symbols are drawn only when the view is forward.
 
 ## 12. Acceptance tests
 
