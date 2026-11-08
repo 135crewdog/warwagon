@@ -143,3 +143,4 @@ Discussed, not adopted yet; to take up when gear, flaps, speed brakes and brakes
 - **Speed limits with annunciators:** a configuration change outside its limit refuses to happen and a caution flashes. For example, flaps 0 to 20 above 230 KIAS: the flaps don't move and "CHECK SPEED" flashes.
 - **Air refuelling** with a receiver.
 - **Rudder pedals and an engine-out**, which need the rudder off automatic.
+- **A lighter jet.** The owner would have preferred under 200,000 lb (25,000 to 60,000 lb of fuel, the touch-and-go training weight) and chose to keep 240,000 lb for now. The weight is already a value passed through the simulation; to make it a choice, the CG and the inertias must move with it (Crenshaw's 130,000 and 284,000 lb conditions in `docs/kc135-data.md` 10.2 and 10.3 give the two ends) and the handling tests re-checked at the light weight.
