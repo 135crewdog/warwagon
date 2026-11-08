@@ -64,7 +64,13 @@ python3 terrain/fetch-lidar.py 565600 272600 578400 285400 lidar/
 python3 terrain/make-heightmap.py terr50_gagg_gb.zip terrain/ lidar/
 ```
 
-The first fetches the Environment Agency's 1 m LiDAR for the two bases' box from its WCS service into `lidar/` (about 800 MB, not committed; a minute or two); the second writes `base.png` (the island at 200 m posts), `places.png` (the fine patches: OS Terrain 50 at 50 m, the LiDAR at 5 m) and `region.json`, plus `preview.png`, a picture of the base for checking by eye that is not committed. To add a place, add a line to `PATCHES` in the script (a centre for an OS patch, a grid box for a LiDAR one, fetched first) and run it again; the base does not change. The tests read the real files (`tests/terrain.test.js` checks the summits, the seas and the Fens).
+The first fetches the Environment Agency's 1 m LiDAR for the two bases' box from its WCS service into `lidar/` (about 800 MB, not committed; a minute or two); the second writes `base.png` (the island at 200 m posts), `places.png` (the fine patches: OS Terrain 50 at 50 m, the LiDAR at 5 m) and `region.json`, plus `preview.png`, a picture of the base for checking by eye that is not committed. The colour comes from Sentinel-2 mosaics the owner exports from the Copernicus Browser (8-bit GeoTIFF, WGS 84, 2,500 pixels a side; the areas of interest are in `terrain/CREDITS.md`), laid on the same grids:
+
+```bash
+python3 terrain/make-imagery.py terrain/ base=south.tiff base=north.tiff "Mildenhall=patch.tiff" "Mildenhall and Lakenheath=patch.tiff"
+```
+
+To add a place, add a line to `PATCHES` in the script (a centre for an OS patch, a grid box for a LiDAR one, fetched first) and run it again; the base does not change. The tests read the real files (`tests/terrain.test.js` checks the summits, the seas and the Fens).
 
 Pushing to `main` runs the tests and publishes the app to GitHub Pages (`.github/workflows/pages.yml`). Phones keep the version they have until a new one is offered on the start or pause screen, which happens only when `APP_VERSION` in `src/version.js` and `VERSION` in `sw.js` change: bump both with every change to anything the app serves. The debug overlay at `?debug=1` shows the raw sensor angles, the derived pitch and roll, the yoke, n_z, α, β, the surfaces, N1 and the frame rate. The icons are drawn by `icons/make-icons.mjs`.
 

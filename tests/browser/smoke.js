@@ -48,6 +48,9 @@ async function main() {
     assert.equal(ground.patches, 2, 'the Mildenhall patch and the two bases in LiDAR');
     assert.ok(ground.ground > 50 && ground.ground < 250, `Newmarket's heath is about 110 ft up: ${ground.ground} ft`);
     assert.equal(ground.water, 0, 'the middle of England is dry');
+    const colour = await page.evaluate(() => ({ ...window.warwagon.terrain.colour, expect: { base: window.warwagon.terrain.region.base, atlas: window.warwagon.terrain.region.atlas, scale: window.warwagon.terrain.region.colour.scale } }));
+    assert.deepEqual([colour.base.w, colour.base.h], [colour.expect.base.w, colour.expect.base.h], 'the base imagery sits on the base posts');
+    assert.deepEqual([colour.atlas.w, colour.atlas.h], [colour.expect.atlas.w * colour.expect.scale, colour.expect.atlas.h * colour.expect.scale], 'the patch imagery at its scale');
     // tap Fly: no permission prompt in Chromium, so flight starts at once, at the air start
     await page.click('#fly');
     await page.waitForFunction(() => window.warwagon.mode === 'flying');

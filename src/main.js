@@ -41,8 +41,9 @@ const jet = createAircraft();
 scene.add(jet);
 
 // The ground: the region of terrain/region.json (see heightmap.js), a base
-// tile of the island and an atlas of fine patches. Each heightmap is drawn
-// once to read its posts for the CPU sampler; the GPU reads the images.
+// tile of the island and an atlas of fine patches, and the satellite
+// imagery on the same grids. Each heightmap is drawn once to read its posts
+// for the CPU sampler; the GPU reads the images directly.
 let terrain = null;
 async function loadTerrain() {
   const region = await (await fetch('./terrain/region.json')).json();
@@ -51,7 +52,8 @@ async function loadTerrain() {
   // into nonsense while the CPU still read the true posts. Every iPhone the
   // app supports allows 16,384; a device that allows less gets no ground.
   const maxTexture = renderer.capabilities.maxTextureSize;
-  if (Math.max(region.base.w, region.base.h, region.atlas.w, region.atlas.h) > maxTexture) throw new Error(`the ground needs a ${region.base.h}-pixel texture and this device allows ${maxTexture}`);
+  const largest = Math.max(region.base.w, region.base.h, region.atlas.w, region.atlas.h) * Math.max(1, region.colour?.scale ?? 1);
+  if (largest > maxTexture) throw new Error(`the ground needs a ${largest}-pixel texture and this device allows ${maxTexture}`);
   const load = async (meta) => {
     const image = new Image();
     image.src = './terrain/' + meta.image;
@@ -63,12 +65,14 @@ async function loadTerrain() {
     const rgba = ctx.getImageData(0, 0, meta.w, meta.h).data;
     return { image, heights: decodeHeights(rgba, meta.w * meta.h), water: decodeWater(rgba, meta.w * meta.h) };
   };
-  const [base, atlas] = await Promise.all([load(region.base), load(region.atlas)]);
+  const picture = async (name) => { const image = new Image(); image.src = './terrain/' + name; await image.decode(); return image; };
+  const [base, atlas, colourBase, colourAtlas] = await Promise.all([load(region.base), load(region.atlas), picture(region.colour.base), picture(region.colour.atlas)]);
   return {
     sampler: createSampler(region, { base: base.heights, atlas: atlas.heights }, { base: base.water, atlas: atlas.water }),
     projection: createProjection(region),
-    mesh: createTerrain(scene, region, { base: base.image, atlas: atlas.image }, world),
+    mesh: createTerrain(scene, region, { base: base.image, atlas: atlas.image, colourBase, colourAtlas }, world, Math.min(8, renderer.capabilities.getMaxAnisotropy())),
     region,
+    colour: { base: { w: colourBase.width, h: colourBase.height }, atlas: { w: colourAtlas.width, h: colourAtlas.height } },
   };
 }
 // ground height in feet under a simulation state (north, east in feet)
