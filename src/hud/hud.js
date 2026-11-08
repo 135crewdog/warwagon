@@ -192,7 +192,7 @@ export function createHud(canvas) {
     // the waterline, so it stays in front of the jet whatever the view, and
     // turns with the horizon (from the same projection as the pitch ladder;
     // from the bank alone when the horizon can't be projected), 0, 30 and
-    // 45 long; the pointer belongs to the jet, so it points along the jet's
+    // 45 long and unnumbered; the pointer belongs to the jet, so it points along the jet's
     // own up as the view sees it, and the bank is read on the banked side.
     // Drawn only while the nose is in view. The radius is what fits under
     // the heading tape in the plain chase view.
@@ -209,8 +209,7 @@ export function createHud(canvas) {
         const a = (bankTickAngle(t, horizonDeg) - 90) * D2R;   // from straight up, positive clockwise
         const long = t === 0 || Math.abs(t) === 30 || Math.abs(t) === 45;
         const r0 = br, r1 = br + (long ? 12 : 6);
-        stroke(() => { ctx.moveTo(bx + r0 * Math.cos(a), by + r0 * Math.sin(a)); ctx.lineTo(bx + r1 * Math.cos(a), by + r1 * Math.sin(a)); });
-        if (long && t !== 0) text(String(Math.abs(t)), bx + (br + 23) * Math.cos(a), by + (br + 23) * Math.sin(a), 'center', 11);
+        stroke(() => { ctx.moveTo(bx + r0 * Math.cos(a), by + r0 * Math.sin(a)); ctx.lineTo(bx + r1 * Math.cos(a), by + r1 * Math.sin(a)); });   // no numbers: the long ticks say 30 and 45, as on the attitude indicator
       }
       const pa = (jetDeg - 90) * D2R, tx = -Math.sin(pa), ty = Math.cos(pa);   // the pointer's direction, and along the arc
       const px = bx + br * Math.cos(pa), py = by + br * Math.sin(pa);
