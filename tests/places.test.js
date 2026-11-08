@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
-import { PLACES, DEFAULT_PLACE, placeNamed, airStartFor, START_AGL_FT } from '../src/places.js';
+import { PLACES, DEFAULT_PLACE, placeNamed, airStartFor, START_FT, START_MIN_AGL_FT, START_KCAS } from '../src/places.js';
 import { createProjection } from '../src/render/heightmap.js';
 import { Simulation } from '../src/sim/simulation.js';
 import { IX } from '../src/sim/dynamics.js';
@@ -27,10 +27,13 @@ test('places: each starts well inside its own fine patch, with a heading', () =>
   assert.equal(placeNamed('Nowhere').name, 'RAF Mildenhall', 'an unknown name falls back to the first place');
 });
 
-test('places: the air start is 5,000 ft above the ground there, pointed the right way', () => {
+test('places: the air start is at 10,000 ft and 250 KIAS, pointed the right way, and clear of high ground', () => {
+  assert.equal(START_FT, 10000); assert.equal(START_KCAS, 250);
   const sampler = { heightAt: () => 10 };
   const s = airStartFor(placeNamed('RAF Mildenhall'), projection, sampler);
-  near(s.h, 10 / METRES_PER_FOOT + START_AGL_FT, 0.01, 'height');
+  near(s.h, START_FT, 0.01, 'height: 10,000 ft on the altimeter over low ground');
+  const high = airStartFor(placeNamed('RAF Mildenhall'), projection, { heightAt: () => 9000 * METRES_PER_FOOT });
+  near(high.h, 9000 + START_MIN_AGL_FT, 0.01, 'over 9,000 ft ground: 2,000 ft above it instead');
   near(s.psi, 22 * Math.PI / 180, 1e-12, 'heading');
   const { x, z } = projection.fromLatLon(52.245, 0.41);
   near(s.east * METRES_PER_FOOT, x, 1e-6, 'east'); near(-s.north * METRES_PER_FOOT, z, 1e-6, 'north');
@@ -38,12 +41,12 @@ test('places: the air start is 5,000 ft above the ground there, pointed the righ
 });
 
 test('places: the simulation takes the heading and position and is still trimmed', () => {
-  const sim = new Simulation({ h: 5100, kcas: 280, psi: 22 * Math.PI / 180, north: -40000, east: -20000 });
+  const sim = new Simulation({ h: START_FT, kcas: START_KCAS, psi: 22 * Math.PI / 180, north: -40000, east: -20000 });
   near(sim.airdata.heading, 22, 0.01, 'heading');
   near(sim.state[IX.NORTH], -40000, 1e-9); near(sim.state[IX.EAST], -20000, 1e-9);
   near(sim.aux.nz, 1, 0.01, '1 g');
   near(sim.airdata.roll, 0, 0.01, 'wings level');
   for (let i = 0; i < 50; i++) sim.step({ pitch: 0, roll: 0 }, sim.trimThrottle, 0.02);
   near(sim.airdata.heading, 22, 0.05, 'heading holds');
-  near(sim.state[IX.H], 5100, 2, 'height holds');
+  near(sim.state[IX.H], START_FT, 2, 'height holds');
 });

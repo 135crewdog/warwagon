@@ -283,7 +283,7 @@ with r_s = r·cosα − p·sinα the stability-axis yaw rate. The damper is real
 
 ### 8.7 Tuning targets
 
-Tune in 1b at the air start (10,000 ft, 280 KIAS; the tests keep this condition, while the app from milestone 2 starts 5,000 ft above the ground at the chosen place, 280 KIAS, trimmed the same way), at cruise (FL300, Mach 0.78) and at FL350, Mach 0.80, all at 240,000 lb, with the trim solver plus finite-difference linearisation for the open-loop modes and the full simulation for the closed-loop checks. The numbers in 12.2 are the pass bands; the flight-test modes of data 8.5 are the centre of them. Explain every tuning decision in plain words in the pull request.
+Tune in 1b at the air start (10,000 ft, 280 KIAS; the tests keep this condition, while the app from milestone 2 starts at the chosen place at 10,000 ft on the altimeter and 250 KIAS, trimmed the same way; the owner's choice after the first flights over the UK), at cruise (FL300, Mach 0.78) and at FL350, Mach 0.80, all at 240,000 lb, with the trim solver plus finite-difference linearisation for the open-loop modes and the full simulation for the closed-loop checks. The numbers in 12.2 are the pass bands; the flight-test modes of data 8.5 are the centre of them. Explain every tuning decision in plain words in the pull request.
 
 **Measured in 1b** (`tests/flight/modes.test.js`, bare airframe unless stated; `node tests/flight/fly.js modes` prints them):
 

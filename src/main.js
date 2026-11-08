@@ -12,7 +12,7 @@ import { createWorld, FAR } from './render/world.js';
 import { createTerrain } from './render/terrain.js';
 import { decodeHeights, decodeWater, createSampler, createProjection } from './render/heightmap.js';
 import { METRES_PER_FOOT } from './render/frames.js';
-import { PLACES, placeNamed, airStartFor, START_AGL_FT } from './places.js';
+import { PLACES, placeNamed, airStartFor, START_FT, START_KCAS } from './places.js';
 import { createAircraft } from './render/kc135.js';
 import { createChaseCamera } from './render/camera.js';
 import { createHud } from './hud/hud.js';
@@ -24,7 +24,6 @@ import { createLook, attachLook } from './input/look.js';
 import { SURFACES } from './sim/data/aircraft.js';
 import { APP_VERSION } from './version.js';
 
-const AIR_START_KCAS = 280;   // 5,000 ft above the ground at the place, 280 KIAS, wings level, trimmed (CLAUDE.md)
 const DEBUG = new URLSearchParams(location.search).get('debug') === '1';
 
 // ---- renderer, world, jet, camera, HUD ----
@@ -135,8 +134,8 @@ function poseOf(state) {
 
 const place = PLACES[0].name;   // one place for now; the owner's routes add the rest, and a list to the start screen
 function airStart() {
-  const start = terrain ? airStartFor(placeNamed(place), terrain.projection, terrain.sampler) : { h: START_AGL_FT };
-  sim = new Simulation({ ...start, kcas: AIR_START_KCAS });
+  const start = terrain ? airStartFor(placeNamed(place), terrain.projection, terrain.sampler) : { h: START_FT };   // 10,000 ft, 250 KIAS, trimmed (CLAUDE.md)
+  sim = new Simulation({ ...start, kcas: START_KCAS });
   carry = 0;
   prevPose = pose = poseOf(sim.state);
   throttleValue = sim.trimThrottle;
@@ -148,7 +147,7 @@ airStart();
 // Fly waits for the ground: on a first visit it may still be downloading.
 loadTerrain().then((t) => {
   terrain = t;
-  airStart();                                   // now 5,000 ft above the ground that is there
+  airStart();                                   // now over the ground that is there
   screens.ready();
 }, (e) => { console.error(e); screens.failed(e.message); });
 

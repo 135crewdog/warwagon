@@ -42,7 +42,7 @@ async function main() {
     await page.click('#settings-done');
     assert.equal(await page.evaluate(() => document.getElementById('screen-start').hidden), false, 'done returns to the start screen');
 
-    // the ground loads (Fly is disabled until it has), and the air start is 5,000 ft above it over Newmarket, pointed at Mildenhall
+    // the ground loads (Fly is disabled until it has), and the air start is 10,000 ft over Newmarket at 250 KIAS, pointed at Mildenhall
     await page.waitForFunction(() => window.warwagon.terrain !== null, null, { timeout: 60000 });
     const ground = await page.evaluate(() => ({ patches: window.warwagon.terrain.region.patches.length, ground: window.warwagon.ground, water: window.warwagon.terrain.sampler.waterAt(-569000 + 400000, -(278000 - 400000)) }));
     assert.equal(ground.patches, 2, 'the Mildenhall patch and the two bases in LiDAR');
@@ -55,7 +55,7 @@ async function main() {
     await page.click('#fly');
     await page.waitForFunction(() => window.warwagon.mode === 'flying');
     const start = await page.evaluate(() => ({ alt: window.warwagon.sim.airdata.altitude, agl: window.warwagon.sim.airdata.altitude - window.warwagon.ground, heading: window.warwagon.sim.airdata.heading, kcas: window.warwagon.sim.airdata.kcas, nz: window.warwagon.sim.aux.nz, n1: window.warwagon.sim.engines.n1 }));
-    assert.ok(Math.abs(start.agl - 5000) < 60 && Math.abs(start.kcas - 280) < 0.5, `the air start: ${start.agl} ft above the ground (${start.alt} ft), ${start.kcas} KIAS`);
+    assert.ok(Math.abs(start.alt - 10000) < 1 && Math.abs(start.kcas - 250) < 0.5, `the air start: ${start.alt} ft (${start.agl} ft above the ground), ${start.kcas} KIAS`);
     assert.ok(Math.abs(start.heading - 22) < 0.5, `pointed at Mildenhall: ${start.heading}`);
     assert.ok(Math.abs(start.nz - 1) < 0.01 && start.n1 > 40 && start.n1 < 80, `trimmed at 1 g, N1 ${start.n1}`);
     assert.equal(await page.evaluate(() => document.getElementById('controls').hidden), false);
@@ -154,7 +154,7 @@ async function main() {
     await page.click('#fly-again');
     await page.waitForFunction(() => window.warwagon.mode === 'start');
     assert.equal(await page.evaluate(() => document.getElementById('controls').hidden), true, 'the controls are hidden on the start screen');
-    assert.ok(Math.abs((await page.evaluate(() => window.warwagon.sim.airdata.altitude - window.warwagon.ground)) - 5000) < 60, 'back at the air start, 5,000 ft above the ground');
+    assert.ok(Math.abs((await page.evaluate(() => window.warwagon.sim.airdata.altitude)) - 10000) < 1, 'back at the air start, 10,000 ft');
 
     // the service worker registers and caches under a warwagon- prefix
     const caches = await page.evaluate(async () => { await navigator.serviceWorker.ready; return (await window.caches.keys()); });
