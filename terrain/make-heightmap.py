@@ -9,7 +9,15 @@
 # in the projection the app uses. A developer tool, run once; needs numpy and
 # scipy, and about 3 GB of memory for the 50 m mosaic of the island:
 #
-#   python terrain/make-heightmap.py terr50_gagg_gb.zip terrain/
+#   python terrain/make-heightmap.py terr50_gagg_gb.zip terrain/ [lidar-dir]
+#
+# A patch can instead come from the Environment Agency's LiDAR Composite DTM
+# (1 m, bare earth, England, Open Government Licence), fetched into lidar-dir
+# by fetch-lidar.py: its posts are a block mean of the 1 m cells, so a 5 m
+# post is the mean of 25, its voids are filled from OS Terrain 50, and its
+# water is OS Terrain 50's, read at its posts. Such a patch nests inside an
+# OS patch with a short blend of its own, since the two surveys agree to a
+# metre or two.
 #
 # Everything is in the British National Grid (EPSG:27700), OS Terrain 50's
 # own grid, so nothing is reprojected: the base is a 4 × 4 block mean of the
@@ -41,12 +49,17 @@ BASE_N = (0, 1000000)            #   (3,001 × 5,001 posts, under the 16.8 milli
 PATCH = 1024                     # posts per side of a patch unless it says otherwise: 51.2 km of 50 m posts
 LAKE_MIN = 200                   # posts: a flat region at least this big (half a square kilometre) in a basin is a lake
 SEA_MAX = 0.5                    # m: the sea's constant is never above this
-# name, centre latitude, centre longitude (WGS 84), posts a side (PATCH if left out). A patch is that many
-# posts of SRC metres about its centre, snapped to OS's posts. Mildenhall's takes in Lakenheath, Ely,
-# Cambridge, Newmarket and Bury St Edmunds, which span 50 km, so it is 1,536 posts: 76.8 km.
+# The patches. An OS patch: so many posts of SRC metres about a centre given as latitude and longitude
+# (WGS 84), snapped to OS's posts. Mildenhall's takes in Lakenheath, Ely, Cambridge, Newmarket and Bury
+# St Edmunds, which span 50 km, so it is 1,536 posts: 76.8 km. A LiDAR patch: a National Grid box
+# (multiples of its post, inside the tiles fetch-lidar.py fetched) and its post spacing; the two bases'
+# patch is 12.8 km at 5 m, Mildenhall's runway 1 km inside its west edge and Lakenheath's 2 km inside its
+# east, with a 500 m blend into the OS patch around it.
 PATCHES = [
-    ('Mildenhall', 52.32, 0.54, 1536),
+    dict(name='Mildenhall', lat=52.32, lon=0.54, posts=1536),
+    dict(name='Mildenhall and Lakenheath', lidar=(565600, 272600, 578400, 285400), post=5, blend=500.0),
 ]
+LIDAR_VOID = -1e30               # the service's voids are the most negative float
 
 # --- WGS 84 latitude and longitude to the National Grid (the same maths as src/osgb.js) ---
 def osgb(lat, lon):
@@ -172,7 +185,45 @@ def png(q, water):
     return b'\x89PNG\r\n\x1a\n' + chunk(b'IHDR', struct.pack('>IIBBBBB', rgb.shape[1], rgb.shape[0], 8, 2, 0, 0, 0)) + chunk(b'IDAT', zlib.compress(raw, 9)) + chunk(b'IEND', b'')
 
 src, out = sys.argv[1], sys.argv[2]
+lidar_dir = sys.argv[3] if len(sys.argv) > 3 else None
 heights, water = read_tiles(src)
+
+# --- a LiDAR patch: the 1 m tiles block-meaned to its posts, voids filled and water taken from OS Terrain 50 ---
+def bilinear50(a, E, N):
+    # a: the 50 m mosaic (heights or water); E, N: arrays of easting and northing; the value between the four posts
+    fc = np.clip((E - SRC / 2 - ME[0]) / SRC, 0, COLS - 1.001); fr = np.clip((MN[1] - SRC / 2 - N) / SRC, 0, ROWS - 1.001)
+    c0 = np.floor(fc).astype(int); r0 = np.floor(fr).astype(int); tc = fc - c0; tr = fr - r0
+    return ((a[r0, c0] * (1 - tc) + a[r0, c0 + 1] * tc) * (1 - tr) + (a[r0 + 1, c0] * (1 - tc) + a[r0 + 1, c0 + 1] * tc) * tr)
+
+def lidar_patch(box, post):
+    import tifffile, warnings
+    e0, n0, e1, n1 = box; w = e1 - e0; h = n1 - n0
+    assert w % post == 0 and h % post == 0 and w == h, 'a square box of whole posts'
+    m = np.full((h, w), np.nan, np.float32)     # 1 m cells, row 0 at the north edge
+    for f in sorted(os.listdir(lidar_dir)):
+        if not f.startswith('dtm1m_'): continue
+        _, te, tn, side = f[:-4].split('_'); te, tn, side = int(te), int(tn), int(side)
+        if te >= e1 or te + side <= e0 or tn >= n1 or tn + side <= n0: continue
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore')
+            t = tifffile.imread(os.path.join(lidar_dir, f)).astype(np.float32)
+        t[t < LIDAR_VOID] = np.nan
+        # the tile's cell (i, j) is at E = te + j, N = tn + side - 1 - i; place it
+        r = n1 - (tn + side); c = te - e0
+        rs, re_ = max(r, 0), min(r + side, h); cs, ce = max(c, 0), min(c + side, w)
+        m[rs:re_, cs:ce] = t[rs - r:re_ - r, cs - c:ce - c]
+    n = w // post
+    E = e0 + post / 2 + post * np.arange(n); N = n1 - post / 2 - post * np.arange(n)
+    EE, NN = np.meshgrid(E, N)
+    os50 = bilinear50(heights, EE, NN)
+    voids = int(np.isnan(m).sum())
+    blocks = m.reshape(n, post, n, post)
+    z = np.nanmean(blocks, axis=(1, 3))
+    z = np.where(np.isnan(z), os50, z).astype(np.float32)
+    wz = bilinear50(water.astype(np.float32), EE, NN)
+    diff = z - os50
+    print(f'  LiDAR {w / 1000:.1f} km at {post} m: {voids:,} void cells of {m.size:,} filled from OS; against OS Terrain 50 the posts differ by {np.sqrt(np.mean(diff ** 2)):.2f} m RMS, {np.abs(diff).max():.1f} m at most')
+    return z, wz, E[0], N[0]
 
 base, base_water, w, h = make_base(heights, water)
 lo = float(np.floor(base.min()))
@@ -181,27 +232,39 @@ open(os.path.join(out, 'base.png'), 'wb').write(png(quantise(base, lo), base_wat
 meta_base = dict(image='base.png', w=w, h=h, post=BASE_POST, x0=x0, z0=z0, min=lo, max=lo + 65535 * STEP, flat=0.0)
 print(f'base: {w} x {h} posts every {BASE_POST} m, heights {lo:.0f}..{base.max():.0f} m, {base_water.mean() * 100:.0f} % water')
 
-# the patches: so many posts of SRC metres about each centre, the posts OS's own, packed into the atlas in
-# shelves, largest first, the atlas as wide as two ordinary patches or the largest patch
-specs = [(p[0], p[1], p[2], p[3] if len(p) > 3 else PATCH) for p in PATCHES]
-specs.sort(key=lambda p: -p[3])
-atlas_w = max(2 * PATCH, max(p[3] for p in specs))
+# the patches, packed into the atlas in shelves, largest first, the atlas as wide as two ordinary patches
+# or the largest patch
+def posts_of(p): return p.get('posts', PATCH) if 'lidar' not in p else (p['lidar'][2] - p['lidar'][0]) // p['post']
+specs = sorted(PATCHES, key=lambda p: -posts_of(p))
+if any('lidar' in p for p in specs) and not lidar_dir: raise SystemExit('a LiDAR patch needs the tiles directory as the third argument')
+atlas_w = max(2 * PATCH, max(posts_of(p) for p in specs))
 placed = []; shelf_y = 0; shelf_h = 0; x = 0
-for name, lat, lon, n in specs:
+for p in specs:
+    n = posts_of(p)
     if x + n > atlas_w: shelf_y += shelf_h; shelf_h = 0; x = 0
-    placed.append((name, lat, lon, n, x, shelf_y)); x += n; shelf_h = max(shelf_h, n)
+    placed.append((p, n, x, shelf_y)); x += n; shelf_h = max(shelf_h, n)
 atlas_h = shelf_y + shelf_h
 atlas = np.zeros((atlas_h, atlas_w), np.float32); atlas_water = np.zeros((atlas_h, atlas_w), np.float32)
 patches = []
-for name, lat, lon, n, px, py in placed:
-    E, N = osgb(lat, lon)
-    cE = round((E - SRC / 2) / SRC) * SRC + SRC / 2; cN = round((N - SRC / 2) / SRC) * SRC + SRC / 2   # the nearest post
-    c0 = col_of(cE) - n // 2 + 1; r0 = row_of(cN) - n // 2
-    z = heights[r0:r0 + n, c0:c0 + n]; wz = water[r0:r0 + n, c0:c0 + n]
+for p, n, px, py in placed:
+    name = p['name']
+    if 'lidar' in p:
+        z, wz, E0, N0 = lidar_patch(p['lidar'], p['post']); post = p['post']
+        xw, zw = world(E0, N0)
+        entry = dict(name=name, px=px, py=py, size=n, post=post, x0=xw, z0=zw, box=list(p['lidar']), source='EA LiDAR Composite DTM 1 m')
+        if 'blend' in p: entry['blend'] = p['blend']
+        where = f'E {p["lidar"][0]}..{p["lidar"][2]} N {p["lidar"][1]}..{p["lidar"][3]}'
+    else:
+        E, N = osgb(p['lat'], p['lon']); post = SRC
+        cE = round((E - SRC / 2) / SRC) * SRC + SRC / 2; cN = round((N - SRC / 2) / SRC) * SRC + SRC / 2   # the nearest post
+        c0 = col_of(cE) - n // 2 + 1; r0 = row_of(cN) - n // 2
+        z = heights[r0:r0 + n, c0:c0 + n]; wz = water[r0:r0 + n, c0:c0 + n]
+        xw, zw = world(cE - (n // 2 - 1) * SRC, cN + (n // 2) * SRC)
+        entry = dict(name=name, px=px, py=py, size=n, post=SRC, x0=xw, z0=zw, centre=[p['lat'], p['lon']], en=[round(E), round(N)], source='OS Terrain 50')
+        where = f'about E {E:.0f} N {N:.0f}'
     atlas[py:py + n, px:px + n] = z; atlas_water[py:py + n, px:px + n] = wz
-    xw, zw = world(cE - (n // 2 - 1) * SRC, cN + (n // 2) * SRC)
-    patches.append(dict(name=name, px=px, py=py, size=n, post=SRC, x0=xw, z0=zw, centre=[lat, lon], en=[round(E), round(N)]))
-    print(f'  {name}: {n * SRC / 1000:.1f} km about E {E:.0f} N {N:.0f}, heights {z.min():.0f}..{z.max():.0f} m, {wz.mean() * 100:.1f} % water, at atlas ({px}, {py})')
+    patches.append(entry)
+    print(f'  {name}: {n * post / 1000:.1f} km at {post} m {where}, heights {z.min():.0f}..{z.max():.0f} m, {wz.mean() * 100:.1f} % water, at atlas ({px}, {py})')
 lo_a = float(np.floor(atlas.min()))
 open(os.path.join(out, 'places.png'), 'wb').write(png(quantise(atlas, lo_a), atlas_water))
 meta = dict(

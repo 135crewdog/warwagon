@@ -12,7 +12,7 @@ import { createWorld, FAR } from './render/world.js';
 import { createTerrain } from './render/terrain.js';
 import { decodeHeights, decodeWater, createSampler, createProjection } from './render/heightmap.js';
 import { METRES_PER_FOOT } from './render/frames.js';
-import { PLACES, placeNamed, airStartFor, START_AGL_FT } from './places.js';
+import { PLACES, placeNamed, airStartFor, START_FT, START_KCAS } from './places.js';
 import { createAircraft } from './render/kc135.js';
 import { createChaseCamera } from './render/camera.js';
 import { createHud } from './hud/hud.js';
@@ -24,7 +24,6 @@ import { createLook, attachLook } from './input/look.js';
 import { SURFACES } from './sim/data/aircraft.js';
 import { APP_VERSION } from './version.js';
 
-const AIR_START_KCAS = 280;   // 5,000 ft above the ground at the place, 280 KIAS, wings level, trimmed (CLAUDE.md)
 const DEBUG = new URLSearchParams(location.search).get('debug') === '1';
 
 // ---- renderer, world, jet, camera, HUD ----
@@ -41,8 +40,9 @@ const jet = createAircraft();
 scene.add(jet);
 
 // The ground: the region of terrain/region.json (see heightmap.js), a base
-// tile of the island and an atlas of fine patches. Each heightmap is drawn
-// once to read its posts for the CPU sampler; the GPU reads the images.
+// tile of the island and an atlas of fine patches, and the satellite
+// imagery on the same grids. Each heightmap is drawn once to read its posts
+// for the CPU sampler; the GPU reads the images directly.
 let terrain = null;
 async function loadTerrain() {
   const region = await (await fetch('./terrain/region.json')).json();
@@ -51,7 +51,8 @@ async function loadTerrain() {
   // into nonsense while the CPU still read the true posts. Every iPhone the
   // app supports allows 16,384; a device that allows less gets no ground.
   const maxTexture = renderer.capabilities.maxTextureSize;
-  if (Math.max(region.base.w, region.base.h, region.atlas.w, region.atlas.h) > maxTexture) throw new Error(`the ground needs a ${region.base.h}-pixel texture and this device allows ${maxTexture}`);
+  const largest = Math.max(region.base.w, region.base.h, region.atlas.w, region.atlas.h) * Math.max(1, region.colour?.scale ?? 1);
+  if (largest > maxTexture) throw new Error(`the ground needs a ${largest}-pixel texture and this device allows ${maxTexture}`);
   const load = async (meta) => {
     const image = new Image();
     image.src = './terrain/' + meta.image;
@@ -63,12 +64,14 @@ async function loadTerrain() {
     const rgba = ctx.getImageData(0, 0, meta.w, meta.h).data;
     return { image, heights: decodeHeights(rgba, meta.w * meta.h), water: decodeWater(rgba, meta.w * meta.h) };
   };
-  const [base, atlas] = await Promise.all([load(region.base), load(region.atlas)]);
+  const picture = async (name) => { const image = new Image(); image.src = './terrain/' + name; await image.decode(); return image; };
+  const [base, atlas, colourBase, colourAtlas] = await Promise.all([load(region.base), load(region.atlas), picture(region.colour.base), picture(region.colour.atlas)]);
   return {
     sampler: createSampler(region, { base: base.heights, atlas: atlas.heights }, { base: base.water, atlas: atlas.water }),
     projection: createProjection(region),
-    mesh: createTerrain(scene, region, { base: base.image, atlas: atlas.image }, world),
+    mesh: createTerrain(scene, region, { base: base.image, atlas: atlas.image, colourBase, colourAtlas }, world, Math.min(8, renderer.capabilities.getMaxAnisotropy())),
     region,
+    colour: { base: { w: colourBase.width, h: colourBase.height }, atlas: { w: colourAtlas.width, h: colourAtlas.height } },
   };
 }
 // ground height in feet under a simulation state (north, east in feet)
@@ -131,8 +134,8 @@ function poseOf(state) {
 
 const place = PLACES[0].name;   // one place for now; the owner's routes add the rest, and a list to the start screen
 function airStart() {
-  const start = terrain ? airStartFor(placeNamed(place), terrain.projection, terrain.sampler) : { h: START_AGL_FT };
-  sim = new Simulation({ ...start, kcas: AIR_START_KCAS });
+  const start = terrain ? airStartFor(placeNamed(place), terrain.projection, terrain.sampler) : { h: START_FT };   // 10,000 ft, 250 KIAS, trimmed (CLAUDE.md)
+  sim = new Simulation({ ...start, kcas: START_KCAS });
   carry = 0;
   prevPose = pose = poseOf(sim.state);
   throttleValue = sim.trimThrottle;
@@ -144,7 +147,7 @@ airStart();
 // Fly waits for the ground: on a first visit it may still be downloading.
 loadTerrain().then((t) => {
   terrain = t;
-  airStart();                                   // now 5,000 ft above the ground that is there
+  airStart();                                   // now over the ground that is there
   screens.ready();
 }, (e) => { console.error(e); screens.failed(e.message); });
 

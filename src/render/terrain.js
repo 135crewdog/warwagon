@@ -5,10 +5,10 @@
 // one sits; the vertex shader lifts every vertex to the height read from the
 // heightmaps (the same lookup heightmap.js does on the CPU) and drops it by
 // the earth's curvature, d²/2R, so the island falls away to a horizon at the
-// right distance; the fragment shader colours the ground by height and slope
-// with a fine grain for close-up detail (the satellite imagery comes in a
-// later pull request), paints the water the survey found, lights it by the
-// sun and fades it into the fog. The grids are positioned relative to the
+// right distance; the fragment shader colours the ground from the satellite
+// imagery, laid over the same base and patches and blended across their
+// edges the same way, with a fine grain for close-up detail, paints the
+// water the survey found, lights it by the sun and fades it into the fog. The grids are positioned relative to the
 // camera, so single-precision positions stay exact 500 km from the origin.
 // Rage's terrain.js, with the curvature and the water mask. Metres; world x
 // east, z south, y up.
@@ -33,7 +33,7 @@ function heightGlsl(patches) {
   uniform vec2 baseSize, atlasSize, baseRange, atlasRange;   // posts; min, max − min
   uniform float blend, fade;
   uniform vec4 patchRect[${patches}];   // x0, z0, side, post; coarsest first
-  uniform vec4 patchPix[${patches}];    // px, py, size
+  uniform vec4 patchPix[${patches}];    // px, py, size, blend (the patch's own band)
   // a post's height (x) and water fraction (y)
   vec2 decode(vec4 t, vec2 range) { return vec2(range.x + (t.r * 65280.0 + t.g * 255.0) / 65535.0 * range.y, t.b); }
   vec2 basePost(vec2 ij) { return decode(texture2D(baseMap, (ij + 0.5) / baseSize), baseRange); }
@@ -55,7 +55,7 @@ function heightGlsl(patches) {
   }
   // each patch's weight at xz: how far inside its edge band the point is
   void weigh(vec2 xz, out float w[${patches}]) {
-    for (int i = 0; i < ${patches}; i++) w[i] = inside(xz, patchRect[i].xy, patchRect[i].zz, blend);
+    for (int i = 0; i < ${patches}; i++) w[i] = inside(xz, patchRect[i].xy, patchRect[i].zz, patchPix[i].w);
   }
   // the ground (height, water) at xz with the patches weighed at w (the point's own, or a neighbour's for a slope)
   vec2 groundWith(vec2 xz, float w[${patches}]) {
@@ -66,6 +66,31 @@ function heightGlsl(patches) {
   }
   float heightWith(vec2 xz, float w[${patches}]) { return groundWith(xz, w).x; }
   vec2 ground(vec2 xz) { float w[${patches}]; weigh(xz, w); return groundWith(xz, w); }`;
+}
+
+// The imagery, on the same grids: the base's colour pixels sit on its posts,
+// each patch's are colourScale times as many across its square. Linear
+// filtering with mipmaps does the smoothing; the patches are weighed as the
+// heights are, so colour and ground blend together at every edge.
+function colourGlsl(patches) {
+  return `
+  uniform sampler2D baseColour, atlasColour;
+  uniform vec2 atlasColourSize;
+  uniform float colourScale;
+  vec3 baseColourAt(vec2 xz) {
+    vec2 p = clamp((xz - baseGrid.xy) / baseGrid.z, vec2(0.0), baseSize - 1.0);
+    return texture2D(baseColour, (p + 0.5) / baseSize).rgb;
+  }
+  vec3 patchColourAt(vec2 xz, vec4 rect, vec4 pix) {
+    float n = pix.z * colourScale;
+    vec2 p = clamp((xz - rect.xy) / rect.z * (n - 1.0), vec2(0.0), vec2(n - 1.0));
+    return texture2D(atlasColour, (pix.xy * colourScale + p + 0.5) / atlasColourSize).rgb;
+  }
+  vec3 colourWith(vec2 xz, float w[${patches}]) {
+    vec3 c = baseColourAt(xz);
+    for (int i = 0; i < ${patches}; i++) if (w[i] > 0.0) c = mix(c, patchColourAt(xz, patchRect[i], patchPix[i]), w[i]);
+    return c;
+  }`;
 }
 
 const vertexShader = (patches) => `${heightGlsl(patches)}
@@ -86,7 +111,7 @@ const vertexShader = (patches) => `${heightGlsl(patches)}
     gl_Position = projectionMatrix * mat4(mat3(viewMatrix)) * vec4(rp, 1.0);
   }`;
 
-const fragmentShader = (patches) => `${heightGlsl(patches)}
+const fragmentShader = (patches) => `${heightGlsl(patches)}${colourGlsl(patches)}
   uniform vec3 sun, fogColor; uniform float fogNear, fogFar;
   varying vec3 wp, rp;
   varying float water;
@@ -98,22 +123,15 @@ const fragmentShader = (patches) => `${heightGlsl(patches)}
     float hx = heightWith(wp.xz + vec2(d, 0.0), w) - heightWith(wp.xz - vec2(d, 0.0), w);
     float hz = heightWith(wp.xz + vec2(0.0, d), w) - heightWith(wp.xz - vec2(0.0, d), w);
     vec3 n = normalize(vec3(-hx, 2.0 * d, -hz));
-    // the land: fields of two greens and a brown from noise at a few scales
-    // as the flat plain had them, browner and barer with height, with a
-    // light grain at two scales so the ground reads as moving at low level
+    // the ground's colour is the imagery's, the patches blended in with the same weights as their heights,
+    // with a light grain at two scales so the ground reads as moving at low level, fading before it aliases
     vec2 p = wp.xz;
-    float fields = noise(p / 900.0);
-    float big = fbm(p / 9000.0);
-    vec3 green = vec3(0.33, 0.47, 0.22), pale = vec3(0.55, 0.58, 0.30), brown = vec3(0.45, 0.36, 0.24), moor = vec3(0.42, 0.38, 0.26), rock = vec3(0.50, 0.48, 0.44);
-    vec3 c = mix(green, pale, smoothstep(0.35, 0.65, fields));
-    c = mix(c, brown, smoothstep(0.6, 0.8, big) * 0.6);
-    c = mix(c, moor, smoothstep(250.0, 600.0, wp.y));
-    c = mix(c, rock, smoothstep(0.25, 0.6, 1.0 - n.y));
+    vec3 c = colourWith(wp.xz, w);
     float dist = length(rp);
     float grain = 0.6 * noise(p / 50.0) + 0.4 * noise(p / 7.0);
-    c *= mix(0.9 + 0.2 * grain, 1.0, smoothstep(1500.0, 6000.0, dist));
-    // lit by the sun
-    float light = max(dot(n, sun), 0.0) * 0.6 + 0.55;
+    c *= mix(0.9 + 0.1 * grain, 0.95, smoothstep(1500.0, 6000.0, dist));
+    // lit by the sun, gently: the imagery carries the satellite's own shading, so the slopes are not shaded twice over
+    float light = max(dot(n, sun), 0.0) * 0.45 + 0.72;
     c *= light;
     // the water the survey found: the sea, the lakes and the reservoirs,
     // read as a fraction of each post, so a shore is a soft line a post wide
@@ -164,6 +182,18 @@ function levelGeometry(withHole) {
   return { geo, variants };   // never frustum-culled: the levels always surround the camera
 }
 
+// The imagery: filtered, mipmapped and anisotropic, since the ground is seen at a grazing angle.
+function colourTexture(image, anisotropy) {
+  const texture = new THREE.Texture(image);
+  texture.magFilter = THREE.LinearFilter; texture.minFilter = THREE.LinearMipmapLinearFilter;
+  texture.generateMipmaps = true;
+  texture.anisotropy = anisotropy;
+  texture.flipY = false;
+  texture.colorSpace = THREE.NoColorSpace;   // its values are used as they are
+  texture.needsUpdate = true;
+  return texture;
+}
+
 function heightTexture(image) {
   const texture = new THREE.Texture(image);
   texture.magFilter = texture.minFilter = THREE.NearestFilter;
@@ -174,19 +204,22 @@ function heightTexture(image) {
   return texture;
 }
 
-// region: the parsed region.json; images: { base, atlas } the two heightmap
-// images; world: the world's fog and sun to match.
-export function createTerrain(scene, region, images, world) {
+// region: the parsed region.json; images: { base, atlas, colourBase,
+// colourAtlas } the two heightmap images and the two imagery images; world:
+// the world's fog and sun to match; anisotropy: what the renderer allows.
+export function createTerrain(scene, region, images, world, anisotropy = 1) {
   const { base, atlas } = region;
   const patches = [...region.patches].sort((a, b) => b.post - a.post);   // coarsest first, so the finest ends on top
   const shared = {
     baseMap: { value: heightTexture(images.base) }, atlasMap: { value: heightTexture(images.atlas) },
+    baseColour: { value: colourTexture(images.colourBase, anisotropy) }, atlasColour: { value: colourTexture(images.colourAtlas, anisotropy) },
+    atlasColourSize: { value: new THREE.Vector2(atlas.w * region.colour.scale, atlas.h * region.colour.scale) }, colourScale: { value: region.colour.scale },
     baseGrid: { value: new THREE.Vector4(base.x0, base.z0, base.post, base.flat) },
     baseSize: { value: new THREE.Vector2(base.w, base.h) }, atlasSize: { value: new THREE.Vector2(atlas.w, atlas.h) },
     baseRange: { value: new THREE.Vector2(base.min, base.max - base.min) }, atlasRange: { value: new THREE.Vector2(atlas.min, atlas.max - atlas.min) },
     blend: { value: region.blend }, fade: { value: region.fade },
     patchRect: { value: patches.map((p) => new THREE.Vector4(p.x0, p.z0, (p.size - 1) * p.post, p.post)) },
-    patchPix: { value: patches.map((p) => new THREE.Vector4(p.px, p.py, p.size, 0)) },
+    patchPix: { value: patches.map((p) => new THREE.Vector4(p.px, p.py, p.size, p.blend ?? region.blend)) },
     sun: { value: world.sun.clone().normalize() }, fogColor: { value: world.fog.color }, fogNear: { value: world.fog.near }, fogFar: { value: world.fog.far },
   };
   const levels = [];
