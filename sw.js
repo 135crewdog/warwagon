@@ -4,7 +4,7 @@
 // It never calls skipWaiting() on its own; the app offers the update on the
 // start or pause screen and posts "skip-waiting" when the pilot accepts.
 
-const VERSION = '0.2.4';   // the same value as APP_VERSION in src/version.js
+const VERSION = '0.2.5';   // the same value as APP_VERSION in src/version.js
 const CACHE = `warwagon-${VERSION}`;
 const FILES = [
   './',
